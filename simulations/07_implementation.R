@@ -1,6 +1,7 @@
 library(vir)
 
-X = matrix(nrow = 1000, ncol = 100)
+# generate data
+X = matrix(nrow = 1000, ncol = 100, rnorm(100 * 1000))
 b = rnorm(100)
 y = rnorm(1) + X %*% b + rnorm(1000, sd = 0.2)
 

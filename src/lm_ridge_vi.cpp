@@ -345,7 +345,6 @@ Rcpp::List lm_ridge_cavi(
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
 //'   \{0.5, 1\}}
-//' @export
 // [[Rcpp::export]]
 Rcpp::List lm_ridge_svi(
   Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 5000, bool verbose = true,

@@ -18,7 +18,7 @@
 #'   full correlation and 1 for independece assumption.
 #' @export
 lm_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.0001, type = 0L) {
-    .Call('_vir_lm_hs_cavi', PACKAGE = 'vir', y, X, n_iter, verbose, a_tau, b_tau, rel_tol, type)
+    .Call(`_vir_lm_hs_cavi`, y, X, n_iter, verbose, a_tau, b_tau, rel_tol, type)
 }
 
 #' Univariate normal linear regression with a horseshoe prior using the
@@ -43,7 +43,7 @@ lm_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau 
 #'   \{0.5, 1\}}
 #' @export
 lm_hs_svi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, tol = 0.0001, type = 0L, batch_size = 42L, const_rhot = 0.1, omega = 15.0, kappa = 0.6) {
-    .Call('_vir_lm_hs_svi', PACKAGE = 'vir', y, X, n_iter, verbose, a_tau, b_tau, tol, type, batch_size, const_rhot, omega, kappa)
+    .Call(`_vir_lm_hs_svi`, y, X, n_iter, verbose, a_tau, b_tau, tol, type, batch_size, const_rhot, omega, kappa)
 }
 
 #' Univariate normal linear regression with a ridge (normal) prior using the
@@ -67,7 +67,7 @@ lm_hs_svi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau =
 #'   full correlation and 1 for independece assumption.
 #' @export
 lm_ridge_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, a_lambda = 0.1, b_lambda = 0.1, rel_tol = 0.0001, type = 0L) {
-    .Call('_vir_lm_ridge_cavi', PACKAGE = 'vir', y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, rel_tol, type)
+    .Call(`_vir_lm_ridge_cavi`, y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, rel_tol, type)
 }
 
 #' Univariate normal linear regression with a ridge (normal) prior using the
@@ -94,104 +94,103 @@ lm_ridge_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_t
 #'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 #' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
 #'   \{0.5, 1\}}
-#' @export
 lm_ridge_svi <- function(y, X, n_iter = 5000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, a_lambda = 0.1, b_lambda = 0.1, type = 0L, batch_size = 42L, const_rhot = 0.01, omega = 15.0, kappa = 0.6) {
-    .Call('_vir_lm_ridge_svi', PACKAGE = 'vir', y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, type, batch_size, const_rhot, omega, kappa)
+    .Call(`_vir_lm_ridge_svi`, y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, type, batch_size, const_rhot, omega, kappa)
 }
 
 mv_probit_gibbs_Z <- function(Y, Eta, tau, N, M, Z) {
-    .Call('_vir_mv_probit_gibbs_Z', PACKAGE = 'vir', Y, Eta, tau, N, M, Z)
+    .Call(`_vir_mv_probit_gibbs_Z`, Y, Eta, tau, N, M, Z)
 }
 
 mvlm_uninf_gibbs_b0 <- function(E_hat, tau, N, M, b0) {
-    .Call('_vir_mvlm_uninf_gibbs_b0', PACKAGE = 'vir', E_hat, tau, N, M, b0)
+    .Call(`_vir_mvlm_uninf_gibbs_b0`, E_hat, tau, N, M, b0)
 }
 
 mvlm_uninf_gibbs_B <- function(E_hat, X, tau, M, P, b) {
-    .Call('_vir_mvlm_uninf_gibbs_B', PACKAGE = 'vir', E_hat, X, tau, M, P, b)
+    .Call(`_vir_mvlm_uninf_gibbs_B`, E_hat, X, tau, M, P, b)
 }
 
 mvlm_uninf_gibbs_mtheta <- function(E_hat, mphi, mgamma, tau, lambda, M, K, mtheta) {
-    .Call('_vir_mvlm_uninf_gibbs_mtheta', PACKAGE = 'vir', E_hat, mphi, mgamma, tau, lambda, M, K, mtheta)
+    .Call(`_vir_mvlm_uninf_gibbs_mtheta`, E_hat, mphi, mgamma, tau, lambda, M, K, mtheta)
 }
 
 mvlm_uninf_gibbs_mphi <- function(E_hat, mtheta, tau, N, K, mphi) {
-    .Call('_vir_mvlm_uninf_gibbs_mphi', PACKAGE = 'vir', E_hat, mtheta, tau, N, K, mphi)
+    .Call(`_vir_mvlm_uninf_gibbs_mphi`, E_hat, mtheta, tau, N, K, mphi)
 }
 
 mvlm_uninf_gibbs_tau <- function(E_hat, N, M, a_tau, b_tau, tau) {
-    .Call('_vir_mvlm_uninf_gibbs_tau', PACKAGE = 'vir', E_hat, N, M, a_tau, b_tau, tau)
+    .Call(`_vir_mvlm_uninf_gibbs_tau`, E_hat, N, M, a_tau, b_tau, tau)
 }
 
 mvlm_uninf_gibbs_mgamma <- function(mtheta, lambda, M, K, nu, mgamma) {
-    .Call('_vir_mvlm_uninf_gibbs_mgamma', PACKAGE = 'vir', mtheta, lambda, M, K, nu, mgamma)
+    .Call(`_vir_mvlm_uninf_gibbs_mgamma`, mtheta, lambda, M, K, nu, mgamma)
 }
 
 mvlm_uninf_gibbs_xi <- function(mtheta, mgamma, lambda, M, K, a1, a2, xi) {
-    .Call('_vir_mvlm_uninf_gibbs_xi', PACKAGE = 'vir', mtheta, mgamma, lambda, M, K, a1, a2, xi)
+    .Call(`_vir_mvlm_uninf_gibbs_xi`, mtheta, mgamma, lambda, M, K, a1, a2, xi)
 }
 
 mv_probit_vi_z <- function(Eta, param_tau, S, M, param_z) {
-    .Call('_vir_mv_probit_vi_z', PACKAGE = 'vir', Eta, param_tau, S, M, param_z)
+    .Call(`_vir_mv_probit_vi_z`, Eta, param_tau, S, M, param_z)
 }
 
 mvlm_vi_phi <- function(E_hat, param_theta, param_tau, S, M, K, param_phi) {
-    .Call('_vir_mvlm_vi_phi', PACKAGE = 'vir', E_hat, param_theta, param_tau, S, M, K, param_phi)
+    .Call(`_vir_mvlm_vi_phi`, E_hat, param_theta, param_tau, S, M, K, param_phi)
 }
 
 mvlm_vi_theta <- function(E_hat, param_phi, param_tau, param_gamma, mu_lambda, N, M, S, K, param_theta) {
-    .Call('_vir_mvlm_vi_theta', PACKAGE = 'vir', E_hat, param_phi, param_tau, param_gamma, mu_lambda, N, M, S, K, param_theta)
+    .Call(`_vir_mvlm_vi_theta`, E_hat, param_phi, param_tau, param_gamma, mu_lambda, N, M, S, K, param_theta)
 }
 
 mvlm_vi_b0 <- function(E_hat, param_tau, N, M, S, param_b0) {
-    .Call('_vir_mvlm_vi_b0', PACKAGE = 'vir', E_hat, param_tau, N, M, S, param_b0)
+    .Call(`_vir_mvlm_vi_b0`, E_hat, param_tau, N, M, S, param_b0)
 }
 
 mvlm_vi_b <- function(E_hat, X, param_tau, N, M, P, S, param_b) {
-    .Call('_vir_mvlm_vi_b', PACKAGE = 'vir', E_hat, X, param_tau, N, M, P, S, param_b)
+    .Call(`_vir_mvlm_vi_b`, E_hat, X, param_tau, N, M, P, S, param_b)
 }
 
 mvlm_vi_tau <- function(E_hat, X, param_b0, param_b, param_phi, param_theta, N, M, P, S, K, a_tau, b_tau, param_tau) {
-    .Call('_vir_mvlm_vi_tau', PACKAGE = 'vir', E_hat, X, param_b0, param_b, param_phi, param_theta, N, M, P, S, K, a_tau, b_tau, param_tau)
+    .Call(`_vir_mvlm_vi_tau`, E_hat, X, param_b0, param_b, param_phi, param_theta, N, M, P, S, K, a_tau, b_tau, param_tau)
 }
 
 mvlm_vi_gamma <- function(param_theta, mu_lambda, M, K, nu, param_gamma) {
-    .Call('_vir_mvlm_vi_gamma', PACKAGE = 'vir', param_theta, mu_lambda, M, K, nu, param_gamma)
+    .Call(`_vir_mvlm_vi_gamma`, param_theta, mu_lambda, M, K, nu, param_gamma)
 }
 
 mvlm_vi_xi <- function(param_gamma, param_theta, M, K, mu_lambda, a1, a2, param_xi, svb = FALSE) {
-    .Call('_vir_mvlm_vi_xi', PACKAGE = 'vir', param_gamma, param_theta, M, K, mu_lambda, a1, a2, param_xi, svb)
+    .Call(`_vir_mvlm_vi_xi`, param_gamma, param_theta, M, K, mu_lambda, a1, a2, param_xi, svb)
 }
 
 mv_probit_vi_z_psi <- function(Y_s, E_hat, param_theta, S, M, K, param_psi, param_z) {
-    .Call('_vir_mv_probit_vi_z_psi', PACKAGE = 'vir', Y_s, E_hat, param_theta, S, M, K, param_psi, param_z)
+    .Call(`_vir_mv_probit_vi_z_psi`, Y_s, E_hat, param_theta, S, M, K, param_psi, param_z)
 }
 
 probit_gibbs_z <- function(y, eta, N, z) {
-    .Call('_vir_probit_gibbs_z', PACKAGE = 'vir', y, eta, N, z)
+    .Call(`_vir_probit_gibbs_z`, y, eta, N, z)
 }
 
 probit_gibbs_b0 <- function(ehat, N, b0) {
-    .Call('_vir_probit_gibbs_b0', PACKAGE = 'vir', ehat, N, b0)
+    .Call(`_vir_probit_gibbs_b0`, ehat, N, b0)
 }
 
 probit_gibbs_b <- function(X, ehat, prior_mat, P, b) {
-    .Call('_vir_probit_gibbs_b', PACKAGE = 'vir', X, ehat, prior_mat, P, b)
+    .Call(`_vir_probit_gibbs_b`, X, ehat, prior_mat, P, b)
 }
 
 probit_log_lik <- function(y, X, b0, b, N) {
-    .Call('_vir_probit_log_lik', PACKAGE = 'vir', y, X, b0, b, N)
+    .Call(`_vir_probit_log_lik`, y, X, b0, b, N)
 }
 
 probit_vi_z <- function(X_s, param_b0, param_b, S, param_z) {
-    .Call('_vir_probit_vi_z', PACKAGE = 'vir', X_s, param_b0, param_b, S, param_z)
+    .Call(`_vir_probit_vi_z`, X_s, param_b0, param_b, S, param_z)
 }
 
 probit_vi_b0 <- function(X_s, param_z, param_b, N, S, param_b0) {
-    .Call('_vir_probit_vi_b0', PACKAGE = 'vir', X_s, param_z, param_b, N, S, param_b0)
+    .Call(`_vir_probit_vi_b0`, X_s, param_z, param_b, N, S, param_b0)
 }
 
 probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b) {
-    .Call('_vir_probit_vi_b', PACKAGE = 'vir', X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
+    .Call(`_vir_probit_vi_b`, X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
 }
 
