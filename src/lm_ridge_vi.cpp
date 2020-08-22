@@ -243,6 +243,11 @@ Rcpp::List lm_ridge_cavi(
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
+    if(verbose && (i % 10 == 0)) {
+      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
+    }
+
+    // b0
     lm_ridge_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
     vi_update_normal(param_b0, rhot);
     natural_to_canonical(param_b0, "normal");
@@ -305,15 +310,32 @@ Rcpp::List lm_ridge_cavi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
+  List b0;
+  b0["dist"] = "univariate normal";
+  b0["mu"] = mu_b0;
+  b0["var"] = sigma2_b0;
+
+  List b;
+  b["dist"] = "multivariate normal";
+  b["mu"] = mu_b;
+  b["sigma_mat"] = msigma_b;
+
+  List tau;
+  tau["dist"] = "gamma";
+  tau["shape"] = astar_tau;
+  tau["rate"] = bstar_tau;
+
+  List lambda;
+  lambda["dist"] = "gamma";
+  lambda["shape"] = astar_lambda;
+  lambda["rate"] = bstar_lambda;
+
+
   List ret;
-  ret["mu_b0"] = mu_b0;
-  ret["sigma2_b0"] = sigma2_b0;
-  ret["mu_b"] = mu_b;
-  ret["msigma_b"] = msigma_b;
-  ret["astar_lambda"] = astar_lambda;
-  ret["bstar_lambda"] = bstar_lambda;
-  ret["astar_tau"] = astar_tau;
-  ret["bstar_tau"] = bstar_tau;
+  ret["b0"] = b0;
+  ret["b"] = b;
+  ret["tau"] = tau;
+  ret["lambda"] = lambda;
   ret["elbo"] = elbo.topRows(iters);
   return(ret);
 }
@@ -345,6 +367,7 @@ Rcpp::List lm_ridge_cavi(
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
 //'   \{0.5, 1\}}
+//' @export
 // [[Rcpp::export]]
 Rcpp::List lm_ridge_svi(
   Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 5000, bool verbose = true,

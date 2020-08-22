@@ -94,6 +94,7 @@ lm_ridge_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_t
 #'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 #' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
 #'   \{0.5, 1\}}
+#' @export
 lm_ridge_svi <- function(y, X, n_iter = 5000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, a_lambda = 0.1, b_lambda = 0.1, type = 0L, batch_size = 42L, const_rhot = 0.01, omega = 15.0, kappa = 0.6) {
     .Call(`_vir_lm_ridge_svi`, y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, type, batch_size, const_rhot, omega, kappa)
 }

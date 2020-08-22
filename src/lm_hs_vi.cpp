@@ -143,7 +143,7 @@ Rcpp::List lm_hs_cavi(
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
-    if(verbose && (i % 100 == 0)) {
+    if(verbose && (i % 10 == 0)) {
       Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
     }
 
@@ -327,7 +327,7 @@ Rcpp::List lm_hs_svi(
     else
       rhot = const_rhot;
 
-    if(verbose && (i % 1000 == 0)) {
+    if(verbose && (i % 100 == 0)) {
       Rcpp::Rcout << "Done with Iteration " << i <<
         " with step size " << rhot << "\r";
     }
