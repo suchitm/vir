@@ -21,5 +21,7 @@ X_test = matrix(nrow = 5, ncol = 5, rnorm(25))
 predict_lm_vi(ridge_cavi_fit, X_test)
 
 ridge_svi_fit = lm_ridge_svi(
-  y, X, n_iter = 1000, verbose = TRUE, batch_size = 10, const_rhot = 0.1
+  y, X, n_iter = 1000, verbose = FALSE, batch_size = 10, const_rhot = 0.1
 )
+
+tibble(y = y, X)
