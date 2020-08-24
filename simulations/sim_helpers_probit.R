@@ -121,6 +121,58 @@ get_model_info_probit_gibbs = function(
   return(retl)
 }
 
+get_model_info_probit_stan = function(
+  model_fit, true_b, X_test, y_test, X_train, y_train
+){
+  # mse
+  coefs = coef(model_fit)
+  mse = mean((coefs[-1] - true_b)^2)
+
+  # ci info
+  cis = posterior_interval(model_fit, prob = 0.95)
+  conf_ints = cis[-1, ]
+  ci_info = get_coverage(conf_ints, true_b)
+  coverage = mean(ci_info$covers)
+  ci_length = mean(ci_info$ci_length)
+
+  # predicted probabilities
+  train_df = as_tibble(data.frame(X_train))
+  test_df = as_tibble(data.frame(X_test))
+  preds_train <- predict(
+    object = model_fit, new_data = train_df, type = "response"
+  )
+  preds_test <- predict(
+    object = model_fit, new_data = test_df, type = "response"
+  )
+
+  # auc roc and pr
+  fg <- preds_test[y_test == 1]
+  bg <- preds_test[y_test == 0]
+  roc <- roc.curve(scores.class0 = fg, scores.class1 = bg)
+  auc_roc <- roc$auc
+  pr <- pr.curve(scores.class0 = fg, scores.class1 = bg)
+  auc_pr <- pr$auc.integral
+
+  # ppv using f1 score
+  ppv <- ppv_w_f1(preds_train, y_train, preds_test, y_test)
+
+  # variable selection
+  estim_clust = 1 * ((conf_ints[, 1] > 0) | (conf_ints[, 2] < 0))
+  true_clust = 1 * (abs(true_b) > 0)
+  rand_ind = rand.index(estim_clust, true_clust)
+
+  retl = list(
+    mse = mse,
+    coverage = coverage,
+    ci_length = ci_length,
+    auc_roc = auc_roc,
+    auc_pr = auc_pr,
+    ppv = ppv,
+    rand_ind = rand_ind
+  )
+  return(retl)
+}
+
 get_model_info_probit_glmnet = function(
   model_fit, true_b, coef_type, X_test, y_test, X_train, y_train
 ){
@@ -165,12 +217,6 @@ get_model_info_probit_glmnet = function(
 fit_model_probit = function(
   X_train, y_train, X_test, y_test, model_type, true_b
 ){
-  # gibbs sampling iterations
-  gibbs_iter = 5000
-  seq_to_keep = 2000:5000
-  svi_n_iter = 15000
-  cavi_n_iter = 1000
-
   # fit model, get mse and coverage
   switch(
     model_type,
@@ -269,6 +315,18 @@ fit_model_probit = function(
         model_fit, true_b, X_test, y_test, X_train, y_train
       )
     },
+    ridge_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+      model_fit = stan_glm(
+        y ~ ., family = binomial(link = "logit"), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = normal(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_obj
+      )
+      model_info = get_model_info_probit_stan(
+        model_fit, true_b, X_test, y_test, X_train, y_train
+      )
+    },
     #~~~~~~~~~~~~~~~~~~~~#
     #  lasso
     #~~~~~~~~~~~~~~~~~~~~#
@@ -303,6 +361,18 @@ fit_model_probit = function(
         batch_size = 50
       )
       model_info = get_model_info_probit_vi(
+        model_fit, true_b, X_test, y_test, X_train, y_train
+      )
+    },
+    lasso_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+      model_fit = stan_glm(
+        y ~ ., family = binomial(link = "logit"), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = laplace(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_obj
+      )
+      model_info = get_model_info_probit_stan(
         model_fit, true_b, X_test, y_test, X_train, y_train
       )
     },
@@ -342,7 +412,72 @@ fit_model_probit = function(
       model_info = get_model_info_probit_vi(
         model_fit, true_b, X_test, y_test, X_train, y_train
       )
+    },
+    hs_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+model_fit = stan_glm(
+  y ~ ., family = binomial(link = "logit"), data = df,
+  prior_intercept = normal(location = 0, scale = 10^6),
+  prior = hs(), algorithm = "meanfield",
+  QR = TRUE, iter = 100000, tol_rel_obj = 0.01
+)
+      model_info = get_model_info_probit_stan(
+        model_fit, true_b, X_test, y_test, X_train, y_train
+      )
     }
   )
   return(model_info)
+}
+
+#-------------------------------------------------------------------------
+# run the simulations for a set of files and models
+#-------------------------------------------------------------------------
+run_sims_probit = function(models, probit_data)
+{
+  results_df = tibble(
+    sim_num = NA, model_type = NA, mse = NA, coverage = NA, ci_length = NA,
+    auc_roc = NA, auc_pr = NA, ppv = NA
+  )
+
+  iter = 0
+  for(file in probit_data)
+  {
+    iter = iter + 1
+    # load data
+    fpath = paste0(FPATH, file)
+    load(fpath)
+    y_train = this_dat$y_train
+    X_train = this_dat$X_train
+    y_test = this_dat$y_test
+    X_test = this_dat$X_test
+    true_b = this_dat$b
+
+    # run models and store results
+    for(model_type in models)
+    {
+      cat("Starting Model:", model_type, '\n')
+      model_results = fit_model_probit(
+        X_train, y_train, X_test, y_test, model_type, true_b
+      )
+      results_df =
+        tibble(
+          sim_num = i,
+          N = this_N,
+          sim_type = this_type,
+          model_type = model_type,
+          mse = model_results$mse,
+          coverage = model_results$coverage,
+          ci_length = model_results$ci_length,
+          auc_roc = model_results$auc_roc,
+          auc_pr = model_results$auc_pr,
+          ppv = model_results$ppv,
+          rand = model_results$rand_ind
+        ) %>%
+        bind_rows(results_df)
+    }
+    cat("#--------------------------------------------------#", '\n')
+    cat("Done with Sim", iter, "of", length(probit_data), '\n')
+    cat("#--------------------------------------------------#", '\n')
+  }
+  return(results_df)
 }

@@ -370,7 +370,7 @@ Rcpp::List lm_ridge_cavi(
 //' @export
 // [[Rcpp::export]]
 Rcpp::List lm_ridge_svi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 5000, bool verbose = true,
+  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 15000, bool verbose = true,
   double a_tau = 0.1, double b_tau = 0.1, double a_lambda = 0.1,
   double b_lambda = 0.1, int type = 0, int batch_size = 42,
   double const_rhot = 0.01, double omega = 15.0, double kappa = 0.6

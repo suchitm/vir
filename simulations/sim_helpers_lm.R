@@ -32,26 +32,27 @@ sim_data_lm = function(N, P, rho = 0.5, snr = 1)
 # metric functions --------------------------------------------------
 get_model_info_lm_vi = function(model_fit, true_b, X_test, y_test)
 {
-    mse = mean((true_b - model_fit$mu_b)^2)
-    ci_info = model_fit %>%
-      get_ci_vb(P) %>%
-      get_coverage(true_b)
-    coverage = mean(ci_info$covers)
-    ci_length = mean(ci_info$ci_length)
+  P = ncol(X_test)
+  mse = mean((true_b - model_fit$mu_b)^2)
+  ci_info = model_fit %>%
+    get_ci_vb(P) %>%
+    get_coverage(true_b)
+  coverage = mean(ci_info$covers)
+  ci_length = mean(ci_info$ci_length)
 
-    # prediction
-    preds <- predict_lm_vi(model_fit, X_test)
-    mspe <- sqrt(sum((y_test - preds$estimate)^2)) / sqrt(sum(y_test^2))
-    pred_cov <- mean((preds$ci[, 1] <= y_test & y_test <= preds$ci[, 2]))
+  # prediction
+  preds <- predict_lm_vi(model_fit, X_test)
+  mspe <- sqrt(sum((y_test - preds$estimate)^2)) / sqrt(sum(y_test^2))
+  pred_cov <- mean((preds$ci[, 1] <= y_test & y_test <= preds$ci[, 2]))
 
-    retl = list(
-      mse = mse,
-      coverage = coverage,
-      ci_length = ci_length,
-      mspe = mspe,
-      pred_cov = pred_cov
-    )
-    return(retl)
+  retl = list(
+    mse = mse,
+    coverage = coverage,
+    ci_length = ci_length,
+    mspe = mspe,
+    pred_cov = pred_cov
+  )
+  return(retl)
 }
 
 get_model_info_lm_gibbs = function(
@@ -89,17 +90,40 @@ get_model_info_lm_gibbs = function(
   return(retl)
 }
 
+get_model_info_lm_rstan = function(model_fit, true_b, X_test, y_test)
+{
+  # mse
+  coefs = coef(model_fit)
+  mse = mean((coefs[-1] - true_b)^2)
+
+  cis = posterior_interval(model_fit, prob = 0.95)
+  cis = cis[-c(1, nrow(cis)), ]
+  ci_info = get_coverage(cis, true_b)
+  coverage = mean(ci_info$covers)
+  ci_length = mean(ci_info$ci_length)
+
+  # predictions
+  test_df = as_tibble(data.frame(X_test))
+  # this function only returns predictions for 100 of the rows
+  estims = cbind(1, X_test) %*% coefs
+  mspe = sqrt(sum((y_test - estims)^2)) / sqrt(sum(y_test^2))
+
+  retl = list(
+    mse = mse,
+    coverage = coverage,
+    ci_length = ci_length,
+    mspe = mspe,
+    pred_cov = NA
+  )
+
+  return(retl)
+}
+
 #-------------------------------------------------------------------------
 # modesl for fit
 #-------------------------------------------------------------------------
 fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
 {
-  # gibbs sampling iterations
-  gibbs_iter = 5000
-  seq_to_keep = 2000:5000
-  svi_n_iter = 15000
-  cavi_n_iter = 500
-
   # fit model, get mse and coverage
   switch(
     model_type,
@@ -203,6 +227,16 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
+    ridge_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+      model_fit = stan_glm(
+        y ~ ., family = gaussian(), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = normal(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+      )
+      model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
+    },
     #~~~~~~~~~~~~~~~~~~~~#
     # lasso
     #~~~~~~~~~~~~~~~~~~~~#
@@ -231,6 +265,16 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
         batch_size = 50
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
+    },
+    lasso_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+      model_fit = stan_glm(
+        y ~ ., family = gaussian(), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = laplace(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+      )
+      model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
     },
     #~~~~~~~~~~~~~~~~~~~~#
     # hs
@@ -262,7 +306,67 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
         batch_size = 50
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
+    },
+    hs_stan = {
+      df = as_tibble(data.frame(y = y_train, X_train))
+      model_fit = stan_glm(
+        y ~ ., family = gaussian(), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = hs(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+      )
+      model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
     }
   )
   return(model_info)
+}
+
+#-------------------------------------------------------------------------
+# run the simulations for a set of files and models
+#-------------------------------------------------------------------------
+run_sims_lm = function(models, lm_data)
+{
+  results_df = tibble(
+    sim_num = NA, model_type = NA, mse = NA, coverage = NA, ci_length = NA,
+    mspe = NA, pred_cov = NA
+  )
+
+  iter = 0
+  for(file in lm_data)
+  {
+    iter = iter + 1
+    # load data
+    fpath = paste0(FPATH, file)
+    load(fpath)
+    y_train = this_dat$y_train
+    X_train = this_dat$X_train
+    y_test = this_dat$y_test
+    X_test = this_dat$X_test
+    true_b = this_dat$b
+
+    # run models and store results
+    for(model_type in models)
+    {
+      cat("Starting Model:", model_type, '\n')
+      model_results = fit_model_lm(
+        X_train, y_train, X_test, y_test, model_type, true_b
+      )
+      results_df =
+        tibble(
+          sim_num = i,
+          N = this_N,
+          model_type = model_type,
+          mse = model_results$mse,
+          coverage = model_results$coverage,
+          ci_length = model_results$ci_length,
+          mspe = model_results$mspe,
+          pred_cov = model_results$pred_cov
+        ) %>%
+        bind_rows(results_df)
+    }
+    cat("#--------------------------------------------------#", '\n')
+    cat("Done with Sim", iter, "of", length(lm_data), '\n')
+    cat("#--------------------------------------------------#", '\n')
+  }
+  return(results_df)
 }
