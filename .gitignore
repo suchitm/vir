@@ -4,7 +4,7 @@ docs
 /src/*.d
 /src/*.so
 *.dll
-.RData
+*.RData
 .Rproj.user
 .Rhistory
 .Ruserdata
