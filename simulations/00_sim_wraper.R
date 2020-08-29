@@ -16,13 +16,13 @@ set.seed(42)
 #--------------------------------------------------
 # parameters used for both lm and probit funcitons
 #--------------------------------------------------
-gibbs_iter = 3000
-seq_to_keep = 1500:3000
+gibbs_iter = 5000
+seq_to_keep = 100:gibbs_iter
 svi_n_iter = 15000
 cavi_n_iter = 1000
 stan_iter = 100000
-stan_rel_tol = 0.0001
-n_sim = 5
+stan_rel_tol = 0.001
+n_sim = 50
 
 #**********************************************************************#
 # CLONE THE GIT REPOSITORY TO YOUR COMPUTER AND WRITE PATH BELOW
@@ -38,6 +38,7 @@ source(paste0(REPO_PATH, "/simulations/sim_helpers_probit.R"))
 source(paste0(REPO_PATH, "/simulations/01_gen_sim_data.R"))
 
 # linear model simualtions (Section 6.2)
+# stan implementations do not run without error on Catalina 10.15.4
 source(paste0(REPO_PATH, "/simulations/02_lm_sims_gibbs.R"))
 source(paste0(REPO_PATH, "/simulations/02_lm_sims_glmnet.R"))
 source(paste0(REPO_PATH, "/simulations/02_lm_sims_vir.R"))
@@ -50,6 +51,8 @@ source(paste0(REPO_PATH, "/simulations/03_probit_sims_gibbs.R"))
 source(paste0(REPO_PATH, "/simulations/03_probit_sims_glmnet.R"))
 source(paste0(REPO_PATH, "/simulations/03_probit_sims_vir.R"))
 # source(paste0(REPO_PATH, "/simulations/03_probit_sims_rstan.R"))
+#
+stop()
 
 
 

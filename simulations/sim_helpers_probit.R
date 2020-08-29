@@ -321,7 +321,7 @@ fit_model_probit = function(
         y ~ ., family = binomial(link = "logit"), data = df,
         prior_intercept = normal(location = 0, scale = 10^6),
         prior = normal(), algorithm = "meanfield",
-        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_obj
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
       )
       model_info = get_model_info_probit_stan(
         model_fit, true_b, X_test, y_test, X_train, y_train
@@ -370,7 +370,7 @@ fit_model_probit = function(
         y ~ ., family = binomial(link = "logit"), data = df,
         prior_intercept = normal(location = 0, scale = 10^6),
         prior = laplace(), algorithm = "meanfield",
-        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_obj
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
       )
       model_info = get_model_info_probit_stan(
         model_fit, true_b, X_test, y_test, X_train, y_train
@@ -415,12 +415,12 @@ fit_model_probit = function(
     },
     hs_stan = {
       df = as_tibble(data.frame(y = y_train, X_train))
-model_fit = stan_glm(
-  y ~ ., family = binomial(link = "logit"), data = df,
-  prior_intercept = normal(location = 0, scale = 10^6),
-  prior = hs(), algorithm = "meanfield",
-  QR = TRUE, iter = 100000, tol_rel_obj = 0.01
-)
+      model_fit = stan_glm(
+        y ~ ., family = binomial(link = "logit"), data = df,
+        prior_intercept = normal(location = 0, scale = 10^6),
+        prior = hs(), algorithm = "meanfield",
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+      )
       model_info = get_model_info_probit_stan(
         model_fit, true_b, X_test, y_test, X_train, y_train
       )

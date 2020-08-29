@@ -1,8 +1,5 @@
 lm_results_path = paste0(results_path, "lm_sims_vir_results.csv")
 
-svi_n_iter = 100
-cavi_n_iter = 500
-
 FPATH = paste0(REPO_PATH, "/data/")
 all_files = list.files(FPATH)
 lm_data = all_files[str_detect(all_files, "lm")]

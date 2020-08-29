@@ -33,24 +33,43 @@ sim_data_lm = function(N, P, rho = 0.5, snr = 1)
 get_model_info_lm_vi = function(model_fit, true_b, X_test, y_test)
 {
   P = ncol(X_test)
-  mse = mean((true_b - model_fit$mu_b)^2)
-  ci_info = model_fit %>%
-    get_ci_vb(P) %>%
-    get_coverage(true_b)
+  coefs = model_fit$mu_b
+  mse = mean((true_b - coefs)^2)
+  cred_ints = model_fit %>% get_ci_vb(P)
+  ci_info = get_coverage(cred_ints, true_b)
   coverage = mean(ci_info$covers)
   ci_length = mean(ci_info$ci_length)
+
+  # coverage and length for non-zero coefficients
+  nz_b_ind = !(true_b == 0)
+  nz_true_b = true_b[nz_b_ind]
+  nz_cred_int = cred_ints[nz_b_ind, ]
+  nz_ci_info = get_coverage(nz_cred_int, nz_true_b)
+  nz_coverage = mean(nz_ci_info$covers)
+  nz_ci_length = mean(nz_ci_info$ci_length)
+
+  # nz_mse
+  nz_mse = mean((coefs[nz_b_ind] - nz_true_b)^2)
 
   # prediction
   preds <- predict_lm_vi(model_fit, X_test)
   mspe <- sqrt(sum((y_test - preds$estimate)^2)) / sqrt(sum(y_test^2))
   pred_cov <- mean((preds$ci[, 1] <= y_test & y_test <= preds$ci[, 2]))
 
+  # variable selection
+  estim_clust = 1 * ((cred_ints[, 1] > 0) | (cred_ints[, 2] < 0))
+  true_clust = 1 * (abs(true_b) > 0)
+  rand_ind = rand.index(estim_clust, true_clust)
+
   retl = list(
     mse = mse,
     coverage = coverage,
     ci_length = ci_length,
     mspe = mspe,
-    pred_cov = pred_cov
+    pred_cov = pred_cov,
+    rand_ind = rand_ind,
+    nz_coverage = nz_coverage,
+    nz_mse = nz_mse
   )
   return(retl)
 }
@@ -58,13 +77,24 @@ get_model_info_lm_vi = function(model_fit, true_b, X_test, y_test)
 get_model_info_lm_gibbs = function(
   model_fit, true_b, seq_to_keep, X_test, y_test
 ){
+
   coefs = colMeans(model_fit$b_mat[seq_to_keep, ])
   mse = mean((true_b - coefs)^2)
-  ci_info = model_fit %>%
-    get_ci_mcmc() %>%
-    get_coverage(true_b)
+  cred_ints = model_fit %>% get_ci_mcmc()
+  ci_info = get_coverage(cred_ints, true_b)
   coverage = mean(ci_info$covers)
   ci_length = mean(ci_info$ci_length)
+
+  # coverage and length for non-zero coefficients
+  nz_b_ind = !(true_b == 0)
+  nz_true_b = true_b[nz_b_ind]
+  nz_cred_int = cred_ints[nz_b_ind, ]
+  nz_ci_info = get_coverage(nz_cred_int, nz_true_b)
+  nz_coverage = mean(nz_ci_info$covers)
+  nz_ci_length = mean(nz_ci_info$ci_length)
+
+  # nz_mse
+  nz_mse = mean((coefs[nz_b_ind] - nz_true_b)^2)
 
   y_pred = matrix(nrow = length(seq_to_keep), ncol = nrow(X_test))
   for(i in 1:length(seq_to_keep))
@@ -80,12 +110,20 @@ get_model_info_lm_gibbs = function(
   ci_mat = summary(mcmc(y_pred), quantiles = c(0.025, 0.975))$quantiles
   pred_cov = get_coverage(ci_mat, y_test)$covers %>% mean()
 
+  # variable selection
+  estim_clust = 1 * ((cred_ints[, 1] > 0) | (cred_ints[, 2] < 0))
+  true_clust = 1 * (abs(true_b) > 0)
+  rand_ind = rand.index(estim_clust, true_clust)
+
   retl = list(
     mse = mse,
     coverage = coverage,
     ci_length = ci_length,
     mspe = mspe,
-    pred_cov = pred_cov
+    pred_cov = pred_cov,
+    rand_ind = rand_ind,
+    nz_coverage = nz_coverage,
+    nz_mse = nz_mse
   )
   return(retl)
 }
@@ -97,10 +135,21 @@ get_model_info_lm_rstan = function(model_fit, true_b, X_test, y_test)
   mse = mean((coefs[-1] - true_b)^2)
 
   cis = posterior_interval(model_fit, prob = 0.95)
-  cis = cis[-c(1, nrow(cis)), ]
-  ci_info = get_coverage(cis, true_b)
+  cred_ints = cis[-c(1, nrow(cis)), ]
+  ci_info = get_coverage(cred_ints, true_b)
   coverage = mean(ci_info$covers)
   ci_length = mean(ci_info$ci_length)
+
+  # coverage and length for non-zero coefficients
+  nz_b_ind = !(true_b == 0)
+  nz_true_b = true_b[nz_b_ind]
+  nz_cred_int = cred_ints[nz_b_ind, ]
+  nz_ci_info = get_coverage(nz_cred_int, nz_true_b)
+  nz_coverage = mean(nz_ci_info$covers)
+  nz_ci_length = mean(nz_ci_info$ci_length)
+
+  # nz_mse
+  nz_mse = mean((coefs[-1][nz_b_ind] - nz_true_b)^2)
 
   # predictions
   test_df = as_tibble(data.frame(X_test))
@@ -108,12 +157,56 @@ get_model_info_lm_rstan = function(model_fit, true_b, X_test, y_test)
   estims = cbind(1, X_test) %*% coefs
   mspe = sqrt(sum((y_test - estims)^2)) / sqrt(sum(y_test^2))
 
+  # variable selection
+  estim_clust = 1 * ((cred_ints[, 1] > 0) | (cred_ints[, 2] < 0))
+  true_clust = 1 * (abs(true_b) > 0)
+  rand_ind = rand.index(estim_clust, true_clust)
+
   retl = list(
     mse = mse,
     coverage = coverage,
     ci_length = ci_length,
     mspe = mspe,
-    pred_cov = NA
+    pred_cov = NA,
+    rand_ind = rand_ind,
+    nz_coverage = nz_coverage,
+    nz_mse = nz_mse
+  )
+
+  return(retl)
+}
+
+get_model_info_lm_glmnet = function(
+  model_fit, true_b, coef_type, X_test, y_test, X_train, y_train
+){
+  # estimation
+  coefs = coef(model_fit, s = 'lambda.1se')
+  mse = mean((true_b - coefs[-1])^2)
+
+  # coverage and length for non-zero coefficients
+  nz_b_ind = !(true_b == 0)
+  nz_true_b = true_b[nz_b_ind]
+  nz_mse = mean((coefs[-1][nz_b_ind] - nz_true_b)^2)
+
+  # prediction
+  preds = predict(model_fit, X_test, s = "lambda.1se")
+  mspe = sqrt(sum((preds - y_test)^2)) / sqrt(sum(y_test^2))
+
+  # variable selection
+  coefs = coef(model_fit, s = coef_type)[-1]
+  estim_clust = 1 * (abs(coefs) > 0)
+  true_clust = 1 * (abs(true_b) > 0)
+  rand_ind = rand.index(estim_clust, true_clust)
+
+  retl = list(
+    mse = mse,
+    coverage = NA,
+    ci_length = NA,
+    mspe = mspe,
+    pred_cov = NA,
+    rand_ind = rand_ind,
+    nz_coverage = NA,
+    nz_mse = nz_mse
   )
 
   return(retl)
@@ -130,50 +223,26 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
     # glmnet models
     ridge_glm_1se = {
       model_fit = glmnet::cv.glmnet(X_train, y_train, alpha = 0)
-      coefs = coef(model_fit, s = 'lambda.1se')
-      preds = predict(model_fit, X_test, s = "lambda.1se")
-      model_info = list(
-        mse = mean((true_b - coefs[-1])^2),
-        coverage = NA,
-        ci_length = NA,
-        mspe = sqrt(sum((preds - y_test)^2)) / sqrt(sum(y_test^2)),
-        pred_cov = NA
+      model_info = get_model_info_lm_glmnet(
+        model_fit, true_b, "lambda.1se", X_test, y_test, X_train, y_train
       )
     },
     ridge_glm_min = {
       model_fit = glmnet::cv.glmnet(X_train, y_train, alpha = 0)
-      coefs = coef(model_fit, s = 'lambda.min')
-      preds = predict(model_fit, X_test, s = "lambda.min")
-      model_info = list(
-        mse = mean((true_b - coefs[-1])^2),
-        coverage = NA,
-        ci_length = NA,
-        mspe = sqrt(sum((preds - y_test)^2)) / sqrt(sum(y_test^2)),
-        pred_cov = NA
+      model_info = get_model_info_lm_glmnet(
+        model_fit, true_b, "lambda.min", X_test, y_test, X_train, y_train
       )
     },
     lasso_glm_min = {
       model_fit = glmnet::cv.glmnet(X_train, y_train)
-      coefs = coef(model_fit, s = 'lambda.min')
-      preds = predict(model_fit, X_test, s = "lambda.min")
-      model_info = list(
-        mse = mean((true_b - coefs[-1])^2),
-        coverage = NA,
-        ci_length = NA,
-        mspe = sqrt(sum((preds - y_test)^2)) / sqrt(sum(y_test^2)),
-        pred_cov = NA
+      model_info = get_model_info_lm_glmnet(
+        model_fit, true_b, "lambda.min", X_test, y_test, X_train, y_train
       )
     },
     lasso_glm_1se = {
       model_fit = glmnet::cv.glmnet(X_train, y_train)
-      coefs = coef(model_fit, s = 'lambda.1se')
-      preds = predict(model_fit, X_test, 'lambda.1se')
-      model_info = list(
-        mse = mean((true_b - coefs[-1])^2),
-        coverage = NA,
-        ci_length = NA,
-        mspe = sqrt(sum((preds - y_test)^2)) / sqrt(sum(y_test^2)),
-        pred_cov = NA
+      model_info = get_model_info_lm_glmnet(
+        model_fit, true_b, "lambda.1se", X_test, y_test, X_train, y_train
       )
     },
     # gibbs samplers
@@ -233,7 +302,8 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
         y ~ ., family = gaussian(), data = df,
         prior_intercept = normal(location = 0, scale = 10^6),
         prior = normal(), algorithm = "meanfield",
-        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol,
+        refresh = 0, importance_resampling = FALSE
       )
       model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
     },
@@ -272,7 +342,8 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
         y ~ ., family = gaussian(), data = df,
         prior_intercept = normal(location = 0, scale = 10^6),
         prior = laplace(), algorithm = "meanfield",
-        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+        QR = FALSE, iter = stan_iter, tol_rel_obj = stan_rel_tol,
+        refresh = TRUE, importance_resampling = FALSE
       )
       model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
     },
@@ -313,7 +384,8 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
         y ~ ., family = gaussian(), data = df,
         prior_intercept = normal(location = 0, scale = 10^6),
         prior = hs(), algorithm = "meanfield",
-        QR = TRUE, iter = stan_iter, tol_rel_obj = stan_rel_tol
+        QR = FALSE, iter = stan_iter, tol_rel_obj = stan_rel_tol,
+        importance_resampling = FALSE, refresh = 1
       )
       model_info = get_model_info_lm_rstan(model_fit, true_b, X_test, y_test)
     }
@@ -328,7 +400,7 @@ run_sims_lm = function(models, lm_data)
 {
   results_df = tibble(
     sim_num = NA, model_type = NA, mse = NA, coverage = NA, ci_length = NA,
-    mspe = NA, pred_cov = NA
+    mspe = NA, pred_cov = NA, rand_ind = NA, nz_coverage = NA, nz_mse = NA
   )
 
   iter = 0
@@ -360,7 +432,10 @@ run_sims_lm = function(models, lm_data)
           coverage = model_results$coverage,
           ci_length = model_results$ci_length,
           mspe = model_results$mspe,
-          pred_cov = model_results$pred_cov
+          pred_cov = model_results$pred_cov,
+          rand_ind = model_results$rand_ind,
+          nz_coverage = model_results$nz_coverage,
+          nz_mse = model_results$nz_mse
         ) %>%
         bind_rows(results_df)
     }

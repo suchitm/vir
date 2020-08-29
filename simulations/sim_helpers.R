@@ -26,12 +26,12 @@ get_coverage = function(ci_mat, b)
     ci_length = rep(NA, length(b))
     for(p in 1:P)
     {
-        ci_length[p] = ci_mat[p, 2] - ci_mat[p, 1]
-        covers[p] = (ci_mat[p, 1] <= b[p]) & (b[p] <= ci_mat[p, 2])
+      ci_length[p] = ci_mat[p, 2] - ci_mat[p, 1]
+      covers[p] = (ci_mat[p, 1] <= b[p]) & (b[p] <= ci_mat[p, 2])
     }
     retl = list(
-        covers = covers,
-        ci_length = ci_length
+      covers = covers,
+      ci_length = ci_length
     )
     return(retl)
 }

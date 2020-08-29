@@ -1,6 +1,4 @@
 lm_results_path = paste0(results_path, "lm_sims_rstan_results.csv")
-stan_iter = 100000
-stan_rel_tol = 0.0001
 
 FPATH = paste0(REPO_PATH, "/data/")
 all_files = list.files(FPATH)
