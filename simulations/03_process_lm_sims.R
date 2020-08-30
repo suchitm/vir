@@ -2,8 +2,13 @@
 # process simulation result csv file
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # process lm sim results
-lm_results_path = paste0(results_path, "lm_sim_results.csv")
-results_df <- read_csv(lm_results_path)
+results_df <- read_csv(paste0(results_path, "lm_sims_gibbs_results.csv")) %>%
+  bind_rows(
+    paste0(results_path, "lm_sims_glmnet_results.csv") %>% read_csv()
+  ) %>%
+  bind_rows(
+    paste0(results_path, "lm_sims_vir_results.csv") %>% read_csv()
+  )
 
 results_summary <-
   results_df %>%
@@ -15,7 +20,10 @@ results_summary <-
     coverage = mean(coverage),
     ci_length = mean(ci_length),
     mspe = mean(mspe),
-    pred_cov = mean(pred_cov)
+    pred_cov = mean(pred_cov),
+    rand_ind = mean(rand_ind),
+    nz_coverage = mean(nz_coverage),
+    nz_mse = mean(nz_mse)
   ) %>%
   mutate(
     prior = factor(
@@ -33,18 +41,18 @@ results_summary <-
       levels = c("1se", "min", "corr", "indep"),
       labels = c("1SE", "Min", "Corr", "Indep")
     )
-  ) %>% # select(model_type, prior, algo, corr) %>% print(n = 100)
+  ) %>%
   ungroup() %>%
   filter(!is.na(model_type)) %>%
   arrange(N, prior, algo, corr) %>%
-  select(N, prior, algo, corr, median, coverage, mspe)
+  select(N, prior, algo, corr, mean, coverage, mspe, rand_ind)
 
 this_N = results_summary$N %>% unique()
 this_priors = results_summary$prior %>% unique() %>% as.character()
 prior_inds = list(1:7, 8:14, 15:19)
-metric_inds = list(1:3, 4:6, 7:9)
-metric_names = c("MSE", "Cov.", "MSPE")
-res_mat = matrix(nrow = 19, ncol = 9, NA)
+metric_inds = list(1:4, 5:8, 9:12)
+metric_names = c("MSE", "Cov.", "MSPE", "RAND")
+res_mat = matrix(nrow = 19, ncol = 12, NA)
 row_labels = c()
 
 for(i in 1:length(prior_inds))
@@ -68,7 +76,7 @@ for(i in 1:length(prior_inds))
 
     res_mat[row_index, col_index] <-
       these_results %>%
-      select(median, coverage, mspe) %>%
+      select(mean, coverage, mspe, rand_ind) %>%
       round(3) %>%
       as.matrix()
   }
@@ -89,5 +97,5 @@ latex(
   cgroup = paste0("N = ", this_N),
   n.cgroup = rep(length(metric_names), length(this_N)),
   table.env = FALSE,
-  col.just = rep('c', 9)
+  col.just = rep('c', ncol(res_mat))
 )
