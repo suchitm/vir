@@ -11,22 +11,24 @@ using namespace std;
 // **********************************************************************
 // individual updaters
 // **********************************************************************
-Rcpp::List lm_ridge_vi_b0(
+Rcpp::List lm_lasso_vi_b0(
   Eigen::VectorXd& y_n, Eigen::MatrixXd& X_n, Rcpp::List& param_b,
   Rcpp::List& param_tau, int& N, int& S, Rcpp::List& param_b0
 ){
   double mu_tau = param_tau["mu"];
   Eigen::VectorXd mu_b = param_b["mu"];
+
   double delta1_t = N * 1.0 / S * mu_tau * (y_n - X_n * mu_b).sum();
   double delta2_t = -1.0 / 2.0 * (N * mu_tau + 0.000001);
+
   param_b0["delta1_t"] = delta1_t;
   param_b0["delta2_t"] = delta2_t;
   return(param_b0);
 }
 
-Rcpp::List lm_ridge_vi_b(
+Rcpp::List lm_lasso_vi_b(
   Eigen::VectorXd& y_n, Eigen::MatrixXd& X_n, Rcpp::List& param_b0,
-  Rcpp::List& param_tau, Rcpp::List& param_lambda, int& N, int& P, int& S,
+  Rcpp::List& param_tau, Rcpp::List& param_gamma, int& N, int& P, int& S,
   int& type, Rcpp::List& param_b, bool svi = false
 ){
   Eigen::VectorXd delta1_t = param_b["delta1_t"];
@@ -34,7 +36,8 @@ Rcpp::List lm_ridge_vi_b(
   Eigen::VectorXd delta2_t1(P);
   double mu_b0 = param_b0["mu"];
   double mu_tau = param_tau["mu"];
-  double mu_lambda = param_lambda["mu"];
+  Eigen::VectorXd mu_gamma = param_gamma["mu"];
+  Eigen::MatrixXd gamma_mat = mu_gamma.asDiagonal();
   Eigen::VectorXd one_S = Eigen::VectorXd::Constant(S, 1.0);
   Eigen::VectorXd ehat_np(S);
   Eigen::VectorXd mu_b = param_b["mu"];
@@ -43,9 +46,7 @@ Rcpp::List lm_ridge_vi_b(
   {
     Eigen::MatrixXd delta2_t = param_b["delta2_t"];
     delta1_t = mu_tau * N * 1.0 / S * X_n.transpose() * (y_n - one_S * mu_b0);
-    delta2_t0 = -mu_tau / 2.0 / S * (
-      N * X_n.transpose() * X_n + S * mu_lambda * MatrixXd::Identity(P, P)
-    );
+    delta2_t0 = -mu_tau / 2.0 / S * (N * X_n.transpose() * X_n + S * gamma_mat);
     param_b["delta2_t"] = delta2_t0;
   }
   else
@@ -56,7 +57,7 @@ Rcpp::List lm_ridge_vi_b(
         X_n.rightCols(P - p - 1) * mu_b.tail(P - p - 1);
       delta1_t(p) = N * mu_tau / S * X_n.col(p).transpose() * ehat_np;
       delta2_t1(p) = -mu_tau / 2.0 / S * (
-        N * X_n.col(p).array().square().sum() + S * mu_lambda
+        N * X_n.col(p).array().square().sum() + S * mu_gamma(p)
       );
       if(!svi) {
         mu_b(p) = -1.0 / 2.0 * delta1_t(p) / delta2_t1(p);
@@ -68,16 +69,16 @@ Rcpp::List lm_ridge_vi_b(
   return(param_b);
 }
 
-Rcpp::List lm_ridge_vi_tau(
+Rcpp::List lm_lasso_vi_tau(
   Eigen::VectorXd& y_n, Eigen::MatrixXd& X_n, Rcpp::List& param_b0,
-  Rcpp::List& param_b, Rcpp::List& param_lambda, int& N, int& P, int& S,
+  Rcpp::List& param_b, Rcpp::List& param_gamma, int& N, int& P, int& S,
   double& a_tau, double& b_tau, Rcpp::List& param_tau
 ){
   double mu_b0 = param_b0["mu"];
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
-  double mu_lambda = param_lambda["mu"];
+  Eigen::VectorXd mu_gamma = param_gamma["mu"];
   double delta1_t = param_tau["delta1_t"];
   double delta2_t = param_tau["delta2_t"];
 
@@ -87,8 +88,9 @@ Rcpp::List lm_ridge_vi_tau(
       (y_n - Eigen::VectorXd::Ones(S, 1) * mu_b0 - X_n * mu_b).squaredNorm() +
       S * sigma2_b0 +
       (X_n.transpose() * X_n * msigma_b).trace()
-    ) +
-    mu_lambda * (mu_b.squaredNorm() + msigma_b.trace())
+    ) + (
+      mu_gamma.array() * (mu_b.array().square() + msigma_b.diagonal().array())
+    ).sum()
   );
 
   param_tau["delta1_t"] = delta1_t;
@@ -96,31 +98,47 @@ Rcpp::List lm_ridge_vi_tau(
   return(param_tau);
 }
 
-Rcpp::List lm_ridge_vi_lambda(
-  Rcpp::List& param_b, Rcpp::List& param_tau, int& N, int& P, double a_lambda,
-  double b_lambda, Rcpp::List& param_lambda
+Rcpp::List lm_lasso_vi_lambda2(
+  Rcpp::List& param_b, Rcpp::List& param_gamma, int& P, double& a_lambda2,
+  double& b_lambda2, Rcpp::List& param_lambda2
 ){
-  Eigen::VectorXd mu_b = param_b["mu"];
-  Eigen::MatrixXd msigma_b = param_b["msigma"];
-  double mu_tau = param_tau["mu"];
+  Eigen::VectorXd mu_inv_gamma = param_gamma["mu_inv"];
+  double delta1_t = P + a_lambda2 - 1;
+  double delta2_t = -b_lambda2 - 1.0 / 2.0 * mu_inv_gamma.sum();
 
-  double delta1_t = P / 2.0 + a_lambda - 1.0;
-  double delta2_t = -b_lambda - mu_tau / 2.0 * (
-    mu_b.array().square().sum() + msigma_b.trace()
-  );
+  param_lambda2["delta1_t"] = delta1_t;
+  param_lambda2["delta2_t"] = delta2_t;
 
-  param_lambda["delta1_t"] = delta1_t;
-  param_lambda["delta2_t"] = delta2_t;
-  return(param_lambda);
+  return(param_lambda2);
 }
 
-double lm_ridge_vi_elbo(
-    Eigen::MatrixXd& X, Eigen::VectorXd& y, Rcpp::List& param_b0,
-    Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda,
-    double& a_lambda, double& b_lambda, double& a_tau, double& b_tau,
-    int& N, int& S, int& P
+Rcpp::List lm_lasso_vi_gamma(
+  Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda2,
+  int& P, Rcpp::List& param_gamma
 ){
+  Eigen::VectorXd mu_b = param_b["mu"];
+  Eigen::VectorXd vsigma2_b = param_b["vsigma2"];
+  double mu_tau = param_tau["mu"];
+  double mu_lambda2 = param_lambda2["mu"];
+  Eigen::VectorXd delta1_t = param_gamma["delta1_t"];
+  Eigen::VectorXd delta2_t = param_gamma["delta2_t"];
 
+  delta1_t = -mu_tau / 2.0 * (
+    mu_b.array().square() + vsigma2_b.array()
+  );
+  delta2_t = -mu_lambda2 / 2.0 * Eigen::VectorXd::Constant(P, 1.0);
+
+  param_gamma["delta1_t"] = delta1_t;
+  param_gamma["delta2_t"] = delta2_t;
+  return(param_gamma);
+}
+
+double lm_lasso_vi_elbo(
+  Eigen::MatrixXd& X, Eigen::VectorXd& y, Rcpp::List& param_b0,
+  Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda2,
+  Rcpp::List& param_gamma, double& a_lambda2, double& b_lambda2,
+  double& a_tau, double& b_tau, int& N, int& P
+){
   double mu_b0 = param_b0["mu"];
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
@@ -130,58 +148,69 @@ double lm_ridge_vi_elbo(
   double mu_tau = param_tau["mu"];
   double astar_tau = param_tau["shape"];
   double bstar_tau = param_tau["rate"];
-  double mu_lambda = param_lambda["mu"];
-  double astar_lambda = param_lambda["shape"];
-  double bstar_lambda = param_lambda["rate"];
+  double mu_lambda2 = param_lambda2["mu"];
+  double astar_lambda2 = param_lambda2["shape"];
+  double bstar_lambda2 = param_lambda2["rate"];
+  Eigen::VectorXd mu_gamma = param_gamma["mu"];
+  Eigen::VectorXd mu_gamma_inv = param_gamma["mu_inv"];
+
 
   double ll = -N/2.0 * std::log(2.0 * M_PI) +
-      N/2.0 * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
-      mu_tau/2.0 * (
-          (y - mu_b0 * Eigen::VectorXd::Ones(P) - X * mu_b).squaredNorm() +
-          N * sigma2_b0 +
-          (X.transpose() * X * msigma_b).trace()
-      );
+    N/2.0 * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
+    mu_tau/2.0 * (
+      (y - mu_b0 * Eigen::VectorXd::Ones(P) - X * mu_b).squaredNorm() +
+      N * sigma2_b0 +
+      (X.transpose() * X * msigma_b).trace()
+    );
 
-  double lp_b0 = -1.0/2.0 * std::log(2.0 * M_PI) - 3 * std::log(10.0) -
-      0.000001/2.0 * (mu_b0 * mu_b0 + sigma2_b0);
+  double lp_b0 = -1.0/2.0 * std::log(2.0 * M_PI) -
+    3 * std::log(10.0) -
+    0.000001/2.0 * (mu_b0 * mu_b0 + sigma2_b0);
 
   double lp_b = -P/2.0 * std::log(2.0 * M_PI) +
-      P/2.0 * (Rf_digamma(astar_lambda) - std::log(bstar_lambda)) +
-      P/2.0 * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
-      mu_tau * mu_lambda / 2.0 * (mu_b.squaredNorm() + msigma_b.trace());
+    P/2.0 * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
+    mu_tau/2.0 * (
+      mu_b.transpose() * mu_gamma.asDiagonal() * mu_b +
+      (msigma_b * mu_gamma.asDiagonal()).trace()
+    );
 
   double lp_tau = a_tau * std::log(b_tau) - Rf_lgammafn(a_tau) +
-      (a_tau - 1) * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
-      b_tau * mu_tau;
+    (a_tau - 1) * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
+    b_tau * mu_tau;
 
-  double lp_lambda = a_lambda * std::log(b_lambda) - Rf_lgammafn(a_lambda) +
-      (a_lambda - 1) * (Rf_digamma(astar_lambda) - std::log(bstar_lambda)) -
-      b_lambda * mu_lambda;
+  double lp_lambda2 = a_lambda2 * std::log(b_lambda2) - Rf_lgammafn(a_lambda2) +
+    (a_lambda2 - 1) * (Rf_digamma(astar_lambda2) - std::log(bstar_lambda2)) -
+    b_lambda2 * mu_lambda2;
+
+  double lp_gamma = (-1.0 * mu_lambda2 / 2.0 * mu_gamma_inv +
+    Eigen::VectorXd::Ones(P) * (
+      Rf_digamma(astar_lambda2) - std::log(bstar_lambda2) - std::log(2.0)
+    )).sum();
 
   double lq_b0 = -1.0/2.0 * std::log(sigma2_b0) -
-      1.0/2.0 * (std::log(2 * M_PI) + 1.0);
+    1.0/2.0 * (std::log(2 * M_PI) + 1.0);
 
   double lq_b = -1.0/2.0 * logdet_msigma_b -
-      P/2.0 * (std::log(2 * M_PI) + 1.0);
+    P/2.0 * (std::log(2 * M_PI) + 1.0);
 
   double lq_tau = -Rf_lgammafn(astar_tau) + std::log(bstar_tau) +
-      (astar_tau - 1) * Rf_digamma(astar_tau) - astar_tau;
+    (astar_tau - 1) * Rf_digamma(astar_tau) - astar_tau;
 
-  double lq_lambda = -Rf_lgammafn(astar_lambda) + std::log(bstar_lambda) +
-      (astar_lambda - 1) * Rf_digamma(astar_lambda) - astar_lambda;
+  double lq_lambda2 = -Rf_lgammafn(astar_lambda2) + std::log(bstar_lambda2) +
+    (astar_lambda2 - 1) * Rf_digamma(astar_lambda2) - astar_lambda2;
 
-  double elbo = ll + lp_b0 + lp_b + lp_tau + lp_lambda -
-      lq_b0 - lq_b - lq_tau - lq_lambda;
+  double lq_gamma = 0.0;
+  for(int p = 0; p < P; p++)
+  {
+    lq_gamma += 1.0/2.0 * (
+      std::log(mu_lambda2) - std::log(2.0 * M_PI) +
+      mu_lambda2 / mu_gamma(p) -
+      mu_lambda2 * mu_gamma_inv(p)
+    );
+  }
 
-  // Rcout << "logdet_msigma_b: " << logdet_msigma_b << endl;
-  // Rcout << "lp_b0: " << lp_b0 << endl;
-  // Rcout << "lp_b: " << lp_b << endl;
-  // Rcout << "lp_tau: " << lp_tau << endl;
-  // Rcout << "lp_lambda: " << lp_lambda << endl;
-  // Rcout << "lq_b0: " << lq_b0 << endl;
-  // Rcout << "lq_b: " << lq_b << endl;
-  // Rcout << "lq_tau: " << lq_tau << endl;
-  // Rcout << "lq_lambda: " << lq_lambda << endl;
+  double elbo = ll + lp_b0 + lp_b + lp_tau + lp_lambda2 + lp_gamma -
+    lq_b0 - lq_b - lq_tau - lq_lambda2 - lq_gamma;
 
   return(elbo);
 }
@@ -189,8 +218,8 @@ double lm_ridge_vi_elbo(
 // **********************************************************************
 // CAVI
 // **********************************************************************
-//' Univariate normal linear regression with a ridge (normal) prior using the
-//' CAVI algorithm.
+//' Univariate normal linear regression with a LASSO (double-exponential) prior
+//' using the CAVI algorithm.
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Max number of iterations to run the algorithm for (default =
@@ -199,9 +228,9 @@ double lm_ridge_vi_elbo(
 //' @param verbose True of False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
-//' @param a_lambda Prior shape parameter for the coefficient precision
+//' @param a_lambda2 Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
-//' @param b_lambda Prior rate parameter for the coefficient precision
+//' @param b_lambda2 Prior rate parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param rel_tol Relative tolerance used for convergence. Convergence is
 //'   assesed using the evidence lower bound (ELBO) changes relative to five
@@ -210,11 +239,13 @@ double lm_ridge_vi_elbo(
 //'   full correlation and 1 for independece assumption.
 //' @export
 // [[Rcpp::export]]
-Rcpp::List lm_ridge_cavi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 1000, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, double a_lambda = 0.1,
-  double b_lambda = 0.1, double rel_tol = 0.0001, int type = 0
+Rcpp::List lm_lasso_cavi(
+  Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose = true,
+  int n_iter = 1000, double a_tau = 0.1, double b_tau = 0.1,
+  double a_lambda2 = 0.1, double b_lambda2 = 0.1, double rel_tol = 0.0001,
+  int type = 0
 ){
+
   // problem info
   int N = X.rows();
   int P = X.cols();
@@ -223,7 +254,7 @@ Rcpp::List lm_ridge_cavi(
   // scale X
   Eigen::RowVectorXd vmu_x = X.colwise().mean();
   Eigen::RowVectorXd vsigma_x =
-      (X.rowwise() - vmu_x).colwise().squaredNorm() / (X.rows() - 1);
+    (X.rowwise() - vmu_x).colwise().squaredNorm() / (X.rows() - 1);
   vsigma_x = vsigma_x.array().sqrt();
   Eigen::VectorXd vsigma_x_inv = vsigma_x.transpose().cwiseInverse();
   Eigen::VectorXd s_x = vmu_x.array() / vsigma_x.array();
@@ -233,7 +264,8 @@ Rcpp::List lm_ridge_cavi(
   Rcpp::List param_b0 = vi_init_normal();
   Rcpp::List param_b = vi_init_mv_normal(P, type);
   Rcpp::List param_tau = vi_init_gamma(1);
-  Rcpp::List param_lambda = vi_init_gamma(1);
+  Rcpp::List param_lambda2 = vi_init_gamma(1);
+  Rcpp::List param_gamma = vi_init_inv_gauss(P);
 
   // vectors for storage
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1);
@@ -243,17 +275,12 @@ Rcpp::List lm_ridge_cavi(
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
-    if(verbose && (i % 10 == 0)) {
-      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
-    }
-
-    // b0
-    lm_ridge_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
+    lm_lasso_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
     vi_update_normal(param_b0, rhot);
     natural_to_canonical(param_b0, "normal");
 
-    lm_ridge_vi_b(
-      y, X, param_b0, param_tau, param_lambda, N, P, S, type, param_b
+    lm_lasso_vi_b(
+      y, X, param_b0, param_tau, param_gamma, N, P, S, type, param_b, false
     );
     vi_update_mv_normal(param_b, type, rhot);
     if(type == 0) {
@@ -262,23 +289,26 @@ Rcpp::List lm_ridge_cavi(
       natural_to_canonical(param_b, "mv_normal_ind");
     }
 
-    lm_ridge_vi_tau(
-      y, X, param_b0, param_b, param_lambda, N, P, S, a_tau,
-      b_tau, param_tau
+    lm_lasso_vi_tau(
+      y, X, param_b0, param_b, param_gamma, N, P, S, a_tau, b_tau, param_tau
     );
     vi_update_gamma(param_tau, rhot);
     natural_to_canonical(param_tau, "univ_gamma");
 
-    lm_ridge_vi_lambda(
-      param_b, param_tau, N, P, a_lambda, b_lambda, param_lambda
+    lm_lasso_vi_lambda2(
+      param_b, param_gamma, P, a_lambda2, b_lambda2, param_lambda2
     );
-    vi_update_gamma(param_lambda, rhot);
-    natural_to_canonical(param_lambda, "univ_gamma");
+    vi_update_gamma(param_lambda2, rhot);
+    natural_to_canonical(param_lambda2, "univ_gamma");
 
-    //elbo
-    elbo(i) = lm_ridge_vi_elbo(
-      X, y, param_b0, param_b, param_tau, param_lambda, a_lambda, b_lambda,
-      a_tau, b_tau, N, S, P
+    lm_lasso_vi_gamma(param_b, param_tau, param_lambda2, P, param_gamma);
+    vi_update_inv_gauss(param_gamma, rhot);
+    natural_to_canonical(param_gamma, "inv_gauss");
+
+    // calculate elbo
+    elbo(i) = lm_lasso_vi_elbo(
+      X, y, param_b0, param_b, param_tau, param_lambda2, param_gamma,
+      a_lambda2, b_lambda2, a_tau, b_tau, N, P
     );
 
     iters = iters + 1;
@@ -299,8 +329,8 @@ Rcpp::List lm_ridge_cavi(
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
-  double astar_lambda = param_lambda["shape"];
-  double bstar_lambda = param_lambda["rate"];
+  double astar_lambda2 = param_lambda2["shape"];
+  double bstar_lambda2 = param_lambda2["rate"];
   double astar_tau = param_tau["shape"];
   double bstar_tau = param_tau["rate"];
 
@@ -310,32 +340,16 @@ Rcpp::List lm_ridge_cavi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
-  List b0;
-  b0["dist"] = "univariate normal";
-  b0["mu"] = mu_b0;
-  b0["var"] = sigma2_b0;
-
-  List b;
-  b["dist"] = "multivariate normal";
-  b["mu"] = mu_b;
-  b["sigma_mat"] = msigma_b;
-
-  List tau;
-  tau["dist"] = "gamma";
-  tau["shape"] = astar_tau;
-  tau["rate"] = bstar_tau;
-
-  List lambda;
-  lambda["dist"] = "gamma";
-  lambda["shape"] = astar_lambda;
-  lambda["rate"] = bstar_lambda;
-
-
   List ret;
-  ret["b0"] = b0;
-  ret["b"] = b;
-  ret["tau"] = tau;
-  ret["lambda"] = lambda;
+  ret["mu_b0"] = mu_b0;
+  ret["sigma2_b0"] = sigma2_b0;
+  ret["mu_b"] = mu_b;
+  ret["msigma_b"] = msigma_b;
+  ret["mu_gamma"] = param_gamma["mu"];
+  ret["astar_lambda2"] = astar_lambda2;
+  ret["bstar_lambda2"] = bstar_lambda2;
+  ret["astar_tau"] = astar_tau;
+  ret["bstar_tau"] = bstar_tau;
   ret["elbo"] = elbo.topRows(iters);
   return(ret);
 }
@@ -352,9 +366,9 @@ Rcpp::List lm_ridge_cavi(
 //' @param verbose True of False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
-//' @param a_lambda Prior shape parameter for the coefficient precision
+//' @param a_lambda2 Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
-//' @param b_lambda Prior rate parameter for the coefficient precision
+//' @param b_lambda2 Prior rate parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param type Correlation structure of the regression coefficients. Use 0 for
 //'   full correlation and 1 for independece assumption.
@@ -369,11 +383,12 @@ Rcpp::List lm_ridge_cavi(
 //'   \{0.5, 1\}}
 //' @export
 // [[Rcpp::export]]
-Rcpp::List lm_ridge_svi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 15000, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, double a_lambda = 0.1,
-  double b_lambda = 0.1, int type = 0, int batch_size = 42,
-  double const_rhot = 0.01, double omega = 15.0, double kappa = 0.6
+Rcpp::List lm_lasso_svi(
+  Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose = true,
+  int n_iter = 1000, double a_tau = 0.1, double b_tau = 0.1,
+  double a_lambda2 = 0.1, double b_lambda2 = 0.1, int type = 0,
+  int batch_size = 10, double const_rhot = 0.01, double omega = 15.0,
+  double kappa = 0.6
 ){
 
   // problem info
@@ -384,7 +399,7 @@ Rcpp::List lm_ridge_svi(
   // scale X
   Eigen::RowVectorXd vmu_x = X.colwise().mean();
   Eigen::RowVectorXd vsigma_x =
-      (X.rowwise() - vmu_x).colwise().squaredNorm() / (X.rows() - 1);
+    (X.rowwise() - vmu_x).colwise().squaredNorm() / (X.rows() - 1);
   vsigma_x = vsigma_x.array().sqrt();
   Eigen::VectorXd vsigma_x_inv = vsigma_x.transpose().cwiseInverse();
   Eigen::VectorXd s_x = vmu_x.array() / vsigma_x.array();
@@ -394,8 +409,8 @@ Rcpp::List lm_ridge_svi(
   Rcpp::List param_b0 = vi_init_normal();
   Rcpp::List param_b = vi_init_mv_normal(P, type);
   Rcpp::List param_tau = vi_init_gamma(1);
-  Rcpp::List param_lambda = vi_init_gamma(1);
-  Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1);
+  Rcpp::List param_lambda2 = vi_init_gamma(1);
+  Rcpp::List param_gamma = vi_init_inv_gauss(P);
 
   // svi specific storage
   Eigen::VectorXd y_s(S);
@@ -404,8 +419,10 @@ Rcpp::List lm_ridge_svi(
   Rcpp::IntegerVector seq_samp = seq(0, N - 1);
   double rhot;
 
+  // main loop of algorithm
   for(int i = 0; i < n_iter; i++)
   {
+
     // sample data
     the_sample = sample(seq_samp, S, false);
     get_subsample_lm(y, X, y_s, X_s, S, N, the_sample);
@@ -416,50 +433,64 @@ Rcpp::List lm_ridge_svi(
       rhot = const_rhot;
 
     // calculate updates
-    lm_ridge_vi_b0(y_s, X_s, param_b, param_tau, N, S, param_b0);
-
-    lm_ridge_vi_b(
-      y_s, X_s, param_b0, param_tau, param_lambda, N, P, S, type, param_b,
-      true
+    // b0
+    lm_lasso_vi_b0(y_s, X_s, param_b, param_tau, N, S, param_b0);
+    // b
+    lm_lasso_vi_b(
+      y_s, X_s, param_b0, param_tau, param_gamma, N, P, S, type, param_b, false
     );
-
-    lm_ridge_vi_tau(
-      y_s, X_s, param_b0, param_b, param_lambda, N, P, S, a_tau,
-      b_tau, param_tau
+    // tau
+    lm_lasso_vi_tau(
+      y_s, X_s, param_b0, param_b, param_gamma, N, P, S, a_tau, b_tau,
+      param_tau
     );
-
-    lm_ridge_vi_lambda(
-      param_b, param_tau, N, P, a_lambda, b_lambda, param_lambda
+    // lambda2
+    lm_lasso_vi_lambda2(
+      param_b, param_gamma, P, a_lambda2, b_lambda2, param_lambda2
     );
+    // gamma
+    lm_lasso_vi_gamma(param_b, param_tau, param_lambda2, P, param_gamma);
 
     // gradient step
     vi_update_normal(param_b0, rhot);
     vi_update_mv_normal(param_b, type, rhot);
     vi_update_gamma(param_tau, rhot);
-    vi_update_gamma(param_lambda, rhot);
+    vi_update_gamma(param_lambda2, rhot);
+    vi_update_inv_gauss(param_gamma, rhot);
 
-    // calculate distribution information
+    // calculate means and variances for next iteration
     natural_to_canonical(param_b0, "normal");
-    natural_to_canonical(param_tau, "univ_gamma");
-    natural_to_canonical(param_lambda, "univ_gamma");
     if(type == 0) {
       natural_to_canonical(param_b, "mv_normal");
     } else {
       natural_to_canonical(param_b, "mv_normal_ind");
     }
-
-    //elbo
-    elbo(i) = lm_ridge_vi_elbo(
-      X, y, param_b0, param_b, param_tau, param_lambda, a_lambda, b_lambda,
-      a_tau, b_tau, N, S, P
-    );
+    natural_to_canonical(param_tau, "univ_gamma");
+    natural_to_canonical(param_lambda2, "univ_gamma");
+    natural_to_canonical(param_gamma, "inv_gauss");
 
     if(verbose && (i % 100 == 0)) {
-        Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
-        Rcout << "rhot: " << rhot << std::endl;
+      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
+      Rcpp::Rcout << "rhot: " << rhot << std::endl;
     }
-
     Rcpp::checkUserInterrupt();
+
+    //// calculate elbo
+    //elbo(i) = lm_lasso_vi_elbo(
+    //  X, y, param_b0, param_b, param_tau, param_lambda2, param_gamma,
+    //  a_lambda2, b_lambda2, a_tau, b_tau, N, P
+    //);
+
+    //iters = iters + 1;
+    //if(i > 4)
+    //{
+    //  // check if lower bound decreases
+    //  if(elbo(i) < elbo(i-1))
+    //    std::cout << "LOWER BOUND DECREASES" << "\n";
+    //  if(std::abs(elbo(i) - elbo(i-5)) < tol) { break; }
+    //  if(i == (n_iter - 1))
+    //    std::cout << "VB DID NOT CONVERGE" << "\n";
+    //}
   }
 
   // values to rescale
@@ -467,8 +498,8 @@ Rcpp::List lm_ridge_svi(
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
-  double astar_lambda = param_lambda["shape"];
-  double bstar_lambda = param_lambda["rate"];
+  double astar_lambda2 = param_lambda2["shape"];
+  double bstar_lambda2 = param_lambda2["rate"];
   double astar_tau = param_tau["shape"];
   double bstar_tau = param_tau["rate"];
 
@@ -483,10 +514,13 @@ Rcpp::List lm_ridge_svi(
   ret["sigma2_b0"] = sigma2_b0;
   ret["mu_b"] = mu_b;
   ret["msigma_b"] = msigma_b;
-  ret["astar_lambda"] = astar_lambda;
-  ret["bstar_lambda"] = bstar_lambda;
+  ret["mu_gamma"] = param_gamma["mu"];
+  ret["astar_lambda2"] = astar_lambda2;
+  ret["bstar_lambda2"] = bstar_lambda2;
   ret["astar_tau"] = astar_tau;
   ret["bstar_tau"] = bstar_tau;
-  ret["elbo"] = elbo;
   return(ret);
 }
+
+
+

@@ -6,6 +6,30 @@
 
 using namespace Rcpp;
 
+// lm_hs_vi_elbo
+double lm_hs_vi_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda, Rcpp::List& param_xi, Rcpp::List& param_gamma, Rcpp::List& param_nu, double& a_tau, double& b_tau, int& N, int& S, int& P);
+RcppExport SEXP _vir_lm_hs_vi_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_tauSEXP, SEXP param_lambdaSEXP, SEXP param_xiSEXP, SEXP param_gammaSEXP, SEXP param_nuSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type y_s(y_sSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_xi(param_xiSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_nu(param_nuSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
+    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_hs_vi_elbo(X_s, y_s, param_b0, param_b, param_tau, param_lambda, param_xi, param_gamma, param_nu, a_tau, b_tau, N, S, P));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lm_hs_cavi
 Rcpp::List lm_hs_cavi(Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter, bool verbose, double a_tau, double b_tau, double rel_tol, int type);
 RcppExport SEXP _vir_lm_hs_cavi(SEXP ySEXP, SEXP XSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP rel_tolSEXP, SEXP typeSEXP) {
@@ -25,24 +49,66 @@ BEGIN_RCPP
 END_RCPP
 }
 // lm_hs_svi
-Rcpp::List lm_hs_svi(Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter, bool verbose, double a_tau, double b_tau, double tol, int type, int batch_size, double const_rhot, double omega, double kappa);
-RcppExport SEXP _vir_lm_hs_svi(SEXP ySEXP, SEXP XSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP tolSEXP, SEXP typeSEXP, SEXP batch_sizeSEXP, SEXP const_rhotSEXP, SEXP omegaSEXP, SEXP kappaSEXP) {
+Rcpp::List lm_hs_svi(Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_tau, double b_tau, int type, int batch_size, double const_rhot, double omega, double kappa);
+RcppExport SEXP _vir_lm_hs_svi(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP typeSEXP, SEXP batch_sizeSEXP, SEXP const_rhotSEXP, SEXP omegaSEXP, SEXP kappaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
     Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type type(typeSEXP);
     Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
     Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
     Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
     Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_svi(y, X, n_iter, verbose, a_tau, b_tau, tol, type, batch_size, const_rhot, omega, kappa));
+    rcpp_result_gen = Rcpp::wrap(lm_hs_svi(y, X, verbose, n_iter, a_tau, b_tau, type, batch_size, const_rhot, omega, kappa));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_lasso_cavi
+Rcpp::List lm_lasso_cavi(Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_tau, double b_tau, double a_lambda2, double b_lambda2, double rel_tol, int type);
+RcppExport SEXP _vir_lm_lasso_cavi(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP rel_tolSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda2(a_lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda2(b_lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type rel_tol(rel_tolSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_lasso_cavi(y, X, verbose, n_iter, a_tau, b_tau, a_lambda2, b_lambda2, rel_tol, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_lasso_svi
+Rcpp::List lm_lasso_svi(Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_tau, double b_tau, double a_lambda2, double b_lambda2, int type, int batch_size, double const_rhot, double omega, double kappa);
+RcppExport SEXP _vir_lm_lasso_svi(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP typeSEXP, SEXP batch_sizeSEXP, SEXP const_rhotSEXP, SEXP omegaSEXP, SEXP kappaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda2(a_lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda2(b_lambda2SEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
+    Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
+    Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_lasso_svi(y, X, verbose, n_iter, a_tau, b_tau, a_lambda2, b_lambda2, type, batch_size, const_rhot, omega, kappa));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -493,8 +559,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_vir_lm_hs_vi_elbo", (DL_FUNC) &_vir_lm_hs_vi_elbo, 14},
     {"_vir_lm_hs_cavi", (DL_FUNC) &_vir_lm_hs_cavi, 8},
-    {"_vir_lm_hs_svi", (DL_FUNC) &_vir_lm_hs_svi, 12},
+    {"_vir_lm_hs_svi", (DL_FUNC) &_vir_lm_hs_svi, 11},
+    {"_vir_lm_lasso_cavi", (DL_FUNC) &_vir_lm_lasso_cavi, 10},
+    {"_vir_lm_lasso_svi", (DL_FUNC) &_vir_lm_lasso_svi, 13},
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
     {"_vir_mv_probit_gibbs_Z", (DL_FUNC) &_vir_mv_probit_gibbs_Z, 6},

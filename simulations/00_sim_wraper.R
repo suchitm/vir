@@ -17,7 +17,7 @@ set.seed(42)
 # parameters used for both lm and probit funcitons
 #--------------------------------------------------
 gibbs_iter = 5000
-seq_to_keep = 100:gibbs_iter
+seq_to_keep = 1000:gibbs_iter
 svi_n_iter = 15000
 cavi_n_iter = 1000
 stan_iter = 100000
@@ -37,6 +37,8 @@ source(paste0(REPO_PATH, "/simulations/sim_helpers_probit.R"))
 # generate the data for the simulations
 source(paste0(REPO_PATH, "/simulations/01_gen_sim_data.R"))
 
+stop()
+
 # linear model simualtions (Section 6.2)
 # stan implementations do not run without error on Catalina 10.15.4
 source(paste0(REPO_PATH, "/simulations/02_lm_sims_gibbs.R"))
@@ -51,19 +53,12 @@ source(paste0(REPO_PATH, "/simulations/03_probit_sims_gibbs.R"))
 source(paste0(REPO_PATH, "/simulations/03_probit_sims_glmnet.R"))
 source(paste0(REPO_PATH, "/simulations/03_probit_sims_vir.R"))
 # source(paste0(REPO_PATH, "/simulations/03_probit_sims_rstan.R"))
-#
+
 stop()
 
-
-
-# linear model simulations (Section 6.2)
-source(paste0(REPO_PATH, "/simulations/01_run_lm_sims.R"))
-
-# probit simulations (Section 6.3)
-source(paste0(REPO_PATH, "/simulations/02_run_probit_sims.R"))
-
 # timing experiment simulations (Section 6.3)
-source(paste0(REPO_PATH, "/simulations/05_run_timing_experiments.R"))
+source(paste0(REPO_PATH, "/simulations/04_run_timing_experiments.R"))
+
 
 # process results
 source(paste0(REPO_PATH, "/simulations/03_process_lm_sims.R"))

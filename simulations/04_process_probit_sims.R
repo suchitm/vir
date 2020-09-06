@@ -1,8 +1,14 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # process simulation result csv file
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-probit_results_path = paste0(results_path, "probit_sim_results.csv")
-results_df <- read_csv(probit_results_path)
+# process lm sim results
+results_df <- read_csv(paste0(results_path, "probit_sims_gibbs_results.csv")) %>%
+  bind_rows(
+    paste0(results_path, "probit_sims_glmnet_results.csv") %>% read_csv()
+  ) %>%
+  bind_rows(
+    paste0(results_path, "probit_sims_vir_results.csv") %>% read_csv()
+  )
 
 results_summary <-
   results_df %>%
@@ -53,7 +59,7 @@ this_N = results_summary$N %>% unique()
 this_sim_type = results_summary$sim_type %>% unique()
 this_priors = results_summary$prior %>% unique() %>% as.character()
 prior_inds = list(1:7, 8:14, 15:19)
-metric_names = c("MSE", "AUC-PR", "PPV", "RAND")
+metric_names = c("MSE", "Coverage", "RAND", "AUC-PR")
 metric_inds = list(1:4, 5:8)
 res_mat = matrix(nrow = 19, ncol = 8, NA)
 row_labels = c()
@@ -79,7 +85,7 @@ for(i in 1:length(prior_inds))
 
     res_mat[row_index, col_index] <-
       these_results %>%
-      select(mean, auc_pr, ppv, rand) %>%
+      select(mean, coverage, rand, auc_pr) %>%
       round(3) %>%
       as.matrix()
   }
@@ -87,6 +93,9 @@ for(i in 1:length(prior_inds))
 }
 
 res_mat <- format_numbers(res_mat, digits = 3)
+
+# have to drop coverage for the logit models
+res_mat <- res_mat[, -2]
 
 probit_tab_path = paste0(REPO_PATH, "/paper/tables/probit_sims.tex")
 latex(
@@ -96,9 +105,9 @@ latex(
   rowname = row_labels,
   rgroup = this_priors,
   n.rgroup = lapply(prior_inds, length) %>% unlist(),
-  colheads = rep(metric_names, length(this_sim_type)),
+  colheads = c("MSE", "RAND", "AUC-PR", "MSE", "Coverage", "RAND", "AUC-PR"),
   cgroup = c("Logit", "Probit"),
-  n.cgroup = rep(length(metric_names), length(this_sim_type)),
+  n.cgroup = c(3, 4),
   table.env = FALSE,
   col.just = rep('c', ncol(res_mat))
 )

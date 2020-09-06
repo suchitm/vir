@@ -14,6 +14,7 @@ using namespace std;
 // individual updaters
 // **********************************************************************
 // calculate the evidence lower bound
+// [[Rcpp::export]]
 double lm_hs_vi_elbo(
   Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0,
   Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda,
@@ -85,8 +86,8 @@ double lm_hs_vi_elbo(
 // **********************************************************************
 // CAVI
 // **********************************************************************
-//' Univariate normal linear regression with a horseshoe prior using the
-//' CAVI algorithm.
+//' Univariate normal linear regression with a Horseshoe prior using the CAVI
+//' algorithm.
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Max number of iterations to run the algorithm for (default =
@@ -138,12 +139,13 @@ Rcpp::List lm_hs_cavi(
   // vectors for storage
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1);
   double rhot = 1.0;
+  double mu_b0;
 
   // main loop of algorithm
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
-    if(verbose && (i % 10 == 0)) {
+    if(verbose && (i % 100 == 0)) {
       Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
     }
 
@@ -151,6 +153,7 @@ Rcpp::List lm_hs_cavi(
     lm_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
     vi_update_normal(param_b0, rhot);
     natural_to_canonical(param_b0, "normal");
+    mu_b0 = param_b0["mu"];
 
     // b
     mu_gamma = param_gamma["mu"];
@@ -215,7 +218,7 @@ Rcpp::List lm_hs_cavi(
   }
 
   // values to rescale
-  double mu_b0 = param_b0["mu"];
+  mu_b0 = param_b0["mu"];
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
@@ -248,7 +251,7 @@ Rcpp::List lm_hs_cavi(
 // **********************************************************************
 // SVI
 // **********************************************************************
-//' Univariate normal linear regression with a horseshoe prior using the
+//' Univariate normal linear regression with a ridge (normal) prior using the
 //' SVI algorithm.
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
@@ -271,10 +274,10 @@ Rcpp::List lm_hs_cavi(
 //' @export
 // [[Rcpp::export]]
 Rcpp::List lm_hs_svi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 1000, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, double tol = 0.0001, int type = 0,
-  int batch_size = 42, double const_rhot = 0.1, double omega = 15.0,
-  double kappa = 0.6
+  Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose = true,
+  int n_iter = 1000, double a_tau = 0.1, double b_tau = 0.1,
+  int type = 0, int batch_size = 10, double const_rhot = 0.01,
+  double omega = 15.0, double kappa = 0.6
 ){
 
   // problem info
@@ -327,7 +330,7 @@ Rcpp::List lm_hs_svi(
     else
       rhot = const_rhot;
 
-    if(verbose && (i % 100 == 0)) {
+    if(verbose && (i % 1000 == 0)) {
       Rcpp::Rcout << "Done with Iteration " << i <<
         " with step size " << rhot << "\r";
     }
@@ -385,8 +388,8 @@ Rcpp::List lm_hs_svi(
 
     // calculate elbo
     elbo(i) = lm_hs_vi_elbo(
-      X_s, y_s, param_b0, param_b, param_tau, param_lambda, param_xi, param_gamma,
-      param_nu, a_tau, b_tau, N, S, P
+      X_s, y_s, param_b0, param_b, param_tau, param_lambda, param_xi,
+      param_gamma, param_nu, a_tau, b_tau, N, S, P
     );
 
     Rcpp::checkUserInterrupt();

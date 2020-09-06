@@ -50,9 +50,9 @@ results_summary <-
 this_N = results_summary$N %>% unique()
 this_priors = results_summary$prior %>% unique() %>% as.character()
 prior_inds = list(1:7, 8:14, 15:19)
-metric_inds = list(1:4, 5:8, 9:12)
-metric_names = c("MSE", "Cov.", "MSPE", "RAND")
-res_mat = matrix(nrow = 19, ncol = 12, NA)
+metric_inds = list(1:3, 4:6, 7:9)
+metric_names = c("MSE", "Cov.", "MSPE")
+res_mat = matrix(nrow = 19, ncol = 9, NA)
 row_labels = c()
 
 for(i in 1:length(prior_inds))
@@ -76,7 +76,7 @@ for(i in 1:length(prior_inds))
 
     res_mat[row_index, col_index] <-
       these_results %>%
-      select(mean, coverage, mspe, rand_ind) %>%
+      select(mean, coverage, mspe) %>%
       round(3) %>%
       as.matrix()
   }

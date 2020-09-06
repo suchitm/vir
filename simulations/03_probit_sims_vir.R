@@ -1,8 +1,5 @@
 probit_results_path = paste0(results_path, "probit_sims_vir_results.csv")
 
-svi_n_iter = 1500
-cavi_n_iter = 100
-
 FPATH = paste0(REPO_PATH, "/data/")
 all_files = list.files(FPATH)
 probit_data = all_files[str_detect(all_files, "probit")]
