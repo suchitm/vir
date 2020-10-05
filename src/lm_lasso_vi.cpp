@@ -275,10 +275,17 @@ Rcpp::List lm_lasso_cavi(
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
+
+    if(verbose && (i % 100 == 0)) {
+      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
+    }
+
+    // b0
     lm_lasso_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
     vi_update_normal(param_b0, rhot);
     natural_to_canonical(param_b0, "normal");
 
+    // b
     lm_lasso_vi_b(
       y, X, param_b0, param_tau, param_gamma, N, P, S, type, param_b, false
     );
@@ -289,18 +296,21 @@ Rcpp::List lm_lasso_cavi(
       natural_to_canonical(param_b, "mv_normal_ind");
     }
 
+    // tau
     lm_lasso_vi_tau(
       y, X, param_b0, param_b, param_gamma, N, P, S, a_tau, b_tau, param_tau
     );
     vi_update_gamma(param_tau, rhot);
     natural_to_canonical(param_tau, "univ_gamma");
 
+    // lambda2
     lm_lasso_vi_lambda2(
       param_b, param_gamma, P, a_lambda2, b_lambda2, param_lambda2
     );
     vi_update_gamma(param_lambda2, rhot);
     natural_to_canonical(param_lambda2, "univ_gamma");
 
+    // gamma
     lm_lasso_vi_gamma(param_b, param_tau, param_lambda2, P, param_gamma);
     vi_update_inv_gauss(param_gamma, rhot);
     natural_to_canonical(param_gamma, "inv_gauss");
@@ -333,6 +343,8 @@ Rcpp::List lm_lasso_cavi(
   double bstar_lambda2 = param_lambda2["rate"];
   double astar_tau = param_tau["shape"];
   double bstar_tau = param_tau["rate"];
+  Eigen::VectorXd mu_gamma = param_gamma["mu"];
+  Eigen::VectorXd lambda_gamma = param_gamma["lambda"];
 
   // rescaled values - need mu_b0, sigma2_b0, msigma_b
   mu_b0 = mu_b0 - (mu_b.array() * s_x.array()).sum();
@@ -340,18 +352,40 @@ Rcpp::List lm_lasso_cavi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
+  List b0;
+  b0["dist"] = "univariate normal";
+  b0["mu"] = mu_b0;
+  b0["var"] = sigma2_b0;
+
+  List b;
+  b["dist"] = "multivariate normal";
+  b["mu"] = mu_b;
+  b["sigma_mat"] = msigma_b;
+
+  List tau;
+  tau["dist"] = "gamma";
+  tau["shape"] = astar_tau;
+  tau["rate"] = bstar_tau;
+
+  List lambda2;
+  lambda2["dist"] = "gamma";
+  lambda2["shape"] = astar_lambda2;
+  lambda2["rate"] = bstar_lambda2;
+
+  List gamma;
+  gamma["dist"] = "inverse gaussian";
+  gamma["mu"] = mu_gamma;
+  gamma["lambda"] = lambda_gamma;
+
   List ret;
-  ret["mu_b0"] = mu_b0;
-  ret["sigma2_b0"] = sigma2_b0;
-  ret["mu_b"] = mu_b;
-  ret["msigma_b"] = msigma_b;
-  ret["mu_gamma"] = param_gamma["mu"];
-  ret["astar_lambda2"] = astar_lambda2;
-  ret["bstar_lambda2"] = bstar_lambda2;
-  ret["astar_tau"] = astar_tau;
-  ret["bstar_tau"] = bstar_tau;
+  ret["b0"] = b0;
+  ret["b"] = b;
+  ret["tau"] = tau;
+  ret["lambda2"] = lambda2;
+  ret["gamma"] = gamma;
   ret["elbo"] = elbo.topRows(iters);
   return(ret);
+
 }
 
 // **********************************************************************
@@ -502,6 +536,8 @@ Rcpp::List lm_lasso_svi(
   double bstar_lambda2 = param_lambda2["rate"];
   double astar_tau = param_tau["shape"];
   double bstar_tau = param_tau["rate"];
+  Eigen::VectorXd mu_gamma = param_gamma["mu"];
+  Eigen::VectorXd lambda_gamma = param_gamma["lambda"];
 
   // rescaled values - need mu_b0, sigma2_b0, msigma_b
   mu_b0 = mu_b0 - (mu_b.array() * s_x.array()).sum();
@@ -509,16 +545,37 @@ Rcpp::List lm_lasso_svi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
+  List b0;
+  b0["dist"] = "univariate normal";
+  b0["mu"] = mu_b0;
+  b0["var"] = sigma2_b0;
+
+  List b;
+  b["dist"] = "multivariate normal";
+  b["mu"] = mu_b;
+  b["sigma_mat"] = msigma_b;
+
+  List tau;
+  tau["dist"] = "gamma";
+  tau["shape"] = astar_tau;
+  tau["rate"] = bstar_tau;
+
+  List lambda2;
+  lambda2["dist"] = "gamma";
+  lambda2["shape"] = astar_lambda2;
+  lambda2["rate"] = bstar_lambda2;
+
+  List gamma;
+  gamma["dist"] = "inverse gaussian";
+  gamma["mu"] = mu_gamma;
+  gamma["lambda"] = lambda_gamma;
+
   List ret;
-  ret["mu_b0"] = mu_b0;
-  ret["sigma2_b0"] = sigma2_b0;
-  ret["mu_b"] = mu_b;
-  ret["msigma_b"] = msigma_b;
-  ret["mu_gamma"] = param_gamma["mu"];
-  ret["astar_lambda2"] = astar_lambda2;
-  ret["bstar_lambda2"] = bstar_lambda2;
-  ret["astar_tau"] = astar_tau;
-  ret["bstar_tau"] = bstar_tau;
+  ret["b0"] = b0;
+  ret["b"] = b;
+  ret["tau"] = tau;
+  ret["lambda2"] = lambda2;
+  ret["gamma"] = gamma;
   return(ret);
 }
 

@@ -557,6 +557,81 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// probit_ridge_vi_lambda
+Rcpp::List probit_ridge_vi_lambda(Rcpp::List& param_b, int& P, double& a_lambda, double& b_lambda, Rcpp::List& param_lambda);
+RcppExport SEXP _vir_probit_ridge_vi_lambda(SEXP param_bSEXP, SEXP PSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP param_lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_vi_lambda(param_b, P, a_lambda, b_lambda, param_lambda));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_ridge_elbo
+double probit_ridge_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda, double& a_lambda, double& b_lambda, int& N, int& S, int& P);
+RcppExport SEXP _vir_probit_ridge_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_zSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_lambdaSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXi& >::type y_s(y_sSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_elbo(X_s, y_s, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda, N, S, P));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_ridge_cavi
+Rcpp::List probit_ridge_cavi(Eigen::VectorXi y, Eigen::MatrixXd X, int n_iter, bool verbose, double a_lambda, double b_lambda, double tol, int type);
+RcppExport SEXP _vir_probit_ridge_cavi(SEXP ySEXP, SEXP XSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP tolSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_cavi(y, X, n_iter, verbose, a_lambda, b_lambda, tol, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_ridge_svi
+Rcpp::List probit_ridge_svi(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_lambda, double b_lambda, int type, int batch_size, double omega, double kappa, double const_rhot);
+RcppExport SEXP _vir_probit_ridge_svi(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP typeSEXP, SEXP batch_sizeSEXP, SEXP omegaSEXP, SEXP kappaSEXP, SEXP const_rhotSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
+    Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
+    Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_svi(y, X, verbose, n_iter, a_lambda, b_lambda, type, batch_size, omega, kappa, const_rhot));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_hs_vi_elbo", (DL_FUNC) &_vir_lm_hs_vi_elbo, 14},
@@ -590,6 +665,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_probit_vi_z", (DL_FUNC) &_vir_probit_vi_z, 5},
     {"_vir_probit_vi_b0", (DL_FUNC) &_vir_probit_vi_b0, 6},
     {"_vir_probit_vi_b", (DL_FUNC) &_vir_probit_vi_b, 10},
+    {"_vir_probit_ridge_vi_lambda", (DL_FUNC) &_vir_probit_ridge_vi_lambda, 5},
+    {"_vir_probit_ridge_elbo", (DL_FUNC) &_vir_probit_ridge_elbo, 11},
+    {"_vir_probit_ridge_cavi", (DL_FUNC) &_vir_probit_ridge_cavi, 8},
+    {"_vir_probit_ridge_svi", (DL_FUNC) &_vir_probit_ridge_svi, 11},
     {NULL, NULL, 0}
 };
 

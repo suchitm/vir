@@ -252,3 +252,64 @@ probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cav
     .Call(`_vir_probit_vi_b`, X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
 }
 
+probit_ridge_vi_lambda <- function(param_b, P, a_lambda, b_lambda, param_lambda) {
+    .Call(`_vir_probit_ridge_vi_lambda`, param_b, P, a_lambda, b_lambda, param_lambda)
+}
+
+probit_ridge_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda, N, S, P) {
+    .Call(`_vir_probit_ridge_elbo`, X_s, y_s, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda, N, S, P)
+}
+
+#' Univariate probit linear regression with a ridge (normal) prior using the
+#' CAVI algorithm.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Max number of iterations to run the algorithm for (default =
+#'   1000). A convergence warning is issues if the algorithm runs for the max
+#'   number of iterations.
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param a_tau Prior shape parameter for the likelihood precision.
+#' @param b_tau Prior rate parameter for the likelihood precision.
+#' @param a_lambda Prior shape parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param b_lambda Prior rate parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param rel_tol Relative tolerance used for convergence. Convergence is
+#'   assesed using the evidence lower bound (ELBO) changes relative to five
+#'   iterations prior.
+#' @param type Correlation structure of the regression coefficients. Use 0 for
+#'   full correlation and 1 for independece assumption.
+#' @export
+probit_ridge_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_lambda = 0.1, b_lambda = 0.1, tol = 0.0001, type = 0L) {
+    .Call(`_vir_probit_ridge_cavi`, y, X, n_iter, verbose, a_lambda, b_lambda, tol, type)
+}
+
+#' Univariate probit linear regression with a ridge (normal) prior using the
+#' SVI algorithm.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Number of iterations to run the algorithm for (default =
+#'   5000).
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param a_tau Prior shape parameter for the likelihood precision.
+#' @param b_tau Prior rate parameter for the likelihood precision.
+#' @param a_lambda Prior shape parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param b_lambda Prior rate parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param type Correlation structure of the regression coefficients. Use 0 for
+#'   full correlation and 1 for independece assumption.
+#' @param batch_size Size of the subsamples used to update the parameters.
+#' @param cost_rhot Used to set a constant step size in the gradient descent
+#'   algorithm. If this parameter is greater than zero, it overrides the step
+#'   size iterations calculated using kappa and omega.
+#' @param omega Delay for the stepsize (\eqn{\omega}) for the gradient step.
+#'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
+#'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
+#' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
+#'   \{0.5, 1\}}
+#' @export
+probit_ridge_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_lambda = 0.1, b_lambda = 0.1, type = 0L, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
+    .Call(`_vir_probit_ridge_svi`, y, X, verbose, n_iter, a_lambda, b_lambda, type, batch_size, omega, kappa, const_rhot)
+}
+

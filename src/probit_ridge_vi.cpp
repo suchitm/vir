@@ -3,82 +3,60 @@
 
 #include "typedefs.h"
 #include "include/helpers.hpp"
-#include "include/lm_helpers.hpp"
-#include "include/hs_helpers.hpp"
+#include "include/probit_helpers.hpp"
 
-using namespace Eigen;
-using namespace Rcpp;
-using namespace std;
-
-// **********************************************************************
+// **********************************************************************#
 // individual updaters
-// **********************************************************************
-// calculate the evidence lower bound
+// **********************************************************************#
 // [[Rcpp::export]]
-double lm_hs_vi_elbo(
-  Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0,
-  Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda,
-  Rcpp::List& param_xi, Rcpp::List& param_gamma, Rcpp::List& param_nu,
-  double& a_tau, double& b_tau, int& N, int& S, int& P
+Rcpp::List probit_ridge_vi_lambda(
+  Rcpp::List& param_b, int& P, double& a_lambda, double& b_lambda,
+  Rcpp::List& param_lambda
 ){
-  Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
+  Eigen::VectorXd mu_b = param_b["mu"];
 
-  double ll = lm_log_lik(X_s, y_s, param_b0, param_b, param_tau, N, S);
+  double delta1_t = P / 2.0 + a_lambda - 1;
+  double delta2_t = -b_lambda - 1.0 / 2.0 * (
+    mu_b.array().square().sum() + msigma_b.trace()
+  );
+
+  param_lambda["delta1_t"] = delta1_t;
+  param_lambda["delta2_t"] = delta2_t;
+
+  return(param_lambda);
+}
+
+// [[Rcpp::export]]
+double probit_ridge_elbo(
+  Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z,
+  Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda,
+  double& a_lambda, double& b_lambda, int& N, int&  S, int& P
+){
+  // for later use
+  double mu_lambda = param_lambda["mu"];
+  double mu_log_lambda = param_lambda["mu_log"];
 
   // ----- lp -----
-  // b0
+  double lp_m_lq_z = probit_lp_m_lq_z(X_s, y_s, param_b0, param_b, N, S);
+
   double mu_prec0 = 0.000001;
   double mu_log_prec0 = -6 * std::log(10.0);
   double lp_b0 = lp_univ_normal(mu_prec0, mu_log_prec0, param_b0);
 
-  // b
-  double mu_tau = param_tau["mu"];
-  double mu_log_tau = param_tau["mu_log"];
-  double mu_lambda = param_lambda["mu"];
-  double mu_log_lambda = param_lambda["mu_log"];
-  Eigen::VectorXd mu_gamma = param_gamma["mu"];
-  Eigen::VectorXd mu_log_gamma = param_gamma["mu_log"];
-
-  Eigen::MatrixXd mu_prec = mu_tau * mu_lambda * mu_gamma.asDiagonal();
-  double mu_logdet_prec = P * (mu_log_lambda + mu_log_tau) + mu_log_gamma.sum();
+  Eigen::MatrixXd mu_prec = mu_lambda * Eigen::MatrixXd::Identity(P, P);
+  double mu_logdet_prec = P * mu_log_lambda;
   double lp_b = lp_mv_normal(mu_prec, mu_logdet_prec, param_b, P);
 
-  // tau
-  double log_b_tau = std::log(b_tau);
-  double lp_tau = lp_univ_gamma(a_tau, b_tau, log_b_tau, param_tau);
-
-  // lambda
-  double mu_xi = param_xi["mu"];
-  double mu_log_xi = param_xi["mu_log"];
-  double lp_lambda = lp_univ_gamma(1.0/2.0, mu_xi, mu_log_xi, param_lambda);
-
-  // xi
-  double lp_xi = lp_univ_gamma(1.0/2.0, 1.0, 0.0, param_xi);
-
-  // gamma
-  Eigen::VectorXd a = 1.0 / 2.0 * Eigen::VectorXd::Constant(P, 1.0);
-  Eigen::VectorXd mu_nu = param_nu["mu"];
-  Eigen::VectorXd mu_log_nu = param_nu["mu_log"];
-  double lp_gam = lp_gamma(a, mu_nu, mu_log_nu, param_gamma);
-
-  // nu
-  Eigen::VectorXd a1 = 1.0 / 2.0 * Eigen::VectorXd::Constant(P, 1.0);
-  Eigen::VectorXd b1 = Eigen::VectorXd::Constant(P, 1.0);
-  Eigen::VectorXd log_b1 = Eigen::VectorXd::Constant(P, 0.0);
-  double lp_nu = lp_gamma(a1, b1, log_b1, param_nu);
+  double mu_log_b = std::log(b_lambda);
+  double lp_lambda = lp_univ_gamma(a_lambda, b_lambda, mu_log_b, param_lambda);
 
   // ----- lq -----
   double lq_b0 = lq_univ_normal(param_b0);
   double lq_b = lq_mv_normal(param_b, P);
-  double lq_tau = lq_univ_gamma(param_tau);
   double lq_lambda = lq_univ_gamma(param_lambda);
-  double lq_xi = lq_univ_gamma(param_xi);
-  double lq_gam = lq_gamma(param_gamma);
-  double lq_nu = lq_gamma(param_nu);
 
-  double elbo = ll + lp_b0 + lp_b + lp_tau + lp_lambda + lp_xi + lp_gam +
-    lp_nu - lq_b0 - lq_b - lq_tau - lq_lambda - lq_xi - lq_gam - lq_nu;
+  double elbo = lp_m_lq_z + lp_b0 + lp_b + lp_lambda - lq_b0 - lq_b - lq_lambda;
 
   return(elbo);
 }
@@ -86,8 +64,8 @@ double lm_hs_vi_elbo(
 // **********************************************************************
 // CAVI
 // **********************************************************************
-//' Univariate normal linear regression with a Horseshoe prior using the CAVI
-//' algorithm.
+//' Univariate probit linear regression with a ridge (normal) prior using the
+//' CAVI algorithm.
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Max number of iterations to run the algorithm for (default =
@@ -96,6 +74,10 @@ double lm_hs_vi_elbo(
 //' @param verbose True of False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
+//' @param a_lambda Prior shape parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param b_lambda Prior rate parameter for the coefficient precision
+//'   (shrinkage) term.
 //' @param rel_tol Relative tolerance used for convergence. Convergence is
 //'   assesed using the evidence lower bound (ELBO) changes relative to five
 //'   iterations prior.
@@ -103,9 +85,10 @@ double lm_hs_vi_elbo(
 //'   full correlation and 1 for independece assumption.
 //' @export
 // [[Rcpp::export]]
-Rcpp::List lm_hs_cavi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter = 1000, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, double rel_tol = 0.0001, int type = 0
+Rcpp::List probit_ridge_cavi(
+  Eigen::VectorXi y, Eigen::MatrixXd X, int n_iter = 1000, bool verbose = true,
+  double a_lambda = 0.1, double b_lambda = 0.1, double tol = 0.0001,
+  int type = 0
 ){
 
   // problem info
@@ -123,45 +106,44 @@ Rcpp::List lm_hs_cavi(
   X = (X.rowwise() - vmu_x).array().rowwise() / vsigma_x.array();
 
   // initializing starting values for parameters
+  Rcpp::List param_z = vi_init_mv_normal(S, 1);
   Rcpp::List param_b0 = vi_init_normal();
   Rcpp::List param_b = vi_init_mv_normal(P, type);
-  Rcpp::List param_tau = vi_init_gamma(1);
   Rcpp::List param_lambda = vi_init_gamma(1);
-  Rcpp::List param_xi = vi_init_gamma(1);
-  Rcpp::List param_gamma = vi_init_gamma(P);
-  Rcpp::List param_nu = vi_init_gamma(P);
 
-  // for prior mean of b
   Eigen::MatrixXd mu_prior_mat(P, P);
-  Eigen::VectorXd mu_gamma(P);
-  double mu_lambda;
+  Eigen::MatrixXd id_mat = Eigen::MatrixXd::Identity(P, P);
+  double mu_lambda = param_lambda["mu"];
 
   // vectors for storage
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1);
   double rhot = 1.0;
-  double mu_b0;
 
   // main loop of algorithm
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
+    Rcpp::checkUserInterrupt();
     if(verbose && (i % 100 == 0)) {
-      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\n";
+      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter << "\r";
     }
 
+    // local params
+    probit_vi_z(X, param_b0, param_b, S, param_z);
+    vi_update_mv_normal(param_z, 1, rhot);
+    natural_to_canonical(param_z, "mv_normal_ind");
+    canonical_transform_probit_trunc_norm(param_z, y, S);
+
     // b0
-    lm_vi_b0(y, X, param_b, param_tau, N, S, param_b0);
+    probit_vi_b0(X, param_z, param_b, N, S, param_b0);
     vi_update_normal(param_b0, rhot);
     natural_to_canonical(param_b0, "normal");
-    mu_b0 = param_b0["mu"];
 
     // b
-    mu_gamma = param_gamma["mu"];
     mu_lambda = param_lambda["mu"];
-    mu_prior_mat = mu_lambda * mu_gamma.asDiagonal();
-
-    lm_vi_b(
-      y, X, param_b0, param_tau, mu_prior_mat, N, S, P, type, true, param_b
+    mu_prior_mat = mu_lambda * id_mat;
+    probit_vi_b(
+      X, param_z, param_b0, mu_prior_mat, N, S, P, type, true, param_b
     );
     vi_update_mv_normal(param_b, type, rhot);
     if(type == 0) {
@@ -170,38 +152,15 @@ Rcpp::List lm_hs_cavi(
       natural_to_canonical(param_b, "mv_normal_ind");
     }
 
-    // tau
-    hs_vi_tau(
-      y, X, param_b0, param_b, param_lambda, param_gamma, N, P, S, a_tau,
-      b_tau, param_tau
-    );
-    vi_update_gamma(param_tau, rhot);
-    natural_to_canonical(param_tau, "univ_gamma");
-
     // lambda
-    hs_vi_lambda(param_b, param_tau, param_gamma, param_xi, P, param_lambda);
+    probit_ridge_vi_lambda(param_b, P, a_lambda, b_lambda, param_lambda);
     vi_update_gamma(param_lambda, rhot);
     natural_to_canonical(param_lambda, "univ_gamma");
 
-    // xi
-    hs_vi_xi(param_lambda, param_xi);
-    vi_update_gamma(param_xi, rhot);
-    natural_to_canonical(param_xi, "univ_gamma");
-
-    // gamma
-    hs_vi_gamma(param_b, param_tau, param_lambda, param_nu, P, param_gamma);
-    vi_update_gamma(param_gamma, rhot);
-    natural_to_canonical(param_gamma, "gamma");
-
-    // nu
-    hs_vi_nu(param_gamma, P, param_nu);
-    vi_update_gamma(param_nu, rhot);
-    natural_to_canonical(param_nu, "gamma");
-
-    // calculate elbo
-    elbo(i) = lm_hs_vi_elbo(
-      X, y, param_b0, param_b, param_tau, param_lambda, param_xi, param_gamma,
-      param_nu, a_tau, b_tau, N, S, P
+    // elbo
+    elbo(i) = probit_ridge_elbo(
+      X, y, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda,
+      N, S, P
     );
 
     iters = iters + 1;
@@ -210,23 +169,19 @@ Rcpp::List lm_hs_cavi(
       // check if lower bound decreases
       if(elbo(i) < elbo(i-1))
         std::cout << "LOWER BOUND DECREASES" << "\n";
-      if((1.0 - elbo(i) / elbo(i-5)) < rel_tol) { break; }
+      if((1.0 - elbo(i) / elbo(i - 5)) < tol) { break; }
       if(i == (n_iter - 1))
         std::cout << "VB DID NOT CONVERGE" << "\n";
     }
-    Rcpp::checkUserInterrupt();
   }
 
-  // values to rescale
-  mu_b0 = param_b0["mu"];
+  // values to rescale and return
+  double mu_b0 = param_b0["mu"];
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
   double astar_lambda = param_lambda["shape"];
   double bstar_lambda = param_lambda["rate"];
-  double astar_tau = param_tau["shape"];
-  double bstar_tau = param_tau["rate"];
-  mu_gamma = param_gamma["mu"];
 
   // rescaled values - need mu_b0, sigma2_b0, msigma_b
   mu_b0 = mu_b0 - (mu_b.array() * s_x.array()).sum();
@@ -234,25 +189,25 @@ Rcpp::List lm_hs_cavi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
-  List b0;
+  Rcpp::List b0;
   b0["dist"] = "univariate normal";
   b0["mu"] = mu_b0;
   b0["var"] = sigma2_b0;
 
-  List b;
+  Rcpp::List b;
   b["dist"] = "multivariate normal";
   b["mu"] = mu_b;
   b["sigma_mat"] = msigma_b;
 
-  List tau;
-  tau["dist"] = "gamma";
-  tau["shape"] = astar_tau;
-  tau["rate"] = bstar_tau;
+  Rcpp::List lambda;
+  lambda["dist"] = "gamma";
+  lambda["shape"] = astar_lambda;
+  lambda["rate"] = bstar_lambda;
 
-  List ret;
+  Rcpp::List ret;
   ret["b0"] = b0;
   ret["b"] = b;
-  ret["tau"] = tau;
+  ret["lambda"] = lambda;
   ret["elbo"] = elbo.topRows(iters);
   return(ret);
 }
@@ -260,7 +215,7 @@ Rcpp::List lm_hs_cavi(
 // **********************************************************************
 // SVI
 // **********************************************************************
-//' Univariate normal linear regression with a ridge (normal) prior using the
+//' Univariate probit linear regression with a ridge (normal) prior using the
 //' SVI algorithm.
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
@@ -269,6 +224,10 @@ Rcpp::List lm_hs_cavi(
 //' @param verbose True of False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
+//' @param a_lambda Prior shape parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param b_lambda Prior rate parameter for the coefficient precision
+//'   (shrinkage) term.
 //' @param type Correlation structure of the regression coefficients. Use 0 for
 //'   full correlation and 1 for independece assumption.
 //' @param batch_size Size of the subsamples used to update the parameters.
@@ -282,11 +241,11 @@ Rcpp::List lm_hs_cavi(
 //'   \{0.5, 1\}}
 //' @export
 // [[Rcpp::export]]
-Rcpp::List lm_hs_svi(
-  Eigen::VectorXd y, Eigen::MatrixXd X, bool verbose = true,
-  int n_iter = 1000, double a_tau = 0.1, double b_tau = 0.1,
-  int type = 0, int batch_size = 10, double const_rhot = 0.01,
-  double omega = 15.0, double kappa = 0.6
+Rcpp::List probit_ridge_svi(
+  Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose = true, int n_iter = 1000,
+  double a_lambda = 0.1, double b_lambda = 0.1, int type = 0,
+  int batch_size = 10, double omega = 15.0, double kappa = 0.6,
+  double const_rhot = 0.01
 ){
 
   // problem info
@@ -304,29 +263,25 @@ Rcpp::List lm_hs_svi(
   X = (X.rowwise() - vmu_x).array().rowwise() / vsigma_x.array();
 
   // initializing starting values for parameters
+  Rcpp::List param_z = vi_init_mv_normal(S, 1);
   Rcpp::List param_b0 = vi_init_normal();
   Rcpp::List param_b = vi_init_mv_normal(P, type);
-  Rcpp::List param_tau = vi_init_gamma(1);
   Rcpp::List param_lambda = vi_init_gamma(1);
-  Rcpp::List param_xi = vi_init_gamma(1);
-  Rcpp::List param_gamma = vi_init_gamma(P);
-  Rcpp::List param_nu = vi_init_gamma(P);
 
-  // for prior mean of b
+  // for updating b
   Eigen::MatrixXd mu_prior_mat(P, P);
-  Eigen::VectorXd mu_gamma(P);
-  double mu_lambda;
+  Eigen::MatrixXd id_mat = Eigen::MatrixXd::Identity(P, P);
+  double mu_lambda = param_lambda["mu"];
+
+  // svi specific storage
+  Eigen::VectorXi y_s(S);
+  Eigen::MatrixXd X_s(S, P);
+  Rcpp::IntegerVector the_sample = Rcpp::seq(0, S - 1);
+  Rcpp::IntegerVector seq_samp = Rcpp::seq(0, N - 1);
+  double rhot;
 
   // vectors for storage
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1);
-
-  // svi specific storage
-  Eigen::VectorXd y_s(S);
-  Eigen::MatrixXd X_s(S, P);
-  Rcpp::IntegerVector the_sample = seq(0, S - 1);
-  Rcpp::IntegerVector seq_samp = seq(0, N - 1);
-  double rhot;
-  rhot = std::exp(-kappa * std::log(1.0 + omega));
 
   // main loop of algorithm
   int iters = 0;
@@ -344,76 +299,57 @@ Rcpp::List lm_hs_svi(
         " with step size " << rhot << "\r";
     }
 
-    // ----- sample data -----
+    // sample data
     the_sample = Rcpp::sample(seq_samp, S, false);
-    get_subsample_lm(y, X, y_s, X_s, S, N, the_sample);
-    rhot = std::exp(-kappa * std::log(i + 1.0 + omega));
+    get_subsample_probit(y, X, y_s, X_s, S, N, the_sample);
+
+    // local params
+    probit_vi_z(X_s, param_b0, param_b, S, param_z);
+    vi_update_mv_normal(param_z, 1, 1.0);
+    natural_to_canonical(param_z, "mv_normal_ind");
+    canonical_transform_probit_trunc_norm(param_z, y_s, S);
 
     // ----- global params -----
     // b0
-    lm_vi_b0(y_s, X_s, param_b, param_tau, N, S, param_b0);
-
+    probit_vi_b0(X_s, param_z, param_b, N, S, param_b0);
     // b
-    mu_gamma = param_gamma["mu"];
     mu_lambda = param_lambda["mu"];
-    mu_prior_mat = mu_lambda * mu_gamma.asDiagonal();
-    lm_vi_b(
-      y_s, X_s, param_b0, param_tau, mu_prior_mat, N, S, P, type, false, param_b
+    mu_prior_mat = mu_lambda * id_mat;
+    probit_vi_b(
+      X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, false, param_b
     );
-
-    // hs specific param
-    hs_vi_tau(
-      y_s, X_s, param_b0, param_b, param_lambda, param_gamma, N, P, S, a_tau,
-      b_tau, param_tau
-    );
-    hs_vi_lambda(param_b, param_tau, param_gamma, param_xi, P, param_lambda);
-    hs_vi_xi(param_lambda, param_xi);
-    hs_vi_gamma(param_b, param_tau, param_lambda, param_nu, P, param_gamma);
-    hs_vi_nu(param_gamma, P, param_nu);
+    // lambda
+    probit_ridge_vi_lambda(param_b, P, a_lambda, b_lambda, param_lambda);
 
     // ----- gradient step -----
     vi_update_normal(param_b0, rhot);
     vi_update_mv_normal(param_b, type, rhot);
-    vi_update_gamma(param_tau, rhot);
     vi_update_gamma(param_lambda, rhot);
-    vi_update_gamma(param_xi, rhot);
-    vi_update_gamma(param_gamma, rhot);
-    vi_update_gamma(param_nu, rhot);
 
-    // ----- calculate means and variances for next iteration -----
+    // ----- calculate means and variances -----
     natural_to_canonical(param_b0, "normal");
     if(type == 0) {
       natural_to_canonical(param_b, "mv_normal");
     } else {
       natural_to_canonical(param_b, "mv_normal_ind");
     }
-    natural_to_canonical(param_tau, "univ_gamma");
     natural_to_canonical(param_lambda, "univ_gamma");
-    natural_to_canonical(param_xi, "univ_gamma");
-    natural_to_canonical(param_gamma, "gamma");
-    natural_to_canonical(param_nu, "gamma");
 
-    iters = iters + 1;
-
-    // calculate elbo
-    elbo(i) = lm_hs_vi_elbo(
-      X_s, y_s, param_b0, param_b, param_tau, param_lambda, param_xi,
-      param_gamma, param_nu, a_tau, b_tau, N, S, P
+    // elbo
+    elbo(i) = probit_ridge_elbo(
+      X_s, y_s, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda,
+      N, S, P
     );
-
-    Rcpp::checkUserInterrupt();
+    iters = iters + 1;
   }
 
-  // values to rescale
+  // values to rescale and return
   double mu_b0 = param_b0["mu"];
   double sigma2_b0 = param_b0["sigma2"];
   Eigen::VectorXd mu_b = param_b["mu"];
   Eigen::MatrixXd msigma_b = param_b["msigma"];
   double astar_lambda = param_lambda["shape"];
   double bstar_lambda = param_lambda["rate"];
-  double astar_tau = param_tau["shape"];
-  double bstar_tau = param_tau["rate"];
-  mu_gamma = param_gamma["mu"];
 
   // rescaled values - need mu_b0, sigma2_b0, msigma_b
   mu_b0 = mu_b0 - (mu_b.array() * s_x.array()).sum();
@@ -421,25 +357,25 @@ Rcpp::List lm_hs_svi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
-  List b0;
+  Rcpp::List b0;
   b0["dist"] = "univariate normal";
   b0["mu"] = mu_b0;
   b0["var"] = sigma2_b0;
 
-  List b;
+  Rcpp::List b;
   b["dist"] = "multivariate normal";
   b["mu"] = mu_b;
   b["sigma_mat"] = msigma_b;
 
-  List tau;
-  tau["dist"] = "gamma";
-  tau["shape"] = astar_tau;
-  tau["rate"] = bstar_tau;
+  Rcpp::List lambda;
+  lambda["dist"] = "gamma";
+  lambda["shape"] = astar_lambda;
+  lambda["rate"] = bstar_lambda;
 
-  List ret;
+  Rcpp::List ret;
   ret["b0"] = b0;
   ret["b"] = b;
-  ret["tau"] = tau;
+  ret["lambda"] = lambda;
   ret["elbo"] = elbo;
   return(ret);
 }
