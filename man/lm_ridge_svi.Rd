@@ -5,9 +5,21 @@
 \title{Univariate normal linear regression with a ridge (normal) prior using the
 SVI algorithm.}
 \usage{
-lm_ridge_svi(y, X, n_iter = 5000L, verbose = TRUE, a_tau = 0.1,
-  b_tau = 0.1, a_lambda = 0.1, b_lambda = 0.1, type = 0L,
-  batch_size = 42L, const_rhot = 0.01, omega = 15, kappa = 0.6)
+lm_ridge_svi(
+  y,
+  X,
+  n_iter = 15000L,
+  verbose = TRUE,
+  a_tau = 0.1,
+  b_tau = 0.1,
+  a_lambda = 0.1,
+  b_lambda = 0.1,
+  type = 0L,
+  batch_size = 42L,
+  const_rhot = 0.01,
+  omega = 15,
+  kappa = 0.6
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

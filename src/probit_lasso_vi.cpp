@@ -85,6 +85,24 @@ double probit_lasso_elbo(
 // **********************************************************************
 // CAVI
 // **********************************************************************
+//' Univariate probit linear regression with a LASSO (double-exponential) prior
+//' using the CAVI algorithm.
+//' @param y Vector or responses (N by 1)
+//' @param X Matrix of predictors (N by P)
+//' @param n_iter Max number of iterations to run the algorithm for (default =
+//'   1000). A convergence warning is issues if the algorithm runs for the max
+//'   number of iterations.
+//' @param verbose True of False. Do you want to print messages along the way?
+//' @param a_lambda2 Prior shape parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param b_lambda2 Prior rate parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param rel_tol Relative tolerance used for convergence. Convergence is
+//'   assesed using the evidence lower bound (ELBO) changes relative to five
+//'   iterations prior.
+//' @param type Correlation structure of the regression coefficients. Use 0 for
+//'   full correlation and 1 for independece assumption.
+//' @export
 // [[Rcpp::export]]
 Rcpp::List probit_lasso_cavi(
   Eigen::VectorXi y, Eigen::MatrixXd X, int n_iter = 1000, bool verbose = true,
@@ -224,6 +242,29 @@ Rcpp::List probit_lasso_cavi(
 // **********************************************************************
 // SVI
 // **********************************************************************
+//' Univariate probit linear regression with a ridge (normal) prior using the
+//' SVI algorithm.
+//' @param y Vector or responses (N by 1)
+//' @param X Matrix of predictors (N by P)
+//' @param n_iter Number of iterations to run the algorithm for (default =
+//'   5000).
+//' @param verbose True of False. Do you want to print messages along the way?
+//' @param a_lambda2 Prior shape parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param b_lambda2 Prior rate parameter for the coefficient precision
+//'   (shrinkage) term.
+//' @param type Correlation structure of the regression coefficients. Use 0 for
+//'   full correlation and 1 for independece assumption.
+//' @param batch_size Size of the subsamples used to update the parameters.
+//' @param cost_rhot Used to set a constant step size in the gradient descent
+//'   algorithm. If this parameter is greater than zero, it overrides the step
+//'   size iterations calculated using kappa and omega.
+//' @param omega Delay for the stepsize (\eqn{\omega}) for the gradient step.
+//'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
+//'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
+//' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
+//'   \{0.5, 1\}}
+//' @export
 // [[Rcpp::export]]
 Rcpp::List probit_lasso_svi(
   Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose = true, int n_iter = 1000,

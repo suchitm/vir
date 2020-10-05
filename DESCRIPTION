@@ -12,14 +12,13 @@ LazyData: true
 LinkingTo: 
   Rcpp,
   RcppEigen
-Imports:
-  Rcpp, 
-  RcppEigen, 
-  statmod,
-  knitr, 
-Suggest: 
-  testthat,
-  rmarkdown
+Imports: 
+    RcppEigen,
+    statmod,
+    Rcpp
+Suggests: 
+    dplyr,
+    knitr
 VignetteBuilder: 
   knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

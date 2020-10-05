@@ -209,10 +209,10 @@ Rcpp::List lm_hs_cavi(
     {
       // check if lower bound decreases
       if(elbo(i) < elbo(i-1))
-        std::cout << "LOWER BOUND DECREASES" << "\n";
+        Rcpp::Rcout << "LOWER BOUND DECREASES" << "\n";
       if((1.0 - elbo(i) / elbo(i-5)) < rel_tol) { break; }
       if(i == (n_iter - 1))
-        std::cout << "VB DID NOT CONVERGE" << "\n";
+        Rcpp::Rcout << "VB DID NOT CONVERGE" << "\n";
     }
     Rcpp::checkUserInterrupt();
   }
