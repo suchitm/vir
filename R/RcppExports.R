@@ -393,6 +393,34 @@ probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cav
     .Call(`_vir_probit_vi_b`, X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
 }
 
+probit_hs_gibbs_lambda <- function(b, gamma, xi, P, lambda) {
+    .Call(`_vir_probit_hs_gibbs_lambda`, b, gamma, xi, P, lambda)
+}
+
+probit_hs_gibbs_gamma <- function(lambda, nu, b, P, gamma) {
+    .Call(`_vir_probit_hs_gibbs_gamma`, lambda, nu, b, P, gamma)
+}
+
+probit_hs_gibbs_xi <- function(lambda, xi) {
+    .Call(`_vir_probit_hs_gibbs_xi`, lambda, xi)
+}
+
+probit_hs_gibbs_nu <- function(gamma, P, nu) {
+    .Call(`_vir_probit_hs_gibbs_nu`, gamma, P, nu)
+}
+
+#' Univariate probit linear regression with a Horseshoe prior using a
+#' Gibbs sampler.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Number of iterations to run the algorithm for
+#' @param verbose True of False. Do you want to print messages along the way?
+#'   (shrinkage) term.
+#' @export
+probit_hs_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L) {
+    .Call(`_vir_probit_hs_gibbs`, y, X, verbose, n_iter)
+}
+
 probit_hs_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda, param_xi, param_gamma, param_nu, N, S, P) {
     .Call(`_vir_probit_hs_elbo`, X_s, y_s, param_z, param_b0, param_b, param_lambda, param_xi, param_gamma, param_nu, N, S, P)
 }
@@ -436,6 +464,29 @@ probit_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, tol = 0.0001, t
 #' @export
 probit_hs_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, type = 0L, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
     .Call(`_vir_probit_hs_svi`, y, X, verbose, n_iter, type, batch_size, omega, kappa, const_rhot)
+}
+
+probit_lasso_gibbs_gamma <- function(lambda2, b, P, gamma) {
+    .Call(`_vir_probit_lasso_gibbs_gamma`, lambda2, b, P, gamma)
+}
+
+probit_lasso_gibbs_lambda2 <- function(gamma, a_lambda2, b_lambda2, P, lambda2) {
+    .Call(`_vir_probit_lasso_gibbs_lambda2`, gamma, a_lambda2, b_lambda2, P, lambda2)
+}
+
+#' Univariate probit linear regression with a LASSO prior using a
+#' Gibbs sampler.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Number of iterations to run the algorithm for
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param a_lambda2 Prior shape parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param b_lambda2 Prior rate parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @export
+probit_lasso_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L, a_lambda2 = 0.1, b_lambda2 = 0.1) {
+    .Call(`_vir_probit_lasso_gibbs`, y, X, verbose, n_iter, a_lambda2, b_lambda2)
 }
 
 probit_lasso_vi_lambda2 <- function(param_gamma, P, a_lambda2, b_lambda2, param_lambda2) {
@@ -497,6 +548,25 @@ probit_lasso_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_lambda2 = 
 #' @export
 probit_lasso_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_lambda2 = 0.1, b_lambda2 = 0.1, type = 0L, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
     .Call(`_vir_probit_lasso_svi`, y, X, verbose, n_iter, a_lambda2, b_lambda2, type, batch_size, omega, kappa, const_rhot)
+}
+
+probit_ridge_gibbs_lambda <- function(b, a_lambda, b_lambda, P, lambda) {
+    .Call(`_vir_probit_ridge_gibbs_lambda`, b, a_lambda, b_lambda, P, lambda)
+}
+
+#' Univariate probit linear regression with a ridge (normal) prior using a
+#' Gibbs sampler.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Number of iterations to run the algorithm for
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param a_lambda Prior shape parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @param b_lambda Prior rate parameter for the coefficient precision
+#'   (shrinkage) term.
+#' @export
+probit_ridge_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L, a_lambda = 0.01, b_lambda = 0.01) {
+    .Call(`_vir_probit_ridge_gibbs`, y, X, verbose, n_iter, a_lambda, b_lambda)
 }
 
 probit_ridge_vi_lambda <- function(param_b, P, a_lambda, b_lambda, param_lambda) {

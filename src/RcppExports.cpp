@@ -858,6 +858,75 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// probit_hs_gibbs_lambda
+double probit_hs_gibbs_lambda(Eigen::VectorXd& b, Eigen::VectorXd& gamma, double& xi, int& P, double& lambda);
+RcppExport SEXP _vir_probit_hs_gibbs_lambda(SEXP bSEXP, SEXP gammaSEXP, SEXP xiSEXP, SEXP PSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_lambda(b, gamma, xi, P, lambda));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_hs_gibbs_gamma
+Eigen::VectorXd probit_hs_gibbs_gamma(double& lambda, Eigen::VectorXd& nu, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gamma);
+RcppExport SEXP _vir_probit_hs_gibbs_gamma(SEXP lambdaSEXP, SEXP nuSEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_gamma(lambda, nu, b, P, gamma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_hs_gibbs_xi
+double probit_hs_gibbs_xi(double& lambda, double& xi);
+RcppExport SEXP _vir_probit_hs_gibbs_xi(SEXP lambdaSEXP, SEXP xiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_xi(lambda, xi));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_hs_gibbs_nu
+Eigen::VectorXd probit_hs_gibbs_nu(Eigen::VectorXd& gamma, int& P, Eigen::VectorXd& nu);
+RcppExport SEXP _vir_probit_hs_gibbs_nu(SEXP gammaSEXP, SEXP PSEXP, SEXP nuSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nu(nuSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_nu(gamma, P, nu));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_hs_gibbs
+Rcpp::List probit_hs_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter);
+RcppExport SEXP _vir_probit_hs_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs(y, X, verbose, n_iter));
+    return rcpp_result_gen;
+END_RCPP
+}
 // probit_hs_elbo
 double probit_hs_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda, Rcpp::List& param_xi, Rcpp::List& param_gamma, Rcpp::List& param_nu, int& N, int& S, int& P);
 RcppExport SEXP _vir_probit_hs_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_zSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_lambdaSEXP, SEXP param_xiSEXP, SEXP param_gammaSEXP, SEXP param_nuSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
@@ -912,6 +981,51 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
     Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
     rcpp_result_gen = Rcpp::wrap(probit_hs_svi(y, X, verbose, n_iter, type, batch_size, omega, kappa, const_rhot));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_lasso_gibbs_gamma
+Eigen::VectorXd probit_lasso_gibbs_gamma(double& lambda2, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gamma);
+RcppExport SEXP _vir_probit_lasso_gibbs_gamma(SEXP lambda2SEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs_gamma(lambda2, b, P, gamma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_lasso_gibbs_lambda2
+double probit_lasso_gibbs_lambda2(Eigen::VectorXd& gamma, double& a_lambda2, double& b_lambda2, int& P, double& lambda2);
+RcppExport SEXP _vir_probit_lasso_gibbs_lambda2(SEXP gammaSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP PSEXP, SEXP lambda2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_lambda2(a_lambda2SEXP);
+    Rcpp::traits::input_parameter< double& >::type b_lambda2(b_lambda2SEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs_lambda2(gamma, a_lambda2, b_lambda2, P, lambda2));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_lasso_gibbs
+Rcpp::List probit_lasso_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_lambda2, double b_lambda2);
+RcppExport SEXP _vir_probit_lasso_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda2(a_lambda2SEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda2(b_lambda2SEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs(y, X, verbose, n_iter, a_lambda2, b_lambda2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1002,6 +1116,37 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
     Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
     rcpp_result_gen = Rcpp::wrap(probit_lasso_svi(y, X, verbose, n_iter, a_lambda2, b_lambda2, type, batch_size, omega, kappa, const_rhot));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_ridge_gibbs_lambda
+double probit_ridge_gibbs_lambda(Eigen::VectorXd& b, double& a_lambda, double& b_lambda, int& P, double& lambda);
+RcppExport SEXP _vir_probit_ridge_gibbs_lambda(SEXP bSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP PSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_gibbs_lambda(b, a_lambda, b_lambda, P, lambda));
+    return rcpp_result_gen;
+END_RCPP
+}
+// probit_ridge_gibbs
+Rcpp::List probit_ridge_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_lambda, double b_lambda);
+RcppExport SEXP _vir_probit_ridge_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXi >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type b_lambda(b_lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(probit_ridge_gibbs(y, X, verbose, n_iter, a_lambda, b_lambda));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1132,14 +1277,24 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_probit_vi_z", (DL_FUNC) &_vir_probit_vi_z, 5},
     {"_vir_probit_vi_b0", (DL_FUNC) &_vir_probit_vi_b0, 6},
     {"_vir_probit_vi_b", (DL_FUNC) &_vir_probit_vi_b, 10},
+    {"_vir_probit_hs_gibbs_lambda", (DL_FUNC) &_vir_probit_hs_gibbs_lambda, 5},
+    {"_vir_probit_hs_gibbs_gamma", (DL_FUNC) &_vir_probit_hs_gibbs_gamma, 5},
+    {"_vir_probit_hs_gibbs_xi", (DL_FUNC) &_vir_probit_hs_gibbs_xi, 2},
+    {"_vir_probit_hs_gibbs_nu", (DL_FUNC) &_vir_probit_hs_gibbs_nu, 3},
+    {"_vir_probit_hs_gibbs", (DL_FUNC) &_vir_probit_hs_gibbs, 4},
     {"_vir_probit_hs_elbo", (DL_FUNC) &_vir_probit_hs_elbo, 12},
     {"_vir_probit_hs_cavi", (DL_FUNC) &_vir_probit_hs_cavi, 6},
     {"_vir_probit_hs_svi", (DL_FUNC) &_vir_probit_hs_svi, 9},
+    {"_vir_probit_lasso_gibbs_gamma", (DL_FUNC) &_vir_probit_lasso_gibbs_gamma, 4},
+    {"_vir_probit_lasso_gibbs_lambda2", (DL_FUNC) &_vir_probit_lasso_gibbs_lambda2, 5},
+    {"_vir_probit_lasso_gibbs", (DL_FUNC) &_vir_probit_lasso_gibbs, 6},
     {"_vir_probit_lasso_vi_lambda2", (DL_FUNC) &_vir_probit_lasso_vi_lambda2, 5},
     {"_vir_probit_lasso_vi_gamma", (DL_FUNC) &_vir_probit_lasso_vi_gamma, 4},
     {"_vir_probit_lasso_elbo", (DL_FUNC) &_vir_probit_lasso_elbo, 12},
     {"_vir_probit_lasso_cavi", (DL_FUNC) &_vir_probit_lasso_cavi, 8},
     {"_vir_probit_lasso_svi", (DL_FUNC) &_vir_probit_lasso_svi, 11},
+    {"_vir_probit_ridge_gibbs_lambda", (DL_FUNC) &_vir_probit_ridge_gibbs_lambda, 5},
+    {"_vir_probit_ridge_gibbs", (DL_FUNC) &_vir_probit_ridge_gibbs, 6},
     {"_vir_probit_ridge_vi_lambda", (DL_FUNC) &_vir_probit_ridge_vi_lambda, 5},
     {"_vir_probit_ridge_elbo", (DL_FUNC) &_vir_probit_ridge_elbo, 11},
     {"_vir_probit_ridge_cavi", (DL_FUNC) &_vir_probit_ridge_cavi, 8},
