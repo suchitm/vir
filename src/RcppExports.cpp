@@ -349,6 +349,70 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lm_ridge_gibbs_b0
+double lm_ridge_gibbs_b0(double& y_bar, double& tau, double& b0, int& N);
+RcppExport SEXP _vir_lm_ridge_gibbs_b0(SEXP y_barSEXP, SEXP tauSEXP, SEXP b0SEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double& >::type y_bar(y_barSEXP);
+    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< double& >::type b0(b0SEXP);
+    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_ridge_gibbs_b0(y_bar, tau, b0, N));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_ridge_gibbs_b
+Eigen::VectorXd lm_ridge_gibbs_b(Eigen::MatrixXd& X, Eigen::VectorXd& y, double& lambda, double& tau, Eigen::VectorXd& b, int& P);
+RcppExport SEXP _vir_lm_ridge_gibbs_b(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP, SEXP tauSEXP, SEXP bSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_ridge_gibbs_b(X, y, lambda, tau, b, P));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_ridge_gibbs_tau
+double lm_ridge_gibbs_tau(Eigen::VectorXd& ehat, Eigen::VectorXd& b, double& lambda, double& tau, double& a_tau, double& b_tau, int& N, int& P);
+RcppExport SEXP _vir_lm_ridge_gibbs_tau(SEXP ehatSEXP, SEXP bSEXP, SEXP lambdaSEXP, SEXP tauSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP NSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type ehat(ehatSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
+    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_ridge_gibbs_tau(ehat, b, lambda, tau, a_tau, b_tau, N, P));
+    return rcpp_result_gen;
+END_RCPP
+}
+// lm_ridge_gibbs_lambda
+double lm_ridge_gibbs_lambda(Eigen::VectorXd& b, double& tau, double& lambda, double& a_lambda, double& b_lambda, int& P);
+RcppExport SEXP _vir_lm_ridge_gibbs_lambda(SEXP bSEXP, SEXP tauSEXP, SEXP lambdaSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
+    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
+    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
+    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(lm_ridge_gibbs_lambda(b, tau, lambda, a_lambda, b_lambda, P));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lm_ridge_cavi
 Rcpp::List lm_ridge_cavi(Eigen::VectorXd y, Eigen::MatrixXd X, int n_iter, bool verbose, double a_tau, double b_tau, double a_lambda, double b_lambda, double rel_tol, int type);
 RcppExport SEXP _vir_lm_ridge_cavi(SEXP ySEXP, SEXP XSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP rel_tolSEXP, SEXP typeSEXP) {
@@ -1038,6 +1102,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_lasso_cavi", (DL_FUNC) &_vir_lm_lasso_cavi, 10},
     {"_vir_lm_lasso_svi", (DL_FUNC) &_vir_lm_lasso_svi, 13},
     {"_vir_lm_ridge_gibbs", (DL_FUNC) &_vir_lm_ridge_gibbs, 8},
+    {"_vir_lm_ridge_gibbs_b0", (DL_FUNC) &_vir_lm_ridge_gibbs_b0, 4},
+    {"_vir_lm_ridge_gibbs_b", (DL_FUNC) &_vir_lm_ridge_gibbs_b, 6},
+    {"_vir_lm_ridge_gibbs_tau", (DL_FUNC) &_vir_lm_ridge_gibbs_tau, 8},
+    {"_vir_lm_ridge_gibbs_lambda", (DL_FUNC) &_vir_lm_ridge_gibbs_lambda, 6},
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
     {"_vir_mv_probit_gibbs_Z", (DL_FUNC) &_vir_mv_probit_gibbs_Z, 6},

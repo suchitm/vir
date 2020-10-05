@@ -218,6 +218,32 @@ lm_ridge_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.01, 
     .Call(`_vir_lm_ridge_gibbs`, y, X, verbose, n_iter, a_tau, b_tau, a_lambda, b_lambda)
 }
 
+#' samples the mean
+#' @export
+lm_ridge_gibbs_b0 <- function(y_bar, tau, b0, N) {
+    .Call(`_vir_lm_ridge_gibbs_b0`, y_bar, tau, b0, N)
+}
+
+#' function to update the coefficients in a linear regression
+#' @param X N by P matrix of covariates
+#' @export
+lm_ridge_gibbs_b <- function(X, y, lambda, tau, b, P) {
+    .Call(`_vir_lm_ridge_gibbs_b`, X, y, lambda, tau, b, P)
+}
+
+#' updates the precision parameter tau in a bayesian ridge regression
+#' @export
+lm_ridge_gibbs_tau <- function(ehat, b, lambda, tau, a_tau, b_tau, N, P) {
+    .Call(`_vir_lm_ridge_gibbs_tau`, ehat, b, lambda, tau, a_tau, b_tau, N, P)
+}
+
+#' updates the prior precision parameter of b, lambda, in a bayesian ridge
+#' regression
+#' @export
+lm_ridge_gibbs_lambda <- function(b, tau, lambda, a_lambda, b_lambda, P) {
+    .Call(`_vir_lm_ridge_gibbs_lambda`, b, tau, lambda, a_lambda, b_lambda, P)
+}
+
 #' Univariate normal linear regression with a ridge (normal) prior using the
 #' CAVI algorithm.
 #' @param y Vector or responses (N by 1)
