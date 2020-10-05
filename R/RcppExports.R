@@ -252,6 +252,51 @@ probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cav
     .Call(`_vir_probit_vi_b`, X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
 }
 
+probit_hs_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda, param_xi, param_gamma, param_nu, N, S, P) {
+    .Call(`_vir_probit_hs_elbo`, X_s, y_s, param_z, param_b0, param_b, param_lambda, param_xi, param_gamma, param_nu, N, S, P)
+}
+
+#' Univariate probit linear regression with a Horseshoe prior using the CAVI
+#' algorithm.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Max number of iterations to run the algorithm for (default =
+#'   1000). A convergence warning is issues if the algorithm runs for the max
+#'   number of iterations.
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param rel_tol Relative tolerance used for convergence. Convergence is
+#'   assesed using the evidence lower bound (ELBO) changes relative to five
+#'   iterations prior.
+#' @param type Correlation structure of the regression coefficients. Use 0 for
+#'   full correlation and 1 for independece assumption.
+#' @export
+probit_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, tol = 0.0001, type = 0L) {
+    .Call(`_vir_probit_hs_cavi`, y, X, n_iter, verbose, tol, type)
+}
+
+#' Univariate probit linear regression with a ridge (normal) prior using the
+#' SVI algorithm.
+#' @param y Vector or responses (N by 1)
+#' @param X Matrix of predictors (N by P)
+#' @param n_iter Number of iterations to run the algorithm for (default =
+#'   5000).
+#' @param verbose True of False. Do you want to print messages along the way?
+#' @param type Correlation structure of the regression coefficients. Use 0 for
+#'   full correlation and 1 for independece assumption.
+#' @param batch_size Size of the subsamples used to update the parameters.
+#' @param cost_rhot Used to set a constant step size in the gradient descent
+#'   algorithm. If this parameter is greater than zero, it overrides the step
+#'   size iterations calculated using kappa and omega.
+#' @param omega Delay for the stepsize (\eqn{\omega}) for the gradient step.
+#'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
+#'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
+#' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
+#'   \{0.5, 1\}}
+#' @export
+probit_hs_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, type = 0L, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
+    .Call(`_vir_probit_hs_svi`, y, X, verbose, n_iter, type, batch_size, omega, kappa, const_rhot)
+}
+
 probit_lasso_vi_lambda2 <- function(param_gamma, P, a_lambda2, b_lambda2, param_lambda2) {
     .Call(`_vir_probit_lasso_vi_lambda2`, param_gamma, P, a_lambda2, b_lambda2, param_lambda2)
 }
