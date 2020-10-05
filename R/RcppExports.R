@@ -252,6 +252,26 @@ probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cav
     .Call(`_vir_probit_vi_b`, X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cavi, param_b)
 }
 
+probit_lasso_vi_lambda2 <- function(param_gamma, P, a_lambda2, b_lambda2, param_lambda2) {
+    .Call(`_vir_probit_lasso_vi_lambda2`, param_gamma, P, a_lambda2, b_lambda2, param_lambda2)
+}
+
+probit_lasso_vi_gamma <- function(param_b, param_lambda2, P, param_gamma) {
+    .Call(`_vir_probit_lasso_vi_gamma`, param_b, param_lambda2, P, param_gamma)
+}
+
+probit_lasso_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda2, param_gamma, a_lambda2, b_lambda2, N, S, P) {
+    .Call(`_vir_probit_lasso_elbo`, X_s, y_s, param_z, param_b0, param_b, param_lambda2, param_gamma, a_lambda2, b_lambda2, N, S, P)
+}
+
+probit_lasso_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_lambda2 = 0.1, b_lambda2 = 0.1, tol = 0.0001, type = 0L) {
+    .Call(`_vir_probit_lasso_cavi`, y, X, n_iter, verbose, a_lambda2, b_lambda2, tol, type)
+}
+
+probit_lasso_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_lambda2 = 0.1, b_lambda2 = 0.1, type = 0L, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
+    .Call(`_vir_probit_lasso_svi`, y, X, verbose, n_iter, a_lambda2, b_lambda2, type, batch_size, omega, kappa, const_rhot)
+}
+
 probit_ridge_vi_lambda <- function(param_b, P, a_lambda, b_lambda, param_lambda) {
     .Call(`_vir_probit_ridge_vi_lambda`, param_b, P, a_lambda, b_lambda, param_lambda)
 }
