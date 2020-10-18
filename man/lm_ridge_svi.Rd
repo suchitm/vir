@@ -29,7 +29,7 @@ lm_ridge_svi(
 \item{n_iter}{Number of iterations to run the algorithm for (default =
 5000).}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{a_tau}{Prior shape parameter for the likelihood precision.}
 
