@@ -60,7 +60,7 @@ Eigen::VectorXd probit_hs_gibbs_nu(
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //'   (shrinkage) term.
 //' @export
 // [[Rcpp::export]]

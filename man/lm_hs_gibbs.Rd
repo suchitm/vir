@@ -12,7 +12,7 @@ lm_hs_gibbs(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.1, b_tau = 0.1)
 
 \item{X}{Matrix of predictors (N by P)}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{n_iter}{Number of iterations to run the algorithm for}
 

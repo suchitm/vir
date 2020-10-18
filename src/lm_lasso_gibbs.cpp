@@ -93,7 +93,7 @@ double lm_lasso_gibbs_lambda2(
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
 //' @param a_lambda Prior shape parameter for the coefficient precision

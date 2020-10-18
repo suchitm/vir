@@ -43,7 +43,7 @@ lm_hs_gibbs_nus <- function(gammas, P, nus) {
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @export
@@ -62,7 +62,7 @@ lm_hs_vi_elbo <- function(X_s, y_s, param_b0, param_b, param_tau, param_lambda, 
 #' @param n_iter Max number of iterations to run the algorithm for (default =
 #'   1000). A convergence warning is issues if the algorithm runs for the max
 #'   number of iterations.
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param rel_tol Relative tolerance used for convergence. Convergence is
@@ -81,7 +81,7 @@ lm_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1, b_tau 
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for (default =
 #'   5000).
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param type Correlation structure of the regression coefficients. Use 0 for
@@ -136,7 +136,7 @@ lm_lasso_gibbs_lambda2 <- function(gammas, a_lambda, b_lambda, P, lambda2) {
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param a_lambda Prior shape parameter for the coefficient precision
@@ -155,7 +155,7 @@ lm_lasso_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.1, b
 #' @param n_iter Max number of iterations to run the algorithm for (default =
 #'   1000). A convergence warning is issues if the algorithm runs for the max
 #'   number of iterations.
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param a_lambda2 Prior shape parameter for the coefficient precision
@@ -178,7 +178,7 @@ lm_lasso_cavi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_tau = 0.1, b_t
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for (default =
 #'   5000).
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param a_lambda2 Prior shape parameter for the coefficient precision
@@ -206,7 +206,7 @@ lm_lasso_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_tau = 0.1, b_ta
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param a_lambda Prior shape parameter for the coefficient precision
@@ -414,7 +414,7 @@ probit_hs_gibbs_nu <- function(gamma, P, nu) {
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #'   (shrinkage) term.
 #' @export
 probit_hs_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L) {
@@ -432,7 +432,7 @@ probit_hs_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda, p
 #' @param n_iter Max number of iterations to run the algorithm for (default =
 #'   1000). A convergence warning is issues if the algorithm runs for the max
 #'   number of iterations.
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param rel_tol Relative tolerance used for convergence. Convergence is
 #'   assesed using the evidence lower bound (ELBO) changes relative to five
 #'   iterations prior.
@@ -449,7 +449,7 @@ probit_hs_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, tol = 0.0001, t
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for (default =
 #'   5000).
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param type Correlation structure of the regression coefficients. Use 0 for
 #'   full correlation and 1 for independece assumption.
 #' @param batch_size Size of the subsamples used to update the parameters.
@@ -479,7 +479,7 @@ probit_lasso_gibbs_lambda2 <- function(gamma, a_lambda2, b_lambda2, P, lambda2) 
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda2 Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda2 Prior rate parameter for the coefficient precision
@@ -508,7 +508,7 @@ probit_lasso_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda
 #' @param n_iter Max number of iterations to run the algorithm for (default =
 #'   1000). A convergence warning is issues if the algorithm runs for the max
 #'   number of iterations.
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda2 Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda2 Prior rate parameter for the coefficient precision
@@ -529,7 +529,7 @@ probit_lasso_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_lambda2 = 
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for (default =
 #'   5000).
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda2 Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda2 Prior rate parameter for the coefficient precision
@@ -559,7 +559,7 @@ probit_ridge_gibbs_lambda <- function(b, a_lambda, b_lambda, P, lambda) {
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda Prior rate parameter for the coefficient precision
@@ -584,7 +584,7 @@ probit_ridge_elbo <- function(X_s, y_s, param_z, param_b0, param_b, param_lambda
 #' @param n_iter Max number of iterations to run the algorithm for (default =
 #'   1000). A convergence warning is issues if the algorithm runs for the max
 #'   number of iterations.
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda Prior rate parameter for the coefficient precision
@@ -605,7 +605,7 @@ probit_ridge_cavi <- function(y, X, n_iter = 1000L, verbose = TRUE, a_lambda = 0
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for (default =
 #'   5000).
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda Prior rate parameter for the coefficient precision

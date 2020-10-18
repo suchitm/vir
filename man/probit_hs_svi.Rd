@@ -22,7 +22,7 @@ probit_hs_svi(
 
 \item{X}{Matrix of predictors (N by P)}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{n_iter}{Number of iterations to run the algorithm for (default =
 5000).}

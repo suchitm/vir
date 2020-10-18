@@ -116,4 +116,3 @@ Rcpp::List hs_vi_tau(
   param_tau["delta2_t"] = delta2_t;
   return(param_tau);
 }
-

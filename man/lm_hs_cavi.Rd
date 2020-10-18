@@ -25,7 +25,7 @@ lm_hs_cavi(
 1000). A convergence warning is issues if the algorithm runs for the max
 number of iterations.}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{a_tau}{Prior shape parameter for the likelihood precision.}
 
