@@ -8,7 +8,6 @@
 // **********************************************************************#
 // individual updaters
 // **********************************************************************#
-// [[Rcpp::export]]
 Rcpp::List probit_ridge_vi_lambda(
   Rcpp::List& param_b, int& P, double& a_lambda, double& b_lambda,
   Rcpp::List& param_lambda
@@ -27,7 +26,6 @@ Rcpp::List probit_ridge_vi_lambda(
   return(param_lambda);
 }
 
-// [[Rcpp::export]]
 double probit_ridge_elbo(
   Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z,
   Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda,
@@ -71,7 +69,7 @@ double probit_ridge_elbo(
 //' @param n_iter Max number of iterations to run the algorithm for (default =
 //'   1000). A convergence warning is issues if the algorithm runs for the max
 //'   number of iterations.
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_lambda Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param b_lambda Prior rate parameter for the coefficient precision
@@ -219,7 +217,7 @@ Rcpp::List probit_ridge_cavi(
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for (default =
 //'   5000).
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_lambda Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param b_lambda Prior rate parameter for the coefficient precision
@@ -234,7 +232,7 @@ Rcpp::List probit_ridge_cavi(
 //'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
-//'   \{0.5, 1\}}
+//'   (0.5, 1)}
 //' @export
 // [[Rcpp::export]]
 Rcpp::List probit_ridge_svi(

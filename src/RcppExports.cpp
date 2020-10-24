@@ -6,110 +6,44 @@
 
 using namespace Rcpp;
 
-// lm_hs_gibbs_b0
-double lm_hs_gibbs_b0(double& y_bar, double& tau, int& N, double& b0);
-RcppExport SEXP _vir_lm_hs_gibbs_b0(SEXP y_barSEXP, SEXP tauSEXP, SEXP NSEXP, SEXP b0SEXP) {
+// mv_probit_lp_m_lq_z
+double mv_probit_lp_m_lq_z(Eigen::MatrixXd& X_s, Eigen::MatrixXi& Y_s, Eigen::MatrixXd& mu_theta, Eigen::MatrixXd& msigma_theta, Eigen::MatrixXd& mu_psi, Eigen::MatrixXd& msigma_psi, Eigen::VectorXd& mu_b0, Eigen::VectorXd& vsigma2_b0, Eigen::MatrixXd& mu_B, Eigen::MatrixXd& msigma_B, double& logdet_msigma_psi, double& logdet_msigma_theta, int& N, int& S, int& M);
+RcppExport SEXP _vir_mv_probit_lp_m_lq_z(SEXP X_sSEXP, SEXP Y_sSEXP, SEXP mu_thetaSEXP, SEXP msigma_thetaSEXP, SEXP mu_psiSEXP, SEXP msigma_psiSEXP, SEXP mu_b0SEXP, SEXP vsigma2_b0SEXP, SEXP mu_BSEXP, SEXP msigma_BSEXP, SEXP logdet_msigma_psiSEXP, SEXP logdet_msigma_thetaSEXP, SEXP NSEXP, SEXP SSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type y_bar(y_barSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXi& >::type Y_s(Y_sSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mu_theta(mu_thetaSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type msigma_theta(msigma_thetaSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mu_psi(mu_psiSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type msigma_psi(msigma_psiSEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type mu_b0(mu_b0SEXP);
+    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type vsigma2_b0(vsigma2_b0SEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mu_B(mu_BSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type msigma_B(msigma_BSEXP);
+    Rcpp::traits::input_parameter< double& >::type logdet_msigma_psi(logdet_msigma_psiSEXP);
+    Rcpp::traits::input_parameter< double& >::type logdet_msigma_theta(logdet_msigma_thetaSEXP);
     Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< double& >::type b0(b0SEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_b0(y_bar, tau, N, b0));
+    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
+    rcpp_result_gen = Rcpp::wrap(mv_probit_lp_m_lq_z(X_s, Y_s, mu_theta, msigma_theta, mu_psi, msigma_psi, mu_b0, vsigma2_b0, mu_B, msigma_B, logdet_msigma_psi, logdet_msigma_theta, N, S, M));
     return rcpp_result_gen;
 END_RCPP
 }
-// lm_hs_gibbs_b
-Eigen::VectorXd lm_hs_gibbs_b(Eigen::MatrixXd& X, Eigen::VectorXd& y_tilde, double& tau, double& lambda, Eigen::VectorXd& gammas, int& P, Eigen::VectorXd& b);
-RcppExport SEXP _vir_lm_hs_gibbs_b(SEXP XSEXP, SEXP y_tildeSEXP, SEXP tauSEXP, SEXP lambdaSEXP, SEXP gammasSEXP, SEXP PSEXP, SEXP bSEXP) {
+// lp_indep_matrix_normal
+double lp_indep_matrix_normal(Eigen::MatrixXd& mu_prec, double& mu_logdet_prec, Eigen::MatrixXd& mu, Eigen::MatrixXd& msigma, int& P, int& M);
+RcppExport SEXP _vir_lp_indep_matrix_normal(SEXP mu_precSEXP, SEXP mu_logdet_precSEXP, SEXP muSEXP, SEXP msigmaSEXP, SEXP PSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type y_tilde(y_tildeSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mu_prec(mu_precSEXP);
+    Rcpp::traits::input_parameter< double& >::type mu_logdet_prec(mu_logdet_precSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type msigma(msigmaSEXP);
     Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_b(X, y_tilde, tau, lambda, gammas, P, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_gibbs_tau
-double lm_hs_gibbs_tau(Eigen::VectorXd& ehat, Eigen::VectorXd& b, double& lambda, Eigen::VectorXd& gammas, double& a_tau, double& b_tau, int& N, int& P, double& tau);
-RcppExport SEXP _vir_lm_hs_gibbs_tau(SEXP ehatSEXP, SEXP bSEXP, SEXP lambdaSEXP, SEXP gammasSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP NSEXP, SEXP PSEXP, SEXP tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type ehat(ehatSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_tau(ehat, b, lambda, gammas, a_tau, b_tau, N, P, tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_gibbs_lambda
-double lm_hs_gibbs_lambda(Eigen::VectorXd& b, double& tau, Eigen::VectorXd& gammas, double& xi, int& P, double& lambda);
-RcppExport SEXP _vir_lm_hs_gibbs_lambda(SEXP bSEXP, SEXP tauSEXP, SEXP gammasSEXP, SEXP xiSEXP, SEXP PSEXP, SEXP lambdaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_lambda(b, tau, gammas, xi, P, lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_gibbs_gammas
-Eigen::VectorXd lm_hs_gibbs_gammas(double& tau, double& lambda, Eigen::VectorXd& nus, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gammas);
-RcppExport SEXP _vir_lm_hs_gibbs_gammas(SEXP tauSEXP, SEXP lambdaSEXP, SEXP nusSEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammasSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nus(nusSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_gammas(tau, lambda, nus, b, P, gammas));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_gibbs_xi
-double lm_hs_gibbs_xi(double& lambda, double& xi);
-RcppExport SEXP _vir_lm_hs_gibbs_xi(SEXP lambdaSEXP, SEXP xiSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_xi(lambda, xi));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_gibbs_nus
-Eigen::VectorXd lm_hs_gibbs_nus(Eigen::VectorXd& gammas, int& P, Eigen::VectorXd& nus);
-RcppExport SEXP _vir_lm_hs_gibbs_nus(SEXP gammasSEXP, SEXP PSEXP, SEXP nusSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nus(nusSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs_nus(gammas, P, nus));
+    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
+    rcpp_result_gen = Rcpp::wrap(lp_indep_matrix_normal(mu_prec, mu_logdet_prec, mu, msigma, P, M));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -126,30 +60,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
     rcpp_result_gen = Rcpp::wrap(lm_hs_gibbs(y, X, verbose, n_iter, a_tau, b_tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_hs_vi_elbo
-double lm_hs_vi_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_lambda, Rcpp::List& param_xi, Rcpp::List& param_gamma, Rcpp::List& param_nu, double& a_tau, double& b_tau, int& N, int& S, int& P);
-RcppExport SEXP _vir_lm_hs_vi_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_tauSEXP, SEXP param_lambdaSEXP, SEXP param_xiSEXP, SEXP param_gammaSEXP, SEXP param_nuSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type y_s(y_sSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_xi(param_xiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_nu(param_nuSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_hs_vi_elbo(X_s, y_s, param_b0, param_b, param_tau, param_lambda, param_xi, param_gamma, param_nu, a_tau, b_tau, N, S, P));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -189,84 +99,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
     Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
     rcpp_result_gen = Rcpp::wrap(lm_hs_svi(y, X, verbose, n_iter, a_tau, b_tau, type, batch_size, const_rhot, omega, kappa));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_lasso_gibbs_b0
-double lm_lasso_gibbs_b0(double& y_bar, double& tau, int& N, double& b0);
-RcppExport SEXP _vir_lm_lasso_gibbs_b0(SEXP y_barSEXP, SEXP tauSEXP, SEXP NSEXP, SEXP b0SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type y_bar(y_barSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< double& >::type b0(b0SEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_lasso_gibbs_b0(y_bar, tau, N, b0));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_lasso_gibbs_b
-Eigen::VectorXd lm_lasso_gibbs_b(Eigen::MatrixXd& X, Eigen::VectorXd& y_tilde, Eigen::VectorXd& gammas, double& tau, int& P, Eigen::VectorXd& b);
-RcppExport SEXP _vir_lm_lasso_gibbs_b(SEXP XSEXP, SEXP y_tildeSEXP, SEXP gammasSEXP, SEXP tauSEXP, SEXP PSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type y_tilde(y_tildeSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_lasso_gibbs_b(X, y_tilde, gammas, tau, P, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_lasso_gibbs_tau
-double lm_lasso_gibbs_tau(Eigen::VectorXd& ehat, Eigen::VectorXd& b, Eigen::VectorXd& gammas, double& a_tau, double& b_tau, int& N, int& P, double& tau);
-RcppExport SEXP _vir_lm_lasso_gibbs_tau(SEXP ehatSEXP, SEXP bSEXP, SEXP gammasSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP NSEXP, SEXP PSEXP, SEXP tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type ehat(ehatSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_lasso_gibbs_tau(ehat, b, gammas, a_tau, b_tau, N, P, tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_lasso_gibbs_gammas
-Eigen::VectorXd lm_lasso_gibbs_gammas(double& tau, double& lambda2, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gammas);
-RcppExport SEXP _vir_lm_lasso_gibbs_gammas(SEXP tauSEXP, SEXP lambda2SEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammasSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_lasso_gibbs_gammas(tau, lambda2, b, P, gammas));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lm_lasso_gibbs_lambda2
-double lm_lasso_gibbs_lambda2(Eigen::VectorXd& gammas, double& a_lambda, double& b_lambda, int& P, double& lambda2);
-RcppExport SEXP _vir_lm_lasso_gibbs_lambda2(SEXP gammasSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP PSEXP, SEXP lambda2SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gammas(gammasSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
-    rcpp_result_gen = Rcpp::wrap(lm_lasso_gibbs_lambda2(gammas, a_lambda, b_lambda, P, lambda2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -456,297 +288,56 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// mv_probit_gibbs_Z
-Eigen::MatrixXd mv_probit_gibbs_Z(Eigen::MatrixXi& Y, Eigen::MatrixXd& Eta, Eigen::VectorXd& tau, int& N, int& M, Eigen::MatrixXd& Z);
-RcppExport SEXP _vir_mv_probit_gibbs_Z(SEXP YSEXP, SEXP EtaSEXP, SEXP tauSEXP, SEXP NSEXP, SEXP MSEXP, SEXP ZSEXP) {
+// mv_probit_uninf_gibbs
+Rcpp::List mv_probit_uninf_gibbs(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, int burn_in, bool verbose);
+RcppExport SEXP _vir_mv_probit_uninf_gibbs(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP burn_inSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXi& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type Eta(EtaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type Z(ZSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_gibbs_Z(Y, Eta, tau, N, M, Z));
+    Rcpp::traits::input_parameter< Eigen::MatrixXi >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_gibbs(Y, X, K, n_iter, burn_in, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
-// mvlm_uninf_gibbs_b0
-Eigen::VectorXd mvlm_uninf_gibbs_b0(Eigen::MatrixXd& E_hat, Eigen::VectorXd& tau, int& N, int& M, Eigen::VectorXd& b0);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_b0(SEXP E_hatSEXP, SEXP tauSEXP, SEXP NSEXP, SEXP MSEXP, SEXP b0SEXP) {
+// mv_probit_uninf_cavi
+Rcpp::List mv_probit_uninf_cavi(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, double rel_tol);
+RcppExport SEXP _vir_mv_probit_uninf_cavi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP rel_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b0(b0SEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_b0(E_hat, tau, N, M, b0));
+    Rcpp::traits::input_parameter< Eigen::MatrixXi >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type rel_tol(rel_tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_cavi(Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol));
     return rcpp_result_gen;
 END_RCPP
 }
-// mvlm_uninf_gibbs_B
-Eigen::MatrixXd mvlm_uninf_gibbs_B(Eigen::MatrixXd& E_hat, Eigen::MatrixXd& X, Eigen::VectorXd& tau, int& M, int& P, Eigen::MatrixXd& b);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_B(SEXP E_hatSEXP, SEXP XSEXP, SEXP tauSEXP, SEXP MSEXP, SEXP PSEXP, SEXP bSEXP) {
+// mv_probit_uninf_svi
+Rcpp::List mv_probit_uninf_svi(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, int batch_size, double omega, double kappa, double const_rhot);
+RcppExport SEXP _vir_mv_probit_uninf_svi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP batch_sizeSEXP, SEXP omegaSEXP, SEXP kappaSEXP, SEXP const_rhotSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_B(E_hat, X, tau, M, P, b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_uninf_gibbs_mtheta
-Eigen::MatrixXd mvlm_uninf_gibbs_mtheta(Eigen::MatrixXd& E_hat, Eigen::MatrixXd& mphi, Eigen::MatrixXd& mgamma, Eigen::VectorXd& tau, Eigen::VectorXd& lambda, int& M, int& K, Eigen::MatrixXd& mtheta);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_mtheta(SEXP E_hatSEXP, SEXP mphiSEXP, SEXP mgammaSEXP, SEXP tauSEXP, SEXP lambdaSEXP, SEXP MSEXP, SEXP KSEXP, SEXP mthetaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mphi(mphiSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mgamma(mgammaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mtheta(mthetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_mtheta(E_hat, mphi, mgamma, tau, lambda, M, K, mtheta));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_uninf_gibbs_mphi
-Eigen::MatrixXd mvlm_uninf_gibbs_mphi(Eigen::MatrixXd& E_hat, Eigen::MatrixXd& mtheta, Eigen::VectorXd& tau, int& N, int& K, Eigen::MatrixXd& mphi);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_mphi(SEXP E_hatSEXP, SEXP mthetaSEXP, SEXP tauSEXP, SEXP NSEXP, SEXP KSEXP, SEXP mphiSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mtheta(mthetaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mphi(mphiSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_mphi(E_hat, mtheta, tau, N, K, mphi));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_uninf_gibbs_tau
-Eigen::VectorXd mvlm_uninf_gibbs_tau(Eigen::MatrixXd& E_hat, int& N, int& M, double& a_tau, double& b_tau, Eigen::VectorXd& tau);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_tau(SEXP E_hatSEXP, SEXP NSEXP, SEXP MSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_tau(E_hat, N, M, a_tau, b_tau, tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_uninf_gibbs_mgamma
-Eigen::MatrixXd mvlm_uninf_gibbs_mgamma(Eigen::MatrixXd& mtheta, Eigen::VectorXd& lambda, int& M, int& K, double& nu, Eigen::MatrixXd& mgamma);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_mgamma(SEXP mthetaSEXP, SEXP lambdaSEXP, SEXP MSEXP, SEXP KSEXP, SEXP nuSEXP, SEXP mgammaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mtheta(mthetaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double& >::type nu(nuSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mgamma(mgammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_mgamma(mtheta, lambda, M, K, nu, mgamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_uninf_gibbs_xi
-Eigen::VectorXd mvlm_uninf_gibbs_xi(Eigen::MatrixXd& mtheta, Eigen::MatrixXd& mgamma, Eigen::VectorXd& lambda, int& M, int& K, double& a1, double& a2, Eigen::VectorXd& xi);
-RcppExport SEXP _vir_mvlm_uninf_gibbs_xi(SEXP mthetaSEXP, SEXP mgammaSEXP, SEXP lambdaSEXP, SEXP MSEXP, SEXP KSEXP, SEXP a1SEXP, SEXP a2SEXP, SEXP xiSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mtheta(mthetaSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type mgamma(mgammaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double& >::type a1(a1SEXP);
-    Rcpp::traits::input_parameter< double& >::type a2(a2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type xi(xiSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_gibbs_xi(mtheta, mgamma, lambda, M, K, a1, a2, xi));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mv_probit_vi_z
-Rcpp::List mv_probit_vi_z(Eigen::MatrixXd& Eta, Rcpp::List& param_tau, int& S, int& M, Rcpp::List& param_z);
-RcppExport SEXP _vir_mv_probit_vi_z(SEXP EtaSEXP, SEXP param_tauSEXP, SEXP SSEXP, SEXP MSEXP, SEXP param_zSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type Eta(EtaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_vi_z(Eta, param_tau, S, M, param_z));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_phi
-Rcpp::List mvlm_vi_phi(Eigen::MatrixXd& E_hat, Rcpp::List& param_theta, Rcpp::List& param_tau, int& S, int& M, int& K, Rcpp::List& param_phi);
-RcppExport SEXP _vir_mvlm_vi_phi(SEXP E_hatSEXP, SEXP param_thetaSEXP, SEXP param_tauSEXP, SEXP SSEXP, SEXP MSEXP, SEXP KSEXP, SEXP param_phiSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_phi(param_phiSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_phi(E_hat, param_theta, param_tau, S, M, K, param_phi));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_theta
-Rcpp::List mvlm_vi_theta(Eigen::MatrixXd& E_hat, Rcpp::List& param_phi, Rcpp::List& param_tau, Rcpp::List& param_gamma, Eigen::VectorXd& mu_lambda, int& N, int& M, int& S, int& K, Rcpp::List& param_theta);
-RcppExport SEXP _vir_mvlm_vi_theta(SEXP E_hatSEXP, SEXP param_phiSEXP, SEXP param_tauSEXP, SEXP param_gammaSEXP, SEXP mu_lambdaSEXP, SEXP NSEXP, SEXP MSEXP, SEXP SSEXP, SEXP KSEXP, SEXP param_thetaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_phi(param_phiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type mu_lambda(mu_lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_theta(E_hat, param_phi, param_tau, param_gamma, mu_lambda, N, M, S, K, param_theta));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_b0
-Rcpp::List mvlm_vi_b0(Eigen::MatrixXd& E_hat, Rcpp::List& param_tau, int& N, int& M, int& S, Rcpp::List& param_b0);
-RcppExport SEXP _vir_mvlm_vi_b0(SEXP E_hatSEXP, SEXP param_tauSEXP, SEXP NSEXP, SEXP MSEXP, SEXP SSEXP, SEXP param_b0SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_b0(E_hat, param_tau, N, M, S, param_b0));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_b
-Rcpp::List mvlm_vi_b(Eigen::MatrixXd& E_hat, Eigen::MatrixXd& X, Rcpp::List& param_tau, int& N, int& M, int& P, int& S, Rcpp::List& param_b);
-RcppExport SEXP _vir_mvlm_vi_b(SEXP E_hatSEXP, SEXP XSEXP, SEXP param_tauSEXP, SEXP NSEXP, SEXP MSEXP, SEXP PSEXP, SEXP SSEXP, SEXP param_bSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_b(E_hat, X, param_tau, N, M, P, S, param_b));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_tau
-Rcpp::List mvlm_vi_tau(Eigen::MatrixXd& E_hat, Eigen::MatrixXd& X, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_phi, Rcpp::List& param_theta, int& N, int& M, int& P, int& S, int& K, double& a_tau, double& b_tau, Rcpp::List& param_tau);
-RcppExport SEXP _vir_mvlm_vi_tau(SEXP E_hatSEXP, SEXP XSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_phiSEXP, SEXP param_thetaSEXP, SEXP NSEXP, SEXP MSEXP, SEXP PSEXP, SEXP SSEXP, SEXP KSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP param_tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_phi(param_phiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_tau(a_tauSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_tau(param_tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_tau(E_hat, X, param_b0, param_b, param_phi, param_theta, N, M, P, S, K, a_tau, b_tau, param_tau));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_gamma
-Rcpp::List mvlm_vi_gamma(Rcpp::List& param_theta, Eigen::VectorXd& mu_lambda, int& M, int& K, double& nu, Rcpp::List& param_gamma);
-RcppExport SEXP _vir_mvlm_vi_gamma(SEXP param_thetaSEXP, SEXP mu_lambdaSEXP, SEXP MSEXP, SEXP KSEXP, SEXP nuSEXP, SEXP param_gammaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type mu_lambda(mu_lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< double& >::type nu(nuSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_gamma(param_theta, mu_lambda, M, K, nu, param_gamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mvlm_vi_xi
-Rcpp::List mvlm_vi_xi(Rcpp::List& param_gamma, Rcpp::List& param_theta, int& M, int& K, Eigen::VectorXd& mu_lambda, double& a1, double& a2, Rcpp::List& param_xi, bool svb);
-RcppExport SEXP _vir_mvlm_vi_xi(SEXP param_gammaSEXP, SEXP param_thetaSEXP, SEXP MSEXP, SEXP KSEXP, SEXP mu_lambdaSEXP, SEXP a1SEXP, SEXP a2SEXP, SEXP param_xiSEXP, SEXP svbSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type mu_lambda(mu_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type a1(a1SEXP);
-    Rcpp::traits::input_parameter< double& >::type a2(a2SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_xi(param_xiSEXP);
-    Rcpp::traits::input_parameter< bool >::type svb(svbSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_vi_xi(param_gamma, param_theta, M, K, mu_lambda, a1, a2, param_xi, svb));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mv_probit_vi_z_psi
-Rcpp::List mv_probit_vi_z_psi(Eigen::MatrixXi& Y_s, Eigen::MatrixXd& E_hat, Rcpp::List& param_theta, int& S, int& M, int& K, Rcpp::List& param_psi, Rcpp::List& param_z);
-RcppExport SEXP _vir_mv_probit_vi_z_psi(SEXP Y_sSEXP, SEXP E_hatSEXP, SEXP param_thetaSEXP, SEXP SSEXP, SEXP MSEXP, SEXP KSEXP, SEXP param_psiSEXP, SEXP param_zSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXi& >::type Y_s(Y_sSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type E_hat(E_hatSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_theta(param_thetaSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int& >::type K(KSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_psi(param_psiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_vi_z_psi(Y_s, E_hat, param_theta, S, M, K, param_psi, param_z));
+    Rcpp::traits::input_parameter< Eigen::MatrixXi >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
+    Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
+    Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_svi(Y, X, K, n_iter, verbose, batch_size, omega, kappa, const_rhot));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -858,61 +449,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// probit_hs_gibbs_lambda
-double probit_hs_gibbs_lambda(Eigen::VectorXd& b, Eigen::VectorXd& gamma, double& xi, int& P, double& lambda);
-RcppExport SEXP _vir_probit_hs_gibbs_lambda(SEXP bSEXP, SEXP gammaSEXP, SEXP xiSEXP, SEXP PSEXP, SEXP lambdaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_lambda(b, gamma, xi, P, lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_hs_gibbs_gamma
-Eigen::VectorXd probit_hs_gibbs_gamma(double& lambda, Eigen::VectorXd& nu, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gamma);
-RcppExport SEXP _vir_probit_hs_gibbs_gamma(SEXP lambdaSEXP, SEXP nuSEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nu(nuSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_gamma(lambda, nu, b, P, gamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_hs_gibbs_xi
-double probit_hs_gibbs_xi(double& lambda, double& xi);
-RcppExport SEXP _vir_probit_hs_gibbs_xi(SEXP lambdaSEXP, SEXP xiSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type xi(xiSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_xi(lambda, xi));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_hs_gibbs_nu
-Eigen::VectorXd probit_hs_gibbs_nu(Eigen::VectorXd& gamma, int& P, Eigen::VectorXd& nu);
-RcppExport SEXP _vir_probit_hs_gibbs_nu(SEXP gammaSEXP, SEXP PSEXP, SEXP nuSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type nu(nuSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs_nu(gamma, P, nu));
-    return rcpp_result_gen;
-END_RCPP
-}
 // probit_hs_gibbs
 Rcpp::List probit_hs_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter);
 RcppExport SEXP _vir_probit_hs_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP) {
@@ -924,28 +460,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
     rcpp_result_gen = Rcpp::wrap(probit_hs_gibbs(y, X, verbose, n_iter));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_hs_elbo
-double probit_hs_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda, Rcpp::List& param_xi, Rcpp::List& param_gamma, Rcpp::List& param_nu, int& N, int& S, int& P);
-RcppExport SEXP _vir_probit_hs_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_zSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_lambdaSEXP, SEXP param_xiSEXP, SEXP param_gammaSEXP, SEXP param_nuSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXi& >::type y_s(y_sSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_xi(param_xiSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_nu(param_nuSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_hs_elbo(X_s, y_s, param_z, param_b0, param_b, param_lambda, param_xi, param_gamma, param_nu, N, S, P));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -984,35 +498,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// probit_lasso_gibbs_gamma
-Eigen::VectorXd probit_lasso_gibbs_gamma(double& lambda2, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gamma);
-RcppExport SEXP _vir_probit_lasso_gibbs_gamma(SEXP lambda2SEXP, SEXP bSEXP, SEXP PSEXP, SEXP gammaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs_gamma(lambda2, b, P, gamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_lasso_gibbs_lambda2
-double probit_lasso_gibbs_lambda2(Eigen::VectorXd& gamma, double& a_lambda2, double& b_lambda2, int& P, double& lambda2);
-RcppExport SEXP _vir_probit_lasso_gibbs_lambda2(SEXP gammaSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP PSEXP, SEXP lambda2SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda2(a_lambda2SEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda2(b_lambda2SEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda2(lambda2SEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs_lambda2(gamma, a_lambda2, b_lambda2, P, lambda2));
-    return rcpp_result_gen;
-END_RCPP
-}
 // probit_lasso_gibbs
 Rcpp::List probit_lasso_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_lambda2, double b_lambda2);
 RcppExport SEXP _vir_probit_lasso_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP) {
@@ -1026,57 +511,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a_lambda2(a_lambda2SEXP);
     Rcpp::traits::input_parameter< double >::type b_lambda2(b_lambda2SEXP);
     rcpp_result_gen = Rcpp::wrap(probit_lasso_gibbs(y, X, verbose, n_iter, a_lambda2, b_lambda2));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_lasso_vi_lambda2
-Rcpp::List probit_lasso_vi_lambda2(Rcpp::List& param_gamma, int& P, double& a_lambda2, double& b_lambda2, Rcpp::List& param_lambda2);
-RcppExport SEXP _vir_probit_lasso_vi_lambda2(SEXP param_gammaSEXP, SEXP PSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP param_lambda2SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda2(a_lambda2SEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda2(b_lambda2SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda2(param_lambda2SEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_lasso_vi_lambda2(param_gamma, P, a_lambda2, b_lambda2, param_lambda2));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_lasso_vi_gamma
-Rcpp::List probit_lasso_vi_gamma(Rcpp::List& param_b, Rcpp::List& param_lambda2, int& P, Rcpp::List& param_gamma);
-RcppExport SEXP _vir_probit_lasso_vi_gamma(SEXP param_bSEXP, SEXP param_lambda2SEXP, SEXP PSEXP, SEXP param_gammaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda2(param_lambda2SEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_lasso_vi_gamma(param_b, param_lambda2, P, param_gamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_lasso_elbo
-double probit_lasso_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda2, Rcpp::List& param_gamma, double& a_lambda2, double& b_lambda2, int& N, int& S, int& P);
-RcppExport SEXP _vir_probit_lasso_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_zSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_lambda2SEXP, SEXP param_gammaSEXP, SEXP a_lambda2SEXP, SEXP b_lambda2SEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXi& >::type y_s(y_sSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda2(param_lambda2SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_gamma(param_gammaSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda2(a_lambda2SEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda2(b_lambda2SEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_lasso_elbo(X_s, y_s, param_z, param_b0, param_b, param_lambda2, param_gamma, a_lambda2, b_lambda2, N, S, P));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1119,21 +553,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// probit_ridge_gibbs_lambda
-double probit_ridge_gibbs_lambda(Eigen::VectorXd& b, double& a_lambda, double& b_lambda, int& P, double& lambda);
-RcppExport SEXP _vir_probit_ridge_gibbs_lambda(SEXP bSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP PSEXP, SEXP lambdaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type b(bSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type lambda(lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_ridge_gibbs_lambda(b, a_lambda, b_lambda, P, lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
 // probit_ridge_gibbs
 Rcpp::List probit_ridge_gibbs(Eigen::VectorXi y, Eigen::MatrixXd X, bool verbose, int n_iter, double a_lambda, double b_lambda);
 RcppExport SEXP _vir_probit_ridge_gibbs(SEXP ySEXP, SEXP XSEXP, SEXP verboseSEXP, SEXP n_iterSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP) {
@@ -1147,42 +566,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a_lambda(a_lambdaSEXP);
     Rcpp::traits::input_parameter< double >::type b_lambda(b_lambdaSEXP);
     rcpp_result_gen = Rcpp::wrap(probit_ridge_gibbs(y, X, verbose, n_iter, a_lambda, b_lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_ridge_vi_lambda
-Rcpp::List probit_ridge_vi_lambda(Rcpp::List& param_b, int& P, double& a_lambda, double& b_lambda, Rcpp::List& param_lambda);
-RcppExport SEXP _vir_probit_ridge_vi_lambda(SEXP param_bSEXP, SEXP PSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP param_lambdaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_ridge_vi_lambda(param_b, P, a_lambda, b_lambda, param_lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
-// probit_ridge_elbo
-double probit_ridge_elbo(Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z, Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda, double& a_lambda, double& b_lambda, int& N, int& S, int& P);
-RcppExport SEXP _vir_probit_ridge_elbo(SEXP X_sSEXP, SEXP y_sSEXP, SEXP param_zSEXP, SEXP param_b0SEXP, SEXP param_bSEXP, SEXP param_lambdaSEXP, SEXP a_lambdaSEXP, SEXP b_lambdaSEXP, SEXP NSEXP, SEXP SSEXP, SEXP PSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::MatrixXd& >::type X_s(X_sSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXi& >::type y_s(y_sSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_z(param_zSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b0(param_b0SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_b(param_bSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type param_lambda(param_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type a_lambda(a_lambdaSEXP);
-    Rcpp::traits::input_parameter< double& >::type b_lambda(b_lambdaSEXP);
-    Rcpp::traits::input_parameter< int& >::type N(NSEXP);
-    Rcpp::traits::input_parameter< int& >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int& >::type P(PSEXP);
-    rcpp_result_gen = Rcpp::wrap(probit_ridge_elbo(X_s, y_s, param_z, param_b0, param_b, param_lambda, a_lambda, b_lambda, N, S, P));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1227,22 +610,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_vir_lm_hs_gibbs_b0", (DL_FUNC) &_vir_lm_hs_gibbs_b0, 4},
-    {"_vir_lm_hs_gibbs_b", (DL_FUNC) &_vir_lm_hs_gibbs_b, 7},
-    {"_vir_lm_hs_gibbs_tau", (DL_FUNC) &_vir_lm_hs_gibbs_tau, 9},
-    {"_vir_lm_hs_gibbs_lambda", (DL_FUNC) &_vir_lm_hs_gibbs_lambda, 6},
-    {"_vir_lm_hs_gibbs_gammas", (DL_FUNC) &_vir_lm_hs_gibbs_gammas, 6},
-    {"_vir_lm_hs_gibbs_xi", (DL_FUNC) &_vir_lm_hs_gibbs_xi, 2},
-    {"_vir_lm_hs_gibbs_nus", (DL_FUNC) &_vir_lm_hs_gibbs_nus, 3},
+    {"_vir_mv_probit_lp_m_lq_z", (DL_FUNC) &_vir_mv_probit_lp_m_lq_z, 15},
+    {"_vir_lp_indep_matrix_normal", (DL_FUNC) &_vir_lp_indep_matrix_normal, 6},
     {"_vir_lm_hs_gibbs", (DL_FUNC) &_vir_lm_hs_gibbs, 6},
-    {"_vir_lm_hs_vi_elbo", (DL_FUNC) &_vir_lm_hs_vi_elbo, 14},
     {"_vir_lm_hs_cavi", (DL_FUNC) &_vir_lm_hs_cavi, 8},
     {"_vir_lm_hs_svi", (DL_FUNC) &_vir_lm_hs_svi, 11},
-    {"_vir_lm_lasso_gibbs_b0", (DL_FUNC) &_vir_lm_lasso_gibbs_b0, 4},
-    {"_vir_lm_lasso_gibbs_b", (DL_FUNC) &_vir_lm_lasso_gibbs_b, 6},
-    {"_vir_lm_lasso_gibbs_tau", (DL_FUNC) &_vir_lm_lasso_gibbs_tau, 8},
-    {"_vir_lm_lasso_gibbs_gammas", (DL_FUNC) &_vir_lm_lasso_gibbs_gammas, 5},
-    {"_vir_lm_lasso_gibbs_lambda2", (DL_FUNC) &_vir_lm_lasso_gibbs_lambda2, 5},
     {"_vir_lm_lasso_gibbs", (DL_FUNC) &_vir_lm_lasso_gibbs, 8},
     {"_vir_lm_lasso_cavi", (DL_FUNC) &_vir_lm_lasso_cavi, 10},
     {"_vir_lm_lasso_svi", (DL_FUNC) &_vir_lm_lasso_svi, 13},
@@ -1253,23 +625,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_ridge_gibbs_lambda", (DL_FUNC) &_vir_lm_ridge_gibbs_lambda, 6},
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
-    {"_vir_mv_probit_gibbs_Z", (DL_FUNC) &_vir_mv_probit_gibbs_Z, 6},
-    {"_vir_mvlm_uninf_gibbs_b0", (DL_FUNC) &_vir_mvlm_uninf_gibbs_b0, 5},
-    {"_vir_mvlm_uninf_gibbs_B", (DL_FUNC) &_vir_mvlm_uninf_gibbs_B, 6},
-    {"_vir_mvlm_uninf_gibbs_mtheta", (DL_FUNC) &_vir_mvlm_uninf_gibbs_mtheta, 8},
-    {"_vir_mvlm_uninf_gibbs_mphi", (DL_FUNC) &_vir_mvlm_uninf_gibbs_mphi, 6},
-    {"_vir_mvlm_uninf_gibbs_tau", (DL_FUNC) &_vir_mvlm_uninf_gibbs_tau, 6},
-    {"_vir_mvlm_uninf_gibbs_mgamma", (DL_FUNC) &_vir_mvlm_uninf_gibbs_mgamma, 6},
-    {"_vir_mvlm_uninf_gibbs_xi", (DL_FUNC) &_vir_mvlm_uninf_gibbs_xi, 8},
-    {"_vir_mv_probit_vi_z", (DL_FUNC) &_vir_mv_probit_vi_z, 5},
-    {"_vir_mvlm_vi_phi", (DL_FUNC) &_vir_mvlm_vi_phi, 7},
-    {"_vir_mvlm_vi_theta", (DL_FUNC) &_vir_mvlm_vi_theta, 10},
-    {"_vir_mvlm_vi_b0", (DL_FUNC) &_vir_mvlm_vi_b0, 6},
-    {"_vir_mvlm_vi_b", (DL_FUNC) &_vir_mvlm_vi_b, 8},
-    {"_vir_mvlm_vi_tau", (DL_FUNC) &_vir_mvlm_vi_tau, 14},
-    {"_vir_mvlm_vi_gamma", (DL_FUNC) &_vir_mvlm_vi_gamma, 6},
-    {"_vir_mvlm_vi_xi", (DL_FUNC) &_vir_mvlm_vi_xi, 9},
-    {"_vir_mv_probit_vi_z_psi", (DL_FUNC) &_vir_mv_probit_vi_z_psi, 8},
+    {"_vir_mv_probit_uninf_gibbs", (DL_FUNC) &_vir_mv_probit_uninf_gibbs, 6},
+    {"_vir_mv_probit_uninf_cavi", (DL_FUNC) &_vir_mv_probit_uninf_cavi, 8},
+    {"_vir_mv_probit_uninf_svi", (DL_FUNC) &_vir_mv_probit_uninf_svi, 9},
     {"_vir_probit_gibbs_z", (DL_FUNC) &_vir_probit_gibbs_z, 4},
     {"_vir_probit_gibbs_b0", (DL_FUNC) &_vir_probit_gibbs_b0, 3},
     {"_vir_probit_gibbs_b", (DL_FUNC) &_vir_probit_gibbs_b, 5},
@@ -1277,26 +635,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_probit_vi_z", (DL_FUNC) &_vir_probit_vi_z, 5},
     {"_vir_probit_vi_b0", (DL_FUNC) &_vir_probit_vi_b0, 6},
     {"_vir_probit_vi_b", (DL_FUNC) &_vir_probit_vi_b, 10},
-    {"_vir_probit_hs_gibbs_lambda", (DL_FUNC) &_vir_probit_hs_gibbs_lambda, 5},
-    {"_vir_probit_hs_gibbs_gamma", (DL_FUNC) &_vir_probit_hs_gibbs_gamma, 5},
-    {"_vir_probit_hs_gibbs_xi", (DL_FUNC) &_vir_probit_hs_gibbs_xi, 2},
-    {"_vir_probit_hs_gibbs_nu", (DL_FUNC) &_vir_probit_hs_gibbs_nu, 3},
     {"_vir_probit_hs_gibbs", (DL_FUNC) &_vir_probit_hs_gibbs, 4},
-    {"_vir_probit_hs_elbo", (DL_FUNC) &_vir_probit_hs_elbo, 12},
     {"_vir_probit_hs_cavi", (DL_FUNC) &_vir_probit_hs_cavi, 6},
     {"_vir_probit_hs_svi", (DL_FUNC) &_vir_probit_hs_svi, 9},
-    {"_vir_probit_lasso_gibbs_gamma", (DL_FUNC) &_vir_probit_lasso_gibbs_gamma, 4},
-    {"_vir_probit_lasso_gibbs_lambda2", (DL_FUNC) &_vir_probit_lasso_gibbs_lambda2, 5},
     {"_vir_probit_lasso_gibbs", (DL_FUNC) &_vir_probit_lasso_gibbs, 6},
-    {"_vir_probit_lasso_vi_lambda2", (DL_FUNC) &_vir_probit_lasso_vi_lambda2, 5},
-    {"_vir_probit_lasso_vi_gamma", (DL_FUNC) &_vir_probit_lasso_vi_gamma, 4},
-    {"_vir_probit_lasso_elbo", (DL_FUNC) &_vir_probit_lasso_elbo, 12},
     {"_vir_probit_lasso_cavi", (DL_FUNC) &_vir_probit_lasso_cavi, 8},
     {"_vir_probit_lasso_svi", (DL_FUNC) &_vir_probit_lasso_svi, 11},
-    {"_vir_probit_ridge_gibbs_lambda", (DL_FUNC) &_vir_probit_ridge_gibbs_lambda, 5},
     {"_vir_probit_ridge_gibbs", (DL_FUNC) &_vir_probit_ridge_gibbs, 6},
-    {"_vir_probit_ridge_vi_lambda", (DL_FUNC) &_vir_probit_ridge_vi_lambda, 5},
-    {"_vir_probit_ridge_elbo", (DL_FUNC) &_vir_probit_ridge_elbo, 11},
     {"_vir_probit_ridge_cavi", (DL_FUNC) &_vir_probit_ridge_cavi, 8},
     {"_vir_probit_ridge_svi", (DL_FUNC) &_vir_probit_ridge_svi, 11},
     {NULL, NULL, 0}

@@ -13,6 +13,10 @@ void get_subsample_mvlm(
   Eigen::MatrixXd& X_s, int& S, int& N, Rcpp::IntegerVector the_sample
 );
 
+void get_subsample_mv_probit(
+  Eigen::MatrixXi& Y, Eigen::MatrixXd& X, Eigen::MatrixXi& Y_s,
+  Eigen::MatrixXd& X_s, int& S, int& N, Rcpp::IntegerVector the_sample
+);
 // susample for svi in univariate linear models
 void get_subsample_lm(
   Eigen::VectorXd& y, Eigen::MatrixXd& X, Eigen::VectorXd& y_s,
@@ -49,13 +53,28 @@ void canonical_transform_probit_trunc_norm(
 // ELBO helpers
 // *****************************************************************************
 double lm_log_lik(
-  Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0, 
+  Eigen::MatrixXd& X_s, Eigen::VectorXd& y_s, Rcpp::List& param_b0,
   Rcpp::List& param_b, Rcpp::List& param_tau, int& N, int& S
 );
 double probit_lp_m_lq_z(
   Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_b0,
   Rcpp::List& param_b, int& N, int& S
 );
+double mv_probit_lp_m_lq_z(
+  Eigen::MatrixXd& X_s, Eigen::MatrixXi& Y_s,
+  Eigen::MatrixXd& mu_theta, Eigen::MatrixXd& msigma_theta,
+  Eigen::MatrixXd& mu_psi, Eigen::MatrixXd& msigma_psi,
+  Eigen::VectorXd& mu_b0, Eigen::VectorXd& vsigma2_b0,
+  Eigen::MatrixXd& mu_B, Eigen::MatrixXd& msigma_B,
+  double& logdet_msigma_psi, double& logdet_msigma_theta,
+  int& N, int& S, int& M
+);
+
+double lp_indep_matrix_normal(
+  Eigen::MatrixXd& mu_prec, double& mu_logdet_prec, Eigen::MatrixXd& mu,
+  Eigen::MatrixXd& msigma, int& P, int& M
+);
+
 double lp_univ_normal(double& mu_prec, double& mu_log_prec, Rcpp::List& param);
 double lp_mv_normal(
   Eigen::MatrixXd& mu_prec, double& mu_logdet_prec, Rcpp::List& param,
@@ -70,8 +89,11 @@ double lp_lasso_gamma(Rcpp::List& param_lambda2, Rcpp::List& param_gamma);
 
 double lq_univ_normal(Rcpp::List& param);
 double lq_mv_normal(Rcpp::List& param, int& P);
+double lq_mv_normal2(double logdet_msigma, int& P);
 double lq_univ_gamma(Rcpp::List& param);
 double lq_gamma(Rcpp::List& param);
 double lq_lasso_gamma(Rcpp::List& param_gamma);
+
+void mu_var_trunc_norm(int& y, double& mu, double& sd);
 
 #endif // __HELPERS__

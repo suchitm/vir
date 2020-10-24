@@ -8,7 +8,6 @@
 // *****************************************************************************
 // individual samplers
 // *****************************************************************************
-// [[Rcpp::export]]
 double probit_ridge_gibbs_lambda(
   Eigen::VectorXd& b, double& a_lambda, double& b_lambda, int& P,
   double& lambda

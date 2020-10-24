@@ -5,26 +5,16 @@
 \title{Univariate normal linear regression with a ridge (normal) prior using the
 SVI algorithm.}
 \usage{
-lm_hs_svi(
-  y,
-  X,
-  verbose = TRUE,
-  n_iter = 1000L,
-  a_tau = 0.1,
-  b_tau = 0.1,
-  type = 0L,
-  batch_size = 10L,
-  const_rhot = 0.01,
-  omega = 15,
-  kappa = 0.6
-)
+lm_hs_svi(y, X, verbose = TRUE, n_iter = 1000L, a_tau = 0.1,
+  b_tau = 0.1, type = 0L, batch_size = 10L, const_rhot = 0.01,
+  omega = 15, kappa = 0.6)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
 
 \item{X}{Matrix of predictors (N by P)}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{n_iter}{Number of iterations to run the algorithm for (default =
 5000).}
@@ -43,7 +33,7 @@ Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.}
 
 \item{kappa}{Forgetting rate for the step size iterations; \eqn{\kappa \in
-\{0.5, 1\}}}
+(0.5, 1)}}
 
 \item{cost_rhot}{Used to set a constant step size in the gradient descent
 algorithm. If this parameter is greater than zero, it overrides the step

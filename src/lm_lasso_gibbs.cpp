@@ -11,9 +11,7 @@ using namespace std;
 //**********************************************************************//
 // individual samplers
 //**********************************************************************//
-//' samples the mean
-//' @export
-// [[Rcpp::export]]
+// samples the mean
 double lm_lasso_gibbs_b0(double& y_bar, double& tau, int& N, double& b0)
 {
     double G = (N * tau + 0.000001);
@@ -24,10 +22,7 @@ double lm_lasso_gibbs_b0(double& y_bar, double& tau, int& N, double& b0)
     return(b0);
 }
 
-//' function to update the coefficients in a linear regression
-//' @param X N by P matrix of covariates
-//' @export
-// [[Rcpp::export]]
+// function to update the coefficients in a linear regression
 Eigen::VectorXd lm_lasso_gibbs_b(
     Eigen::MatrixXd& X, Eigen::VectorXd& y_tilde, Eigen::VectorXd& gammas,
     double& tau, int& P, Eigen::VectorXd& b
@@ -42,9 +37,7 @@ Eigen::VectorXd lm_lasso_gibbs_b(
     return(b);
 }
 
-//' updates the precision parameter tau in a bayesian lasso regression
-//' @export
-// [[Rcpp::export]]
+// updates the precision parameter tau in a bayesian lasso regression
 double lm_lasso_gibbs_tau(
     Eigen::VectorXd& ehat, Eigen::VectorXd& b, Eigen::VectorXd& gammas,
     double& a_tau, double& b_tau, int& N, int& P, double& tau
@@ -57,8 +50,7 @@ double lm_lasso_gibbs_tau(
     return(tau);
 }
 
-//' update the latent variables for the double exponential prior
-// [[Rcpp::export]]
+// update the latent variables for the double exponential prior
 Eigen::VectorXd lm_lasso_gibbs_gammas(
     double& tau, double& lambda2, Eigen::VectorXd& b, int& P,
     Eigen::VectorXd& gammas
@@ -71,10 +63,8 @@ Eigen::VectorXd lm_lasso_gibbs_gammas(
     return(gammas);
 }
 
-//' updates the prior precision parameter of b, lambda, in a bayesian lasso
-//' regression
-//' @export
-// [[Rcpp::export]]
+// updates the prior precision parameter of b, lambda, in a bayesian lasso
+// regression
 double lm_lasso_gibbs_lambda2(
     Eigen::VectorXd& gammas, double& a_lambda, double& b_lambda, int& P,
     double& lambda2

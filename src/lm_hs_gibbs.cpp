@@ -11,9 +11,7 @@ using namespace std;
 //**********************************************************************//
 // individual samplers
 //**********************************************************************//
-//' samples the mean
-//' @export
-// [[Rcpp::export]]
+// samples the mean
 double lm_hs_gibbs_b0(double& y_bar, double& tau, int& N, double& b0)
 {
     double G = (N * tau + 0.000001);
@@ -24,10 +22,7 @@ double lm_hs_gibbs_b0(double& y_bar, double& tau, int& N, double& b0)
     return(b0);
 }
 
-//' function to update the coefficients in a linear regression
-//' @param X N by P matrix of covariates
-//' @export
-// [[Rcpp::export]]
+// function to update the coefficients in a linear regression
 Eigen::VectorXd lm_hs_gibbs_b(
     Eigen::MatrixXd& X, Eigen::VectorXd& y_tilde, double& tau, double& lambda,
     Eigen::VectorXd& gammas, int& P, Eigen::VectorXd& b
@@ -42,9 +37,7 @@ Eigen::VectorXd lm_hs_gibbs_b(
     return(b);
 }
 
-//' updates the precision parameter tau in a bayesian hs regression
-//' @export
-// [[Rcpp::export]]
+// updates the precision parameter tau in a bayesian hs regression
 double lm_hs_gibbs_tau(
     Eigen::VectorXd& ehat, Eigen::VectorXd& b, double& lambda,
     Eigen::VectorXd& gammas, double& a_tau, double& b_tau, int& N, int& P,
@@ -58,8 +51,7 @@ double lm_hs_gibbs_tau(
     return(tau);
 }
 
-//' @export
-// [[Rcpp::export]]
+// sample lambda
 double lm_hs_gibbs_lambda(
     Eigen::VectorXd& b, double& tau, Eigen::VectorXd& gammas, double& xi,
     int& P, double& lambda
@@ -71,8 +63,7 @@ double lm_hs_gibbs_lambda(
     return(lambda);
 }
 
-//' update the latent variables for the double exponential prior
-// [[Rcpp::export]]
+// update the latent variables for the double exponential prior
 Eigen::VectorXd lm_hs_gibbs_gammas(
     double& tau, double& lambda, Eigen::VectorXd& nus, Eigen::VectorXd& b,
     int& P, Eigen::VectorXd& gammas
@@ -86,14 +77,12 @@ Eigen::VectorXd lm_hs_gibbs_gammas(
     return(gammas);
 }
 
-// [[Rcpp::export]]
 double lm_hs_gibbs_xi(double& lambda, double& xi)
 {
     xi = Rcpp::rgamma(1, 1.0, 1.0 / (1.0 + lambda))(0);
     return(xi);
 }
 
-// [[Rcpp::export]]
 Eigen::VectorXd lm_hs_gibbs_nus(
     Eigen::VectorXd& gammas, int& P, Eigen::VectorXd& nus
 ){

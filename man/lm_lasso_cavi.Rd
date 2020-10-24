@@ -5,25 +5,16 @@
 \title{Univariate normal linear regression with a LASSO (double-exponential) prior
 using the CAVI algorithm.}
 \usage{
-lm_lasso_cavi(
-  y,
-  X,
-  verbose = TRUE,
-  n_iter = 1000L,
-  a_tau = 0.1,
-  b_tau = 0.1,
-  a_lambda2 = 0.1,
-  b_lambda2 = 0.1,
-  rel_tol = 1e-04,
-  type = 0L
-)
+lm_lasso_cavi(y, X, verbose = TRUE, n_iter = 1000L, a_tau = 0.1,
+  b_tau = 0.1, a_lambda2 = 0.1, b_lambda2 = 0.1, rel_tol = 1e-04,
+  type = 0L)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
 
 \item{X}{Matrix of predictors (N by P)}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{n_iter}{Max number of iterations to run the algorithm for (default =
 1000). A convergence warning is issues if the algorithm runs for the max

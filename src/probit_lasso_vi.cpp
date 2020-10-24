@@ -8,7 +8,6 @@
 // **********************************************************************#
 // individual updaters
 // **********************************************************************#
-// [[Rcpp::export]]
 Rcpp::List probit_lasso_vi_lambda2(
   Rcpp::List& param_gamma, int& P, double& a_lambda2, double& b_lambda2,
   Rcpp::List& param_lambda2
@@ -23,7 +22,6 @@ Rcpp::List probit_lasso_vi_lambda2(
   return(param_lambda2);
 }
 
-// [[Rcpp::export]]
 Rcpp::List probit_lasso_vi_gamma(
   Rcpp::List& param_b, Rcpp::List& param_lambda2, int& P,
   Rcpp::List& param_gamma
@@ -44,7 +42,6 @@ Rcpp::List probit_lasso_vi_gamma(
   return(param_gamma);
 }
 
-// [[Rcpp::export]]
 double probit_lasso_elbo(
   Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z,
   Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda2,
@@ -92,7 +89,7 @@ double probit_lasso_elbo(
 //' @param n_iter Max number of iterations to run the algorithm for (default =
 //'   1000). A convergence warning is issues if the algorithm runs for the max
 //'   number of iterations.
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_lambda2 Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param b_lambda2 Prior rate parameter for the coefficient precision
@@ -248,7 +245,7 @@ Rcpp::List probit_lasso_cavi(
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for (default =
 //'   5000).
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_lambda2 Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param b_lambda2 Prior rate parameter for the coefficient precision
@@ -263,7 +260,7 @@ Rcpp::List probit_lasso_cavi(
 //'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
-//'   \{0.5, 1\}}
+//'   (0.5, 1)}
 //' @export
 // [[Rcpp::export]]
 Rcpp::List probit_lasso_svi(

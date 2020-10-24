@@ -5,16 +5,8 @@
 \title{Univariate normal linear regression with a Horseshoe prior using the CAVI
 algorithm.}
 \usage{
-lm_hs_cavi(
-  y,
-  X,
-  n_iter = 1000L,
-  verbose = TRUE,
-  a_tau = 0.1,
-  b_tau = 0.1,
-  rel_tol = 1e-04,
-  type = 0L
-)
+lm_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, a_tau = 0.1,
+  b_tau = 0.1, rel_tol = 1e-04, type = 0L)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
@@ -25,7 +17,7 @@ lm_hs_cavi(
 1000). A convergence warning is issues if the algorithm runs for the max
 number of iterations.}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{a_tau}{Prior shape parameter for the likelihood precision.}
 

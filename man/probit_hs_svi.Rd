@@ -5,24 +5,15 @@
 \title{Univariate probit linear regression with a ridge (normal) prior using the
 SVI algorithm.}
 \usage{
-probit_hs_svi(
-  y,
-  X,
-  verbose = TRUE,
-  n_iter = 1000L,
-  type = 0L,
-  batch_size = 10L,
-  omega = 15,
-  kappa = 0.6,
-  const_rhot = 0.01
-)
+probit_hs_svi(y, X, verbose = TRUE, n_iter = 1000L, type = 0L,
+  batch_size = 10L, omega = 15, kappa = 0.6, const_rhot = 0.01)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
 
 \item{X}{Matrix of predictors (N by P)}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{n_iter}{Number of iterations to run the algorithm for (default =
 5000).}
@@ -37,7 +28,7 @@ Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.}
 
 \item{kappa}{Forgetting rate for the step size iterations; \eqn{\kappa \in
-\{0.5, 1\}}}
+(0.5, 1)}}
 
 \item{cost_rhot}{Used to set a constant step size in the gradient descent
 algorithm. If this parameter is greater than zero, it overrides the step

@@ -8,7 +8,6 @@
 // *****************************************************************************
 // individual samplers
 // *****************************************************************************
-// [[Rcpp::export]]
 Eigen::VectorXd probit_lasso_gibbs_gamma(
   double& lambda2, Eigen::VectorXd& b, int& P, Eigen::VectorXd& gamma
 ){
@@ -20,7 +19,6 @@ Eigen::VectorXd probit_lasso_gibbs_gamma(
   return(gamma);
 }
 
-// [[Rcpp::export]]
 double probit_lasso_gibbs_lambda2(
   Eigen::VectorXd& gamma, double& a_lambda2, double& b_lambda2, int& P,
   double& lambda2
@@ -39,7 +37,7 @@ double probit_lasso_gibbs_lambda2(
 //' @param y Vector or responses (N by 1)
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_lambda2 Prior shape parameter for the coefficient precision
 //'   (shrinkage) term.
 //' @param b_lambda2 Prior rate parameter for the coefficient precision

@@ -5,7 +5,8 @@
 \title{Univariate normal linear regression with a Horseshoe prior using a Gibbs
 sampler.}
 \usage{
-lm_hs_gibbs(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.1, b_tau = 0.1)
+lm_hs_gibbs(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.1,
+  b_tau = 0.1)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

@@ -8,7 +8,6 @@
 // *****************************************************************************
 // individual samplers
 // *****************************************************************************
-// [[Rcpp::export]]
 double probit_hs_gibbs_lambda(
   Eigen::VectorXd& b, Eigen::VectorXd& gamma, double& xi,
   int& P, double& lambda
@@ -20,7 +19,6 @@ double probit_hs_gibbs_lambda(
   return(lambda);
 }
 
-// [[Rcpp::export]]
 Eigen::VectorXd probit_hs_gibbs_gamma(
   double& lambda, Eigen::VectorXd& nu, Eigen::VectorXd& b,
   int& P, Eigen::VectorXd& gamma
@@ -34,14 +32,12 @@ Eigen::VectorXd probit_hs_gibbs_gamma(
   return(gamma);
 }
 
-// [[Rcpp::export]]
 double probit_hs_gibbs_xi(double& lambda, double& xi)
 {
   xi = Rcpp::rgamma(1, 1.0, 1.0 / (1.0 + lambda))(0);
   return(xi);
 }
 
-// [[Rcpp::export]]
 Eigen::VectorXd probit_hs_gibbs_nu(
   Eigen::VectorXd& gamma, int& P, Eigen::VectorXd& nu
 ){

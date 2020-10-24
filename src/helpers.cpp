@@ -421,6 +421,21 @@ void get_subsample_mvlm(
   }
 }
 
+// subsample for mv probit
+void get_subsample_mv_probit(
+  Eigen::MatrixXi& Y, Eigen::MatrixXd& X, Eigen::MatrixXi& Y_s,
+  Eigen::MatrixXd& X_s, int& S, int& N, Rcpp::IntegerVector the_sample
+){
+  // Rcpp::IntegerVector the_sample = sample_int(S, 0, N - 1);
+  int this_samp;
+  for(int s = 0; s < S; s++)
+  {
+    this_samp = the_sample(s);
+    X_s.row(s) = X.row(this_samp);
+    Y_s.row(s) = Y.row(this_samp);
+  }
+}
+
 // subsample the data for SVI algorithm
 void get_subsample_lm(
   Eigen::VectorXd& y, Eigen::MatrixXd& X, Eigen::VectorXd& y_s,
@@ -553,6 +568,74 @@ double probit_lp_m_lq_z(
   return(lp_m_lq);
 }
 
+// [[Rcpp::export]]
+double mv_probit_lp_m_lq_z(
+  Eigen::MatrixXd& X_s, Eigen::MatrixXi& Y_s,
+  Eigen::MatrixXd& mu_theta, Eigen::MatrixXd& msigma_theta,
+  Eigen::MatrixXd& mu_psi, Eigen::MatrixXd& msigma_psi,
+  Eigen::VectorXd& mu_b0, Eigen::VectorXd& vsigma2_b0,
+  Eigen::MatrixXd& mu_B, Eigen::MatrixXd& msigma_B,
+  double& logdet_msigma_psi, double& logdet_msigma_theta,
+  int& N, int& S, int& M
+){
+  Eigen::VectorXd one_S = Eigen::VectorXd::Constant(S, 1.0);
+  Eigen::MatrixXd Eta = one_S * mu_b0.transpose() + X_s * mu_B.transpose() +
+      mu_psi * mu_theta.transpose();
+
+  double log_Phi, log1mexp;
+  double sum_calc = 0.0;
+  for(int m = 0; m < M; m++)
+  {
+    for(int s = 0; s < S; s++)
+    {
+      log_Phi = R::pnorm(-1.0 * Eta(s, m), 0.0, 1.0, true, true);
+
+      // need to compute log(1 - exp(log_Phi)) in a stable way
+      if(log_Phi > -M_LN2)
+        log1mexp = std::log(-expm1(log_Phi));
+      else
+        log1mexp = log1p(-std::exp(log_Phi));
+
+      sum_calc += Y_s(s, m) * log1mexp + (1 - Y_s(s, m)) * log_Phi;
+    }
+  }
+
+  double lp_m_lq =
+    - N / 2.0 * vsigma2_b0.array().sum() -
+    N * M / 2.0 / S * (X_s.transpose() * X_s * msigma_B).trace() -
+    N * M / 2.0 * (msigma_psi * msigma_theta).trace() -
+    N * M / 2.0 / S * (mu_psi.transpose() * mu_psi * msigma_theta).trace() -
+    N / 2.0 * (mu_theta.transpose() * mu_theta * msigma_psi).trace() +
+    N / 1.0 / S * sum_calc;
+
+  return(lp_m_lq);
+}
+
+// [[Rcpp::export]]
+double lp_indep_matrix_normal(
+  Eigen::MatrixXd& mu_prec, double& mu_logdet_prec, Eigen::MatrixXd& mu,
+  Eigen::MatrixXd& msigma, int& P, int& M
+){
+  // M is how many rows with P being the number of columns; M resp. P preds.
+  double mu_prec_msigma_trace = (mu_prec * msigma).trace();
+  Eigen::VectorXd mu_m;
+  double lp = 0.0;
+
+  for(int m = 0; m < M; m++)
+  {
+    mu_m = mu.row(m).transpose();
+    lp +=
+      -P / 2.0 * std::log(2.0 * M_PI) +
+      1.0 / 2.0 * mu_logdet_prec -
+      1.0 / 2.0 * (
+        mu_m.transpose() * mu_prec * mu_m +
+        mu_prec_msigma_trace
+      );
+  }
+
+  return(lp);
+}
+
 double lp_univ_normal(double& mu_prec, double& mu_log_prec, Rcpp::List& param)
 {
   double mu = param["mu"];
@@ -635,6 +718,12 @@ double lq_mv_normal(Rcpp::List& param, int& P)
   return(lq);
 }
 
+double lq_mv_normal2(double logdet_msigma, int& P)
+{
+  double lq = -1.0 / 2.0 * logdet_msigma - P / 2.0 * (1 + std::log(2.0 * M_PI));
+  return(lq);
+}
+
 double lq_univ_gamma(Rcpp::List& param)
 {
   double shape = param["shape"];
@@ -697,6 +786,48 @@ double lp_lasso_gamma(Rcpp::List& param_lambda2, Rcpp::List& param_gamma)
 
   return(lp_gamma);
 }
+
+// mean and variance of truncated multivariate normal
+void mu_var_trunc_norm(int& y, double& mu, double& sd)
+{
+  double eta, log_phi, log_Phi, log_norm_const;
+  eta = -1 * mu / sd;
+  log_phi = R::dnorm(eta, 0.0, 1.0, true);
+  log_Phi = R::pnorm(eta, 0.0, 1.0, true, true);
+  if(y == 1)
+  {
+    // need to compute log(1 - exp(log_Phi)) in a stable way
+    if(log_Phi > -M_LN2)
+      log_norm_const = std::log(-expm1(log_Phi));
+    else
+      log_norm_const = log1p(-std::exp(log_Phi));
+
+    mu = mu + std::exp(
+      std::log(sd) + log_phi - log_norm_const
+    );
+
+    // overwrite sd with variance
+    sd = std::exp(2.0 * std::log(sd)) * (
+      1.0 +
+      eta * std::exp(log_phi - log_norm_const) -
+      std::exp(2.0 * (log_phi - log_norm_const))
+    );
+  }
+  else
+  {
+    log_norm_const = log_Phi;
+
+    mu = mu - std::exp(std::log(sd) + log_phi - log_norm_const);
+
+    // overwrite sd with variance
+    sd = std::exp(2.0 * std::log(sd)) * (
+      1.0 -
+      eta * std::exp(log_phi - log_norm_const) -
+      std::exp(2.0 * (log_phi - log_norm_const))
+    );
+  }
+}
+
 
 
 

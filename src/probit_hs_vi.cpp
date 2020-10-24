@@ -9,7 +9,6 @@
 // **********************************************************************#
 // individual updaters
 // **********************************************************************#
-// [[Rcpp::export]]
 double probit_hs_elbo(
   Eigen::MatrixXd& X_s, Eigen::VectorXi& y_s, Rcpp::List& param_z,
   Rcpp::List& param_b0, Rcpp::List& param_b, Rcpp::List& param_lambda,
@@ -79,7 +78,7 @@ double probit_hs_elbo(
 //' @param n_iter Max number of iterations to run the algorithm for (default =
 //'   1000). A convergence warning is issues if the algorithm runs for the max
 //'   number of iterations.
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param rel_tol Relative tolerance used for convergence. Convergence is
 //'   assesed using the evidence lower bound (ELBO) changes relative to five
 //'   iterations prior.
@@ -235,7 +234,7 @@ Rcpp::List probit_hs_cavi(
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for (default =
 //'   5000).
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param type Correlation structure of the regression coefficients. Use 0 for
 //'   full correlation and 1 for independece assumption.
 //' @param batch_size Size of the subsamples used to update the parameters.
@@ -246,7 +245,7 @@ Rcpp::List probit_hs_cavi(
 //'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
-//'   \{0.5, 1\}}
+//'   (0.5, 1)}
 //' @export
 // [[Rcpp::export]]
 Rcpp::List probit_hs_svi(

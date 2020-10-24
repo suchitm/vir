@@ -5,7 +5,8 @@
 \title{Univariate probit linear regression with a Horseshoe prior using the CAVI
 algorithm.}
 \usage{
-probit_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, tol = 1e-04, type = 0L)
+probit_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, tol = 1e-04,
+  type = 0L)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
@@ -16,7 +17,7 @@ probit_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, tol = 1e-04, type = 0L)
 1000). A convergence warning is issues if the algorithm runs for the max
 number of iterations.}
 
-\item{verbose}{True of False. Do you want to print messages along the way?}
+\item{verbose}{True or False. Do you want to print messages along the way?}
 
 \item{type}{Correlation structure of the regression coefficients. Use 0 for
 full correlation and 1 for independece assumption.}

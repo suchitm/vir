@@ -365,7 +365,7 @@ Rcpp::List lm_ridge_cavi(
 //'   Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 //'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 //' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
-//'   \{0.5, 1\}}
+//'   (0.5, 1)}
 //' @export
 // [[Rcpp::export]]
 Rcpp::List lm_ridge_svi(
