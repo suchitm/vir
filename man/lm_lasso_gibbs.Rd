@@ -5,8 +5,16 @@
 \title{Univariate normal linear regression with a LASSO (double-exponential) prior
 using a Gibbs sampler.}
 \usage{
-lm_lasso_gibbs(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.1,
-  b_tau = 0.1, a_lambda = 0.1, b_lambda = 0.1)
+lm_lasso_gibbs(
+  y,
+  X,
+  verbose = TRUE,
+  n_iter = 10000L,
+  a_tau = 0.1,
+  b_tau = 0.1,
+  a_lambda = 0.1,
+  b_lambda = 0.1
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

@@ -5,8 +5,17 @@
 \title{Univariate probit linear regression with a ridge (normal) prior using the
 SVI algorithm.}
 \usage{
-probit_hs_svi(y, X, verbose = TRUE, n_iter = 1000L, type = 0L,
-  batch_size = 10L, omega = 15, kappa = 0.6, const_rhot = 0.01)
+probit_hs_svi(
+  y,
+  X,
+  verbose = TRUE,
+  n_iter = 1000L,
+  type = 0L,
+  batch_size = 10L,
+  omega = 15,
+  kappa = 0.6,
+  const_rhot = 0.01
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

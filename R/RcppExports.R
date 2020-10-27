@@ -233,16 +233,16 @@ lm_ridge_svi <- function(y, X, n_iter = 15000L, verbose = TRUE, a_tau = 0.1, b_t
     .Call(`_vir_lm_ridge_svi`, y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, type, batch_size, const_rhot, omega, kappa)
 }
 
-mv_probit_uninf_gibbs <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE) {
-    .Call(`_vir_mv_probit_uninf_gibbs`, Y, X, K, n_iter, burn_in, verbose)
+mv_probit_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE) {
+    .Call(`_vir_mv_probit_uninf_gibbs_cpp`, Y, X, K, n_iter, burn_in, verbose)
 }
 
-mv_probit_uninf_cavi <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.00001) {
-    .Call(`_vir_mv_probit_uninf_cavi`, Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol)
+mv_probit_uninf_cavi_cpp <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.00001) {
+    .Call(`_vir_mv_probit_uninf_cavi_cpp`, Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol)
 }
 
-mv_probit_uninf_svi <- function(Y, X, K, n_iter, verbose = TRUE, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
-    .Call(`_vir_mv_probit_uninf_svi`, Y, X, K, n_iter, verbose, batch_size, omega, kappa, const_rhot)
+mv_probit_uninf_svi_cpp <- function(Y, X, K, n_iter, verbose = TRUE, batch_size = 10L, omega = 15.0, kappa = 0.6, const_rhot = 0.01) {
+    .Call(`_vir_mv_probit_uninf_svi_cpp`, Y, X, K, n_iter, verbose, batch_size, omega, kappa, const_rhot)
 }
 
 probit_gibbs_z <- function(y, eta, N, z) {

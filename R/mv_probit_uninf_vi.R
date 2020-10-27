@@ -6,6 +6,10 @@
 #' @param n_samps number of samples to draw from the variational distribution
 #' @param rel_tol relative tolerance at which to end the algorithm
 #' @param verbose print status of the sampler
+#' @return A list with samples from the variational distribution for the
+#'   intercept term (\code{b0_mat}), regression coefficients (\code{B_array}),
+#'   and upper triangular elements of the correlation matrix
+#'   (\code{cor_mat_upper_tri})
 #' @export
 mv_probit_uninf_cavi = function(
   Y, X, K, n_iter = 100, n_samps = 1000, verbose = TRUE, rel_tol = 0.00001
@@ -40,6 +44,10 @@ mv_probit_uninf_cavi = function(
 #'   \omega)^{-\kappa}}. This parameter has to be greater than or equal to zero.
 #' @param kappa Forgetting rate for the step size iterations; \eqn{\kappa \in
 #'   (0.5, 1)}
+#' @return A list with samples from the variational distribution for the
+#'   intercept term (\code{b0_mat}), regression coefficients (\code{B_array}),
+#'   and upper triangular elements of the correlation matrix
+#'   (\code{cor_mat_upper_tri})
 #' @export
 mv_probit_uninf_svi = function(
   Y, X, K, n_iter = 10000, n_samps = 1000, verbose = TRUE, batch_size = 10,

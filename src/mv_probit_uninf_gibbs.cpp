@@ -15,7 +15,7 @@ using namespace Eigen;
 // Run a Gibbs sampler for the multivariate probit model. Note that the
 // parameters are not normalized
 // [[Rcpp::export]]
-Rcpp::List mv_probit_uninf_gibbs(
+Rcpp::List mv_probit_uninf_gibbs_cpp(
     Eigen::MatrixXi Y, Eigen::MatrixXd X, int K = 2, int n_iter = 10000,
     int burn_in = 5000, bool verbose = true
 ){

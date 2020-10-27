@@ -5,8 +5,14 @@
 \title{Univariate probit linear regression with a ridge (normal) prior using a
 Gibbs sampler.}
 \usage{
-probit_ridge_gibbs(y, X, verbose = TRUE, n_iter = 10000L,
-  a_lambda = 0.01, b_lambda = 0.01)
+probit_ridge_gibbs(
+  y,
+  X,
+  verbose = TRUE,
+  n_iter = 10000L,
+  a_lambda = 0.01,
+  b_lambda = 0.01
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

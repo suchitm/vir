@@ -4,8 +4,14 @@
 \alias{mv_probit_uninf_gibbs}
 \title{Multivariate probit with a factor model}
 \usage{
-mv_probit_uninf_gibbs(Y, X, K = 2, n_iter = 10000, burn_in = 5000,
-  verbose = TRUE)
+mv_probit_uninf_gibbs(
+  Y,
+  X,
+  K = 2,
+  n_iter = 10000,
+  burn_in = 5000,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{Y}{integer matrix for the responses}

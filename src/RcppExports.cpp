@@ -288,9 +288,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// mv_probit_uninf_gibbs
-Rcpp::List mv_probit_uninf_gibbs(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, int burn_in, bool verbose);
-RcppExport SEXP _vir_mv_probit_uninf_gibbs(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP burn_inSEXP, SEXP verboseSEXP) {
+// mv_probit_uninf_gibbs_cpp
+Rcpp::List mv_probit_uninf_gibbs_cpp(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, int burn_in, bool verbose);
+RcppExport SEXP _vir_mv_probit_uninf_gibbs_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP burn_inSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -300,13 +300,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
     Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_gibbs(Y, X, K, n_iter, burn_in, verbose));
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_gibbs_cpp(Y, X, K, n_iter, burn_in, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
-// mv_probit_uninf_cavi
-Rcpp::List mv_probit_uninf_cavi(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, double rel_tol);
-RcppExport SEXP _vir_mv_probit_uninf_cavi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP rel_tolSEXP) {
+// mv_probit_uninf_cavi_cpp
+Rcpp::List mv_probit_uninf_cavi_cpp(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, double rel_tol);
+RcppExport SEXP _vir_mv_probit_uninf_cavi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP rel_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -318,13 +318,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
     Rcpp::traits::input_parameter< double >::type rel_tol(rel_tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_cavi(Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol));
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_cavi_cpp(Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol));
     return rcpp_result_gen;
 END_RCPP
 }
-// mv_probit_uninf_svi
-Rcpp::List mv_probit_uninf_svi(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, int batch_size, double omega, double kappa, double const_rhot);
-RcppExport SEXP _vir_mv_probit_uninf_svi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP batch_sizeSEXP, SEXP omegaSEXP, SEXP kappaSEXP, SEXP const_rhotSEXP) {
+// mv_probit_uninf_svi_cpp
+Rcpp::List mv_probit_uninf_svi_cpp(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, int batch_size, double omega, double kappa, double const_rhot);
+RcppExport SEXP _vir_mv_probit_uninf_svi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP batch_sizeSEXP, SEXP omegaSEXP, SEXP kappaSEXP, SEXP const_rhotSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -337,7 +337,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
     Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
     Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
-    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_svi(Y, X, K, n_iter, verbose, batch_size, omega, kappa, const_rhot));
+    rcpp_result_gen = Rcpp::wrap(mv_probit_uninf_svi_cpp(Y, X, K, n_iter, verbose, batch_size, omega, kappa, const_rhot));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -625,9 +625,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_ridge_gibbs_lambda", (DL_FUNC) &_vir_lm_ridge_gibbs_lambda, 6},
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
-    {"_vir_mv_probit_uninf_gibbs", (DL_FUNC) &_vir_mv_probit_uninf_gibbs, 6},
-    {"_vir_mv_probit_uninf_cavi", (DL_FUNC) &_vir_mv_probit_uninf_cavi, 8},
-    {"_vir_mv_probit_uninf_svi", (DL_FUNC) &_vir_mv_probit_uninf_svi, 9},
+    {"_vir_mv_probit_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_probit_uninf_gibbs_cpp, 6},
+    {"_vir_mv_probit_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_cavi_cpp, 8},
+    {"_vir_mv_probit_uninf_svi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_svi_cpp, 9},
     {"_vir_probit_gibbs_z", (DL_FUNC) &_vir_probit_gibbs_z, 4},
     {"_vir_probit_gibbs_b0", (DL_FUNC) &_vir_probit_gibbs_b0, 3},
     {"_vir_probit_gibbs_b", (DL_FUNC) &_vir_probit_gibbs_b, 5},

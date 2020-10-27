@@ -18,7 +18,7 @@ mv_probit_uninf_gibbs = function(
   P = ncol(X)
 
   # run the model
-  model_fit = mv_probit_uninf_gibbs(Y, X, K, n_iter, burn_in, verbose)
+  model_fit = mv_probit_uninf_gibbs_cpp(Y, X, K, n_iter, burn_in, verbose)
 
   # rescale the parameters to the
   final_results = get_identified_params(mv_probit_fit, M, P, K)

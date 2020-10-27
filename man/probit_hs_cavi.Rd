@@ -5,8 +5,7 @@
 \title{Univariate probit linear regression with a Horseshoe prior using the CAVI
 algorithm.}
 \usage{
-probit_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, tol = 1e-04,
-  type = 0L)
+probit_hs_cavi(y, X, n_iter = 1000L, verbose = TRUE, tol = 1e-04, type = 0L)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

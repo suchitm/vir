@@ -5,8 +5,16 @@
 \title{Univariate normal linear regression with a ridge (normal) prior using a
 Gibbs sampler.}
 \usage{
-lm_ridge_gibbs(y, X, verbose = TRUE, n_iter = 10000L, a_tau = 0.01,
-  b_tau = 0.01, a_lambda = 0.01, b_lambda = 0.01)
+lm_ridge_gibbs(
+  y,
+  X,
+  verbose = TRUE,
+  n_iter = 10000L,
+  a_tau = 0.01,
+  b_tau = 0.01,
+  a_lambda = 0.01,
+  b_lambda = 0.01
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

@@ -93,7 +93,7 @@ double mv_probit_uninf_elbo(
 // CAVI
 // **********************************************************************
 // [[Rcpp::export]]
-Rcpp::List mv_probit_uninf_cavi(
+Rcpp::List mv_probit_uninf_cavi_cpp(
   Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
   double a_tau = 0.1, double b_tau = 0.1, double rel_tol = 0.00001
 ){
@@ -261,7 +261,7 @@ Rcpp::List mv_probit_uninf_cavi(
 // SVI
 // **********************************************************************
 // [[Rcpp::export]]
-Rcpp::List mv_probit_uninf_svi(
+Rcpp::List mv_probit_uninf_svi_cpp(
   Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
   int batch_size = 10, double omega = 15.0, double kappa = 0.6,
   double const_rhot = 0.01

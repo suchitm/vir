@@ -5,8 +5,16 @@
 \title{Univariate probit linear regression with a ridge (normal) prior using the
 CAVI algorithm.}
 \usage{
-probit_ridge_cavi(y, X, n_iter = 1000L, verbose = TRUE,
-  a_lambda = 0.1, b_lambda = 0.1, tol = 1e-04, type = 0L)
+probit_ridge_cavi(
+  y,
+  X,
+  n_iter = 1000L,
+  verbose = TRUE,
+  a_lambda = 0.1,
+  b_lambda = 0.1,
+  tol = 1e-04,
+  type = 0L
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}
