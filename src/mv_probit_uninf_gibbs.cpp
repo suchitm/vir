@@ -16,8 +16,8 @@ using namespace Eigen;
 // parameters are not normalized
 // [[Rcpp::export]]
 Rcpp::List mv_probit_uninf_gibbs_cpp(
-    Eigen::MatrixXi Y, Eigen::MatrixXd X, int K = 2, int n_iter = 10000,
-    int burn_in = 5000, bool verbose = true
+  Eigen::MatrixXi Y, Eigen::MatrixXd X, int K = 2, int n_iter = 10000,
+  int burn_in = 5000, bool verbose = true
 ){
   // problem info
   int N = X.rows();
