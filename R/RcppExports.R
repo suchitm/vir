@@ -233,6 +233,10 @@ lm_ridge_svi <- function(y, X, n_iter = 15000L, verbose = TRUE, a_tau = 0.1, b_t
     .Call(`_vir_lm_ridge_svi`, y, X, n_iter, verbose, a_tau, b_tau, a_lambda, b_lambda, type, batch_size, const_rhot, omega, kappa)
 }
 
+mv_lm_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE, a_tau = 0.1, b_tau = 0.1) {
+    .Call(`_vir_mv_lm_uninf_gibbs_cpp`, Y, X, K, n_iter, burn_in, verbose, a_tau, b_tau)
+}
+
 mv_probit_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE) {
     .Call(`_vir_mv_probit_uninf_gibbs_cpp`, Y, X, K, n_iter, burn_in, verbose)
 }

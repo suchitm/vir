@@ -288,6 +288,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mv_lm_uninf_gibbs_cpp
+Rcpp::List mv_lm_uninf_gibbs_cpp(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, int burn_in, bool verbose, double a_tau, double b_tau);
+RcppExport SEXP _vir_mv_lm_uninf_gibbs_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP burn_inSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
+    Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
+    rcpp_result_gen = Rcpp::wrap(mv_lm_uninf_gibbs_cpp(Y, X, K, n_iter, burn_in, verbose, a_tau, b_tau));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mv_probit_uninf_gibbs_cpp
 Rcpp::List mv_probit_uninf_gibbs_cpp(Eigen::MatrixXi Y, Eigen::MatrixXd X, int K, int n_iter, int burn_in, bool verbose);
 RcppExport SEXP _vir_mv_probit_uninf_gibbs_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP burn_inSEXP, SEXP verboseSEXP) {
@@ -625,6 +643,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_ridge_gibbs_lambda", (DL_FUNC) &_vir_lm_ridge_gibbs_lambda, 6},
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
+    {"_vir_mv_lm_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_lm_uninf_gibbs_cpp, 8},
     {"_vir_mv_probit_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_probit_uninf_gibbs_cpp, 6},
     {"_vir_mv_probit_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_cavi_cpp, 8},
     {"_vir_mv_probit_uninf_svi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_svi_cpp, 9},
