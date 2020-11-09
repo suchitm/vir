@@ -306,9 +306,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// mvlm_uninf_cavi
-Rcpp::List mvlm_uninf_cavi(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, int type);
-RcppExport SEXP _vir_mvlm_uninf_cavi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP typeSEXP) {
+// mv_lm_uninf_cavi_cpp
+Rcpp::List mv_lm_uninf_cavi_cpp(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, double rel_tol, bool verbose, double a_tau, double b_tau);
+RcppExport SEXP _vir_mv_lm_uninf_cavi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP rel_tolSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -316,17 +316,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type K(KSEXP);
     Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type rel_tol(rel_tolSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
-    Rcpp::traits::input_parameter< int >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_cavi(Y, X, K, n_iter, verbose, a_tau, b_tau, type));
+    rcpp_result_gen = Rcpp::wrap(mv_lm_uninf_cavi_cpp(Y, X, K, n_iter, rel_tol, verbose, a_tau, b_tau));
     return rcpp_result_gen;
 END_RCPP
 }
-// mvlm_uninf_svi
-Rcpp::List mvlm_uninf_svi(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, int batch_size, double rhot);
-RcppExport SEXP _vir_mvlm_uninf_svi(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP batch_sizeSEXP, SEXP rhotSEXP) {
+// mvlm_uninf_svi_cpp
+Rcpp::List mvlm_uninf_svi_cpp(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, int batch_size, double rhot);
+RcppExport SEXP _vir_mvlm_uninf_svi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP batch_sizeSEXP, SEXP rhotSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -339,7 +339,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
     Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
     Rcpp::traits::input_parameter< double >::type rhot(rhotSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_svi(Y, X, K, n_iter, verbose, a_tau, b_tau, batch_size, rhot));
+    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_svi_cpp(Y, X, K, n_iter, verbose, a_tau, b_tau, batch_size, rhot));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -681,8 +681,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_ridge_cavi", (DL_FUNC) &_vir_lm_ridge_cavi, 10},
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
     {"_vir_mv_lm_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_lm_uninf_gibbs_cpp, 8},
-    {"_vir_mvlm_uninf_cavi", (DL_FUNC) &_vir_mvlm_uninf_cavi, 8},
-    {"_vir_mvlm_uninf_svi", (DL_FUNC) &_vir_mvlm_uninf_svi, 9},
+    {"_vir_mv_lm_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_lm_uninf_cavi_cpp, 8},
+    {"_vir_mvlm_uninf_svi_cpp", (DL_FUNC) &_vir_mvlm_uninf_svi_cpp, 9},
     {"_vir_mv_probit_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_probit_uninf_gibbs_cpp, 6},
     {"_vir_mv_probit_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_cavi_cpp, 8},
     {"_vir_mv_probit_uninf_svi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_svi_cpp, 9},

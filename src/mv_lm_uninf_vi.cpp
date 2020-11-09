@@ -271,9 +271,10 @@ Rcpp::List mvlm_vi_xi(
 // CAVI
 // **********************************************************************
 // [[Rcpp::export]]
-Rcpp::List mvlm_uninf_cavi(
-  Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, int type = 0
+Rcpp::List mv_lm_uninf_cavi_cpp(
+  Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter,
+  double rel_tol = 0.0001, bool verbose = true, double a_tau = 0.1,
+  double b_tau = 0.1
 ){
   // problem info
   int N = Y.rows();
@@ -374,20 +375,18 @@ Rcpp::List mvlm_uninf_cavi(
 
   }
 
-  Eigen::VectorXd vsigma2_b0 = param_b0["vismga2"];
-  Eigen::MatrixXd vsigma2_b = param_b0["vsigma2_mat"];
+  Eigen::VectorXd vsigma2_b0 = param_b0["vsigma2"];
+  Eigen::MatrixXd msigma_b = param_b["msigma_mat"];
+  Eigen::MatrixXd msigma_theta = param_theta["msigma_mat"];
 
   Rcpp::List retl;
   retl["vmu_b0"] = mu_b0;
   retl["vsigma2_b0"] = vsigma2_b0;
   retl["mu_mat_b"] = mu_b;
-  retl["vsigma2_mat_b"] = vsigma2_b;
+  retl["msigma_mat_b"] = msigma_b;
   retl["mu_mat_theta"] = param_theta["mu"];
-  retl["mu_tau"] = param_tau["mu"];
-  retl["mu_xi"] = mu_xi;
-  retl["mu_lambda"] = mu_lambda;
-  retl["param_xi"] = param_xi;
-  retl["param_gamma"] = param_gamma;
+  retl["msigma_mat_theta"] = msigma_theta;
+  retl["param_tau"] = param_tau;
 
   return(retl);
 }
@@ -396,7 +395,7 @@ Rcpp::List mvlm_uninf_cavi(
 // SVI
 // **********************************************************************
 // [[Rcpp::export]]
-Rcpp::List mvlm_uninf_svi(
+Rcpp::List mvlm_uninf_svi_cpp(
   Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
   double a_tau = 0.1, double b_tau = 0.1, int batch_size = 42, double rhot = 0.1
 ){
@@ -427,7 +426,7 @@ Rcpp::List mvlm_uninf_svi(
   Eigen::MatrixXd Y_s(S, M);
   Eigen::MatrixXd X_s(S, P);
   Eigen::VectorXd mu_xi(K);
-    
+
   Rcpp::IntegerVector the_sample = seq(0, S - 1);
   Rcpp::IntegerVector seq_samp = seq(0, N - 1);
 
@@ -459,7 +458,7 @@ Rcpp::List mvlm_uninf_svi(
       E_hat, param_psi, param_tau, param_gamma, mu_lambda, N, M, S, K,
       param_theta
     );
-    
+
     ////**
     //Eigen::MatrixXd theta_delta1_t = param_theta["delta1_t"];
     //Eigen::MatrixXd theta_delta2_t = param_theta["delta2_t"];
@@ -516,7 +515,7 @@ Rcpp::List mvlm_uninf_svi(
     mu_xi = param_xi["mu"];
     mu_lambda = cum_prod(mu_xi);
   }
-  
+
   Eigen::VectorXd vsigma2_b0 = param_b0["vismga2"];
   Eigen::MatrixXd vsigma2_b = param_b0["vsigma2_mat"];
 
