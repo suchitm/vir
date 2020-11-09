@@ -1,7 +1,7 @@
 #' Run a Gibbs sampler for the multivariate probit model. Uses the
 #' multiplicative gamma process for the factor structure
 #' @title Multivariate linear regression with a factor model
-#' @param Y integer matrix for the responses
+#' @param Y matrix of responses
 #' @param X matrix of predictors to control for
 #' @param K number of factors in the factor model
 #' @param n_iter number of iterations to run the Gibbs sampler
