@@ -1,24 +1,16 @@
 #' Run a Gibbs sampler for the multivariate probit model. Uses the
 #' multiplicative gamma process for the factor structure
 #' @title Multivariate linear regression with a factor model
-#' @param Y integer matrix for the responses
+#' @param Y matrix of responses
 #' @param X matrix of predictors to control for
 #' @param K number of factors in the factor model
 #' @param n_iter number of iterations to run the Gibbs sampler
+#' @param burn_in number of iterations to drop for burn in.
 #' @param verbose True or False. Print status of the sampler.
 #' @return A list with samples for the intercept term (\code{b0_mat}),
 #'   regression coefficients (\code{B_array}), and upper triangular elements of
 #'   the correlation matrix (\code{cor_mat_upper_tri})
 #' @export
-#
-# sim_dat = sim_mv_lm(20, 4, 3, 2)
-# X = sim_dat$X
-# Y = sim_dat$Y
-# K = 2
-# n_iter = 100
-# verbose = F
-# a_tau = 0.1
-# b_tau = 0.1
 mv_lm_uninf_gibbs = function(
   Y, X, K = 2, n_iter = 10000, burn_in = 5000, verbose = TRUE
 ){
@@ -36,8 +28,8 @@ mv_lm_uninf_gibbs = function(
 
 #' predict from a multivariate linear model
 #' @param mvlm_fit fit from a mv_lm
-#' @param X_test
-#' @return an array with predictions (i, N, M)
+#' @param X_test values at which to predict
+#' @return an array with predictions (iter, N, M)
 #' @export
 predict_mv_lm = function(mvlm_fit, X_test)
 {
@@ -62,6 +54,10 @@ predict_mv_lm = function(mvlm_fit, X_test)
   return(Y_test)
 }
 
+#' @param N number of observations
+#' @param M number of responses
+#' @param P number of predictors
+#' @param K number of factors for the covariance matrix
 sim_mv_lm = function(N, M, P, K)
 {
   X = matrix(nrow = N, ncol = P, rnorm(N * P))
