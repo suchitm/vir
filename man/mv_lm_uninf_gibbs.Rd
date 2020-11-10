@@ -15,6 +15,8 @@ mv_lm_uninf_gibbs(Y, X, K = 2, n_iter = 10000, burn_in = 5000, verbose = TRUE)
 
 \item{n_iter}{number of iterations to run the Gibbs sampler}
 
+\item{burn_in}{number of iterations to drop for burn in.}
+
 \item{verbose}{True or False. Print status of the sampler.}
 }
 \value{

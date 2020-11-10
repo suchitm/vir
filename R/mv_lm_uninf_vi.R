@@ -11,16 +11,6 @@
 #'   the correlation matrix (\code{cor_mat_upper_tri})
 #' @export
 #
-sim_dat = sim_mv_lm(20, 4, 3, 2)
-X = sim_dat$X
-Y = sim_dat$Y
-K = 2
-n_iter = 100
-verbose = F
-a_tau = 0.1
-b_tau = 0.1
-rel_tol = 0.0001
-
 mv_lm_uninf_cavi = function(
   Y, X, K = 2, n_iter = 1000, rel_tol = 0.0001, verbose = TRUE,
   a_tau = 0.1, b_tau = 0.1
@@ -31,8 +21,8 @@ mv_lm_uninf_cavi = function(
   P = ncol(X)
 
   # run the model
-  mvlm_fit = mv_lm_uninf_cavi_cpp(Y, X, K, n_iter, verbose, a_tau, b_tau)
-  final_results = get_params(mvlm_fit, M, P, K)
+  mvlm_fit = mv_lm_uninf_cavi_cpp(Y, X, K, n_iter, rel_tol, verbose, a_tau, b_tau)
+  final_results = get_params_vi(mvlm_fit, M, P, K)
 
   return(final_results)
 }
@@ -62,6 +52,22 @@ get_params_vi = function(mvlm_fit, M, P, K)
   b0$mu = mvlm_fit$vmu_b0
   b0$vsigma2 = mvlm_fit$vsigma2_b0
 
+  B = vector("list")
+  B$dist = 'matrix normal - independent over rows'
+  B$mu = mvlm_fit$vmu_b
+  B$msigma_array = var_b_array
+
+  theta = vector("list")
+  theta$dist = 'matrix normal - independent over rows'
+  theta$mu = mvlm_fit$vmu_theta
+  theta$msigma_array = var_theta_array
+
+  tau = vector("list")
+  tau$dist = 'independent gamma'
+  tau$shape = mvlm_fit$param_tau$shape
+  tau$rate = mvlm_fit$param_tau$rate
+
+  retl = list(b0 = b0, B = B, theta = theta, tau = tau)
 
   return(retl)
 }
