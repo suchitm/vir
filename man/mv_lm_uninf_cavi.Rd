@@ -2,7 +2,7 @@
 % Please edit documentation in R/mv_lm_uninf_vi.R
 \name{mv_lm_uninf_cavi}
 \alias{mv_lm_uninf_cavi}
-\title{Multivariate linear regression with a factor model}
+\title{Multivariate linear regression with a factor model - CAVI}
 \usage{
 mv_lm_uninf_cavi(
   Y,
@@ -32,6 +32,7 @@ A list with samples for the intercept term (\code{b0_mat}),
   the correlation matrix (\code{cor_mat_upper_tri})
 }
 \description{
-Run a Gibbs sampler for the multivariate probit model. Uses the
-multiplicative gamma process for the factor structure
+Estimate the parameters in a multivariate linear model with the CAVI
+algorithm. The model uses a multiplicative gamma process for the factor
+structure
 }

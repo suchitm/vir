@@ -58,6 +58,7 @@ predict_mv_lm = function(mvlm_fit, X_test)
 #' @param M number of responses
 #' @param P number of predictors
 #' @param K number of factors for the covariance matrix
+#' @export
 sim_mv_lm = function(N, M, P, K)
 {
   X = matrix(nrow = N, ncol = P, rnorm(N * P))

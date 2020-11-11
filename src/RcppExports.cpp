@@ -325,8 +325,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // mvlm_uninf_svi_cpp
-Rcpp::List mvlm_uninf_svi_cpp(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, int batch_size, double rhot);
-RcppExport SEXP _vir_mvlm_uninf_svi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP batch_sizeSEXP, SEXP rhotSEXP) {
+Rcpp::List mvlm_uninf_svi_cpp(Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose, double a_tau, double b_tau, int batch_size, double const_rhot, double omega, double kappa);
+RcppExport SEXP _vir_mvlm_uninf_svi_cpp(SEXP YSEXP, SEXP XSEXP, SEXP KSEXP, SEXP n_iterSEXP, SEXP verboseSEXP, SEXP a_tauSEXP, SEXP b_tauSEXP, SEXP batch_sizeSEXP, SEXP const_rhotSEXP, SEXP omegaSEXP, SEXP kappaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -338,8 +338,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a_tau(a_tauSEXP);
     Rcpp::traits::input_parameter< double >::type b_tau(b_tauSEXP);
     Rcpp::traits::input_parameter< int >::type batch_size(batch_sizeSEXP);
-    Rcpp::traits::input_parameter< double >::type rhot(rhotSEXP);
-    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_svi_cpp(Y, X, K, n_iter, verbose, a_tau, b_tau, batch_size, rhot));
+    Rcpp::traits::input_parameter< double >::type const_rhot(const_rhotSEXP);
+    Rcpp::traits::input_parameter< double >::type omega(omegaSEXP);
+    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
+    rcpp_result_gen = Rcpp::wrap(mvlm_uninf_svi_cpp(Y, X, K, n_iter, verbose, a_tau, b_tau, batch_size, const_rhot, omega, kappa));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -682,7 +684,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_vir_lm_ridge_svi", (DL_FUNC) &_vir_lm_ridge_svi, 13},
     {"_vir_mv_lm_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_lm_uninf_gibbs_cpp, 8},
     {"_vir_mv_lm_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_lm_uninf_cavi_cpp, 8},
-    {"_vir_mvlm_uninf_svi_cpp", (DL_FUNC) &_vir_mvlm_uninf_svi_cpp, 9},
+    {"_vir_mvlm_uninf_svi_cpp", (DL_FUNC) &_vir_mvlm_uninf_svi_cpp, 11},
     {"_vir_mv_probit_uninf_gibbs_cpp", (DL_FUNC) &_vir_mv_probit_uninf_gibbs_cpp, 6},
     {"_vir_mv_probit_uninf_cavi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_cavi_cpp, 8},
     {"_vir_mv_probit_uninf_svi_cpp", (DL_FUNC) &_vir_mv_probit_uninf_svi_cpp, 9},

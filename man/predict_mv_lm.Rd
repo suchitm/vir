@@ -8,9 +8,11 @@ predict_mv_lm(mvlm_fit, X_test)
 }
 \arguments{
 \item{mvlm_fit}{fit from a mv_lm}
+
+\item{X_test}{values at which to predict}
 }
 \value{
-an array with predictions (i, N, M)
+an array with predictions (iter, N, M)
 }
 \description{
 predict from a multivariate linear model

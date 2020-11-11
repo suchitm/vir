@@ -267,6 +267,170 @@ Rcpp::List mvlm_vi_xi(
   return(param_xi);
 }
 
+double mv_lm_uninf_elbo(
+  Eigen::MatrixXd& X_s, Eigen::MatrixXd& Y_s,
+  Rcpp::List& param_psi, Rcpp::List& param_theta, Rcpp::List& param_b0,
+  Rcpp::List& param_b, Rcpp::List& param_tau, Rcpp::List& param_gamma,
+  Rcpp::List& param_xi, double& a_tau, double& b_tau, int& N, int& S, int& M,
+  int& P, int& K
+){
+  Eigen::VectorXd one_S = Eigen::VectorXd::Constant(S, 1.0);
+  // ************************************************************************
+  // load the variable for use in functions
+  // ************************************************************************
+  Eigen::VectorXd mu_psi = param_psi["mu"];
+  Eigen::VectorXd msigma_mat_psi = param_psi["msigma_mat"];
+  Eigen::MatrixXd vsigma2_mat_psi = param_psi["vsigma2_mat"];
+  Eigen::VectorXd logdet_msigma_psi = param_psi["logdet_msigma"];
+
+  Eigen::VectorXd mu_theta = param_theta["mu"];
+  Eigen::VectorXd msigma_mat_theta = param_theta["msigma_mat"];
+  Eigen::MatrixXd vsigma2_mat_theta = param_theta["vsigma2_mat"];
+  Eigen::VectorXd logdet_msigma_theta = param_theta["logdet_msigma"];
+
+  Eigen::VectorXd mu_b0 = param_b0["mu"];
+  Eigen::VectorXd msigma_b0 = param_b0["msigma"];
+  Eigen::VectorXd vsigma2_b0 = param_b0["logdet_msigma"];
+
+  Eigen::VectorXd mu_b = param_b["mu"];
+  Eigen::VectorXd msigma_mat_b = param_b["msigma_mat"];
+  Eigen::MatrixXd vsigma2_mat_b = param_b["vsigma2_mat"];
+  Eigen::VectorXd logdet_msigma_b = param_b["logdet_msigma"];
+
+  Eigen::VectorXd astar_tau = param_tau["shape"];
+  Eigen::VectorXd bstar_tau = param_tau["rate"];
+  Eigen::VectorXd mu_tau = param_tau["mu"];
+  Eigen::VectorXd mu_log_tau = param_tau["mu_log"];
+
+  // ************************************************************************
+  // calculate elbo
+  // ************************************************************************
+  // ----- log lik -----
+  Eigen::MatrixXd E_hat = Y_s - one_S * mu_b0.transpose() -
+    X_s * mu_b.transpose() - mu_psi * mu_theta.transpose();
+  Eigen::MatrixXd D_tau = mu_tau.asDiagonal();
+
+  //  add log 2 pi and then the taus
+  double ll = -N/2.0 * M * std::log(2.0 * M_PI);
+  for(int m = 0; m < M; m++)
+    ll = ll + N/2.0 * (Rf_digamma(astar_tau(m)) - std::log(bstar_tau(m)));
+  // matrix normal kernel
+  ll = ll - 1.0/2.0 * (D_tau * E_hat.transpose() * E_hat).trace();
+
+  // ----- psi -----
+  double lp_psi = 0.0;
+  double lq_psi = 0.0;
+  Eigen::MatrixXd mu_prec = Eigen::MatrixXd::Identity(K, K);
+  double mu_logdet_prec = 0.0;
+  Eigen::MatrixXd this_msigma_psi = Eigen::MatrixXd::Identity(K, K);
+  Eigen::VectorXd this_mu_psi;
+
+  for(int s = 0; s < S; s++)
+  {
+    this_mu_psi = mu_psi.row(s).transpose();
+    this_msigma_psi = msigma_mat_psi.block(s * K, 0, K, K);
+    mu_prec = mu_xi
+
+    // lp
+    lp_psi +=
+      -K / 2.0 * std::log(2.0 * M_PI) +
+      1.0 / 2.0 * mu_logdet_prec -
+      1.0 / 2.0 * (
+        this_mu_psi.transpose() * mu_prec * this_mu_psi +
+        (mu_prec * this_msigma_psi).trace()
+      );
+
+    // lq
+    lq_psi += -1.0/2.0 * logdet_msigma_psi(s) -
+      K/2.0 * (1 + std::log(2.0 * M_PI));
+  }
+
+  // ----- theta -----
+  double lp_theta = 0.0;
+  double lq_theta = 0.0;
+  mu_prec = Eigen::MatrixXd::Identity(K, K);
+  mu_logdet_prec = 0.0;
+  Eigen::MatrixXd this_msigma_theta = Eigen::MatrixXd::Identity(K, K);
+  Eigen::VectorXd this_mu_theta;
+
+  for(int m = 0; m < M; m++)
+  {
+    this_mu_theta = mu_theta.row(m).transpose();
+    this_msigma_theta = msigma_mat_theta.block(m * K, 0, K, K);
+
+    // lp
+    lp_theta +=
+      -K / 2.0 * std::log(2.0 * M_PI) +
+      1.0 / 2.0 * mu_logdet_prec -
+      1.0 / 2.0 * (
+        this_mu_theta.transpose() * mu_prec * this_mu_theta +
+        (mu_prec * this_msigma_theta).trace()
+      );
+
+    // lq
+    lq_theta += -1.0/2.0 * logdet_msigma_theta(m) -
+      K/2.0 * (1 + std::log(2.0 * M_PI));
+  }
+
+  // ----- b0 -----
+  Eigen::MatrixXd mu_prec_b0 = Eigen::MatrixXd::Identity(M, M);
+  double mu_logdet_prec_b0 = 0.0;
+  double lp_b0 = lp_mv_normal(mu_prec, mu_logdet_prec, param_b0, M);
+  double lq_b0 = lq_mv_normal(param_b, M);
+
+  // ----- b -----
+  double lp_b = 0.0;
+  double lq_b = 0.0;
+  mu_prec = 0.000001 * Eigen::MatrixXd::Identity(K, K);
+  mu_logdet_prec = 0.0;
+  Eigen::MatrixXd this_msigma_b = Eigen::MatrixXd::Identity(K, K);
+  Eigen::VectorXd this_mu_b;
+
+  for(int m = 0; m < M; m++)
+  {
+    this_mu_b = mu_b.row(m).transpose();
+    this_msigma_b = msigma_mat_b.block(m * P, 0, P, P);
+
+    // lp
+    lp_b +=
+      -P/2.0 * std::log(2.0 * M_PI) +
+      1.0 / 2.0 * mu_logdet_prec -
+      1.0 / 2.0 * (
+        this_mu_b.transpose() * mu_prec * this_mu_b +
+        (mu_prec * this_msigma_b).trace()
+      );
+
+    // lq
+    lq_b += -1.0/2.0 * logdet_msigma_b(m) -
+      P/2.0 * (1 + std::log(2.0 * M_PI));
+  }
+
+  // ----- tau -----
+  double lp_tau = 0.0;
+  double lq_tau = 0.0;
+  for(int m = 0; m < M; m++)
+  {
+    // lp
+    lp_tau +=
+      a_tau * std::log(b_tau) - Rf_lgammafn(a_tau) +
+      (a_tau - 1) * (Rf_digamma(astar_tau(m)) - std::log(bstar_tau(m))) -
+      b_tau * mu_tau(m);
+
+    // lq
+    lq_tau +=
+      -Rf_lgammafn(astar_tau(m)) + std::log(bstar_tau(m)) +
+      (astar_tau(m) - 1.0) * Rf_digamma(astar_tau(m)) - astar_tau(m);
+  }
+
+  // ----- gamma -----
+  // ----- xi -----
+
+
+  return(1.0);
+
+
+}
+
 // **********************************************************************
 // CAVI
 // **********************************************************************
@@ -397,9 +561,9 @@ Rcpp::List mv_lm_uninf_cavi_cpp(
 // [[Rcpp::export]]
 Rcpp::List mvlm_uninf_svi_cpp(
   Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, int batch_size = 42, double rhot = 0.1
+  double a_tau = 0.1, double b_tau = 0.1, int batch_size = 42,
+  double const_rhot = 0.01, double omega = 15.0, double kappa = 0.6
 ){
-
   // problem info
   int N = Y.rows();
   int M = Y.cols();
@@ -429,6 +593,7 @@ Rcpp::List mvlm_uninf_svi_cpp(
 
   Rcpp::IntegerVector the_sample = seq(0, S - 1);
   Rcpp::IntegerVector seq_samp = seq(0, N - 1);
+  double rhot = 0.0;
 
   // other hyperparams
   double a1 = 2.1; double a2 = 3.1;
@@ -436,6 +601,18 @@ Rcpp::List mvlm_uninf_svi_cpp(
 
   for(int i = 0; i < n_iter; i++)
   {
+
+    if(const_rhot <= 0)
+      rhot = std::exp(-kappa * std::log(i + 1.0 + omega));
+    else
+      rhot = const_rhot;
+
+    Rcpp::checkUserInterrupt();
+    if(verbose && (i % 10 == 0)) {
+      Rcpp::Rcout << "Done with Iteration " << i << " of " << n_iter <<
+        " with step size " << rhot << "\r";
+    }
+
     // means for error calculations
     mu_b0 = param_b0["mu"];
     mu_b = param_b["mu"];
@@ -459,20 +636,8 @@ Rcpp::List mvlm_uninf_svi_cpp(
       param_theta
     );
 
-    ////**
-    //Eigen::MatrixXd theta_delta1_t = param_theta["delta1_t"];
-    //Eigen::MatrixXd theta_delta2_t = param_theta["delta2_t"];
-    //Rcout << "theta:" << std::endl;
-    //Rcout << theta_delta1_t << std::endl;
-    //Rcout << theta_delta2_t << std::endl;
-
     // b0
     E_hat = Y_s - X_s * mu_b.transpose() - mu_psi * mu_theta.transpose();
-
-    ////**
-    //Rcout << "E_hat:" << std::endl;
-    //Rcout << E_hat << std::endl;
-
     mvlm_vi_b0(E_hat, param_tau, N, M, S, param_b0);
 
     // b
@@ -516,17 +681,18 @@ Rcpp::List mvlm_uninf_svi_cpp(
     mu_lambda = cum_prod(mu_xi);
   }
 
-  Eigen::VectorXd vsigma2_b0 = param_b0["vismga2"];
-  Eigen::MatrixXd vsigma2_b = param_b0["vsigma2_mat"];
+  Eigen::VectorXd vsigma2_b0 = param_b0["vsigma2"];
+  Eigen::MatrixXd msigma_b = param_b["msigma_mat"];
+  Eigen::MatrixXd msigma_theta = param_theta["msigma_mat"];
 
   Rcpp::List retl;
   retl["vmu_b0"] = mu_b0;
   retl["vsigma2_b0"] = vsigma2_b0;
   retl["mu_mat_b"] = mu_b;
-  retl["vsigma2_mat_b"] = vsigma2_b;
+  retl["msigma_mat_b"] = msigma_b;
   retl["mu_mat_theta"] = param_theta["mu"];
-  retl["mu_tau"] = param_tau["mu"];
-  retl["mu_lambda"] = mu_lambda;
+  retl["msigma_mat_theta"] = msigma_theta;
+  retl["param_tau"] = param_tau;
 
   return(retl);
 }
