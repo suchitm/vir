@@ -237,12 +237,8 @@ mv_lm_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L
     .Call(`_vir_mv_lm_uninf_gibbs_cpp`, Y, X, K, n_iter, burn_in, verbose, a_tau, b_tau)
 }
 
-mv_lm_uninf_cavi_cpp <- function(Y, X, K, n_iter, rel_tol = 0.0001, verbose = TRUE, a_tau = 0.1, b_tau = 0.1) {
-    .Call(`_vir_mv_lm_uninf_cavi_cpp`, Y, X, K, n_iter, rel_tol, verbose, a_tau, b_tau)
-}
-
-mvlm_uninf_svi_cpp <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, batch_size = 42L, const_rhot = 0.01, omega = 15.0, kappa = 0.6) {
-    .Call(`_vir_mvlm_uninf_svi_cpp`, Y, X, K, n_iter, verbose, a_tau, b_tau, batch_size, const_rhot, omega, kappa)
+mv_lm_uninf_cavi_cpp <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.00001) {
+    .Call(`_vir_mv_lm_uninf_cavi_cpp`, Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol)
 }
 
 mv_probit_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE) {

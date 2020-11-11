@@ -8,7 +8,7 @@ mv_lm_uninf_svi(
   Y,
   X,
   K = 2,
-  n_iter,
+  n_iter = 1000,
   verbose = TRUE,
   a_tau = 0.1,
   b_tau = 0.1,
@@ -29,6 +29,10 @@ mv_lm_uninf_svi(
 
 \item{verbose}{True or False. Print status of the sampler.}
 
+\item{a_tau}{prior shape parameter for precisions}
+
+\item{b_tau}{prior shape parameter for precisions}
+
 \item{batch_size}{Size of the subsamples used to update the parameters.}
 
 \item{omega}{Delay for the stepsize (\eqn{\omega}) for the gradient step.
@@ -43,6 +47,5 @@ algorithm. If this parameter is greater than zero, it overrides the step
 size iterations calculated using kappa and omega.}
 }
 \description{
-Run a Gibbs sampler for the multivariate probit model. Uses the
-multiplicative gamma process for the factor structure
+Run a SVI algorithm for the multivariate linear regression model.
 }

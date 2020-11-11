@@ -25,14 +25,12 @@ mv_lm_uninf_cavi(
 \item{n_iter}{number of iterations to run the Gibbs sampler}
 
 \item{verbose}{True or False. Print status of the sampler.}
-}
-\value{
-A list with samples for the intercept term (\code{b0_mat}),
-  regression coefficients (\code{B_array}), and upper triangular elements of
-  the correlation matrix (\code{cor_mat_upper_tri})
+
+\item{a_tau}{Prior shape for the nugget term.}
+
+\item{b_tau}{Prior rate for the nugget term.}
 }
 \description{
 Estimate the parameters in a multivariate linear model with the CAVI
-algorithm. The model uses a multiplicative gamma process for the factor
-structure
+algorithm.
 }

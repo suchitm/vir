@@ -65,10 +65,14 @@ sim_mv_lm = function(N, M, P, K)
   B = matrix(nrow = M, ncol = P, rnorm(M * P))
   mtheta = matrix(nrow = M, ncol = K, rnorm(M * K))
   mpsi = matrix(nrow = N, ncol = K, rnorm(N * K))
+  b0 = rnorm(M)
+  one_N = rep(1, N)
+  tau = 5.0
 
-  Y = X %*% t(B) + mpsi %*% t(mtheta) + matrix(nrow = N, ncol = M, rnorm(N * M))
+  Y = one_N %*% t(b0) + X %*% t(B) + mpsi %*% t(mtheta) +
+    1 / sqrt(tau) * matrix(nrow = N, ncol = M, rnorm(N * M))
 
-  retl = list(X = X, Y = Y)
+  retl = list(X = X, Y = Y, B = B, b0 = b0)
   return(retl)
 }
 

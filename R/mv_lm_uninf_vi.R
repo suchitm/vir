@@ -1,15 +1,13 @@
 #' Estimate the parameters in a multivariate linear model with the CAVI
-#' algorithm. The model uses a multiplicative gamma process for the factor
-#' structure
+#' algorithm. 
 #' @title Multivariate linear regression with a factor model - CAVI
 #' @param Y matrix of responses
 #' @param X matrix of predictors to control for
 #' @param K number of factors in the factor model
 #' @param n_iter number of iterations to run the Gibbs sampler
 #' @param verbose True or False. Print status of the sampler.
-#' @return A list with samples for the intercept term (\code{b0_mat}),
-#'   regression coefficients (\code{B_array}), and upper triangular elements of
-#'   the correlation matrix (\code{cor_mat_upper_tri})
+#' @param a_tau Prior shape for the nugget term.
+#' @param b_tau Prior rate for the nugget term. 
 #' @export
 #
 mv_lm_uninf_cavi = function(
@@ -30,8 +28,7 @@ mv_lm_uninf_cavi = function(
   return(final_results)
 }
 
-#' Run a Gibbs sampler for the multivariate probit model. Uses the
-#' multiplicative gamma process for the factor structure
+#' Run a SVI algorithm for the multivariate linear regression model. 
 #' @title Multivariate linear regression with a factor model
 #' @param Y matrix of responses
 #' @param X matrix of predictors to control for
