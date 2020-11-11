@@ -237,8 +237,22 @@ mv_lm_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L
     .Call(`_vir_mv_lm_uninf_gibbs_cpp`, Y, X, K, n_iter, burn_in, verbose, a_tau, b_tau)
 }
 
-mv_lm_uninf_cavi_cpp <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.00001) {
-    .Call(`_vir_mv_lm_uninf_cavi_cpp`, Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol)
+#' Estimate the parameters in a multivariate linear model with the CAVI
+#' algorithm.
+#' @title Multivariate linear regression with a factor model - CAVI
+#' @param Y matrix of responses
+#' @param X matrix of predictors to control for
+#' @param K number of factors in the factor model
+#' @param n_iter number of iterations to run the Gibbs sampler
+#' @param verbose True or False. Print status of the sampler.
+#' @param a_tau Prior shape for the nugget term.
+#' @param b_tau Prior rate for the nugget term.
+#' @param rel_tol Relative tolerance for stopping
+#' @param abs_tol Absolute tolerance for stopping; considered only after
+#'   relative tolerance is met.
+#' @export
+mv_lm_uninf_cavi <- function(Y, X, K, n_iter, verbose = TRUE, a_tau = 0.1, b_tau = 0.1, rel_tol = 0.0001, abs_tol = 0.1) {
+    .Call(`_vir_mv_lm_uninf_cavi`, Y, X, K, n_iter, verbose, a_tau, b_tau, rel_tol, abs_tol)
 }
 
 mv_probit_uninf_gibbs_cpp <- function(Y, X, K = 2L, n_iter = 10000L, burn_in = 5000L, verbose = TRUE) {

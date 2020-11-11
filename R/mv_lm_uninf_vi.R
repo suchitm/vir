@@ -1,34 +1,4 @@
-#' Estimate the parameters in a multivariate linear model with the CAVI
-#' algorithm. 
-#' @title Multivariate linear regression with a factor model - CAVI
-#' @param Y matrix of responses
-#' @param X matrix of predictors to control for
-#' @param K number of factors in the factor model
-#' @param n_iter number of iterations to run the Gibbs sampler
-#' @param verbose True or False. Print status of the sampler.
-#' @param a_tau Prior shape for the nugget term.
-#' @param b_tau Prior rate for the nugget term. 
-#' @export
-#
-mv_lm_uninf_cavi = function(
-  Y, X, K = 2, n_iter = 1000, rel_tol = 0.0001, verbose = TRUE,
-  a_tau = 0.1, b_tau = 0.1
-){
-  # model dimensions
-  M = ncol(Y)
-  N = nrow(Y)
-  P = ncol(X)
-
-  # run the model
-  mvlm_fit = mv_lm_uninf_cavi_cpp(
-    Y, X, K, n_iter, rel_tol, verbose, a_tau, b_tau
-  )
-  final_results = get_params_vi(mvlm_fit, M, P, K)
-
-  return(final_results)
-}
-
-#' Run a SVI algorithm for the multivariate linear regression model. 
+#' Run a SVI algorithm for the multivariate linear regression model.
 #' @title Multivariate linear regression with a factor model
 #' @param Y matrix of responses
 #' @param X matrix of predictors to control for

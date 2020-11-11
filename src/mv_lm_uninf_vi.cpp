@@ -19,7 +19,7 @@ double mv_lm_uninf_elbo(
   Eigen::VectorXd& mu_b0, Eigen::VectorXd& vsigma2_b0,
   Eigen::MatrixXd& mu_B, Eigen::MatrixXd& msigma_B,
   double& logdet_msigma_psi, double& logdet_msigma_theta,
-  double& logdet_msigma_B, double& astar_tau, double& bstar_tau, double& mu_tau, 
+  double& logdet_msigma_B, double& astar_tau, double& bstar_tau, double& mu_tau,
   double& a_tau, double& b_tau, int& N, int& S, int& M, int& P, int& K
 ){
 
@@ -31,10 +31,17 @@ double mv_lm_uninf_elbo(
   Eigen::MatrixXd E_hat = Y_s - one_S * mu_b0.transpose() -
     X_s * mu_B.transpose() - mu_psi * mu_theta.transpose();
 
-  double ll = 
-    -N/2.0 * M * std::log(2.0 * M_PI) + 
-    N/2.0 * M * (Rf_digamma(astar_tau) - std::log(bstar_tau)) - 
-    mu_tau/2.0 * E_hat.array().square().sum();
+  double ll =
+    -N/2.0 * M * std::log(2.0 * M_PI) +
+    N/2.0 * M * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
+    mu_tau/2.0 * (
+      E_hat.array().square().sum() +
+      N * vsigma2_b0.array().sum() +
+      M * N * 1.0 / S * (msigma_B * X_s.transpose() * X_s).trace() +
+      N * M * (msigma_theta * msigma_psi).trace() +
+      M * N * 1.0 / S * (msigma_theta * mu_psi.transpose() * mu_psi).trace() +
+      N * (msigma_psi * mu_theta.transpose() * mu_theta).trace()
+    );
 
   // ********** lp ***********
   // ------ psi -----
@@ -80,11 +87,11 @@ double mv_lm_uninf_elbo(
   double lp_B = lp_indep_matrix_normal(
     mu_prec_B, mu_logdet_prec, mu_B, msigma_B, P, M
   );
-  
+
   // ----- tau -----
   double lp_tau =
     a_tau * std::log(b_tau) - Rf_lgammafn(a_tau) +
-    (a_tau - 1) * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
+    (a_tau - 1.0) * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
     b_tau * mu_tau;
 
   // ********** lq **********
@@ -106,10 +113,25 @@ double mv_lm_uninf_elbo(
 // **********************************************************************
 // CAVI
 // **********************************************************************
+//' Estimate the parameters in a multivariate linear model with the CAVI
+//' algorithm.
+//' @title Multivariate linear regression with a factor model - CAVI
+//' @param Y matrix of responses
+//' @param X matrix of predictors to control for
+//' @param K number of factors in the factor model
+//' @param n_iter number of iterations to run the Gibbs sampler
+//' @param verbose True or False. Print status of the sampler.
+//' @param a_tau Prior shape for the nugget term.
+//' @param b_tau Prior rate for the nugget term.
+//' @param rel_tol Relative tolerance for stopping
+//' @param abs_tol Absolute tolerance for stopping; considered only after
+//'   relative tolerance is met.
+//' @export
 // [[Rcpp::export]]
-Rcpp::List mv_lm_uninf_cavi_cpp(
+Rcpp::List mv_lm_uninf_cavi(
   Eigen::MatrixXd Y, Eigen::MatrixXd X, int K, int n_iter, bool verbose = true,
-  double a_tau = 0.1, double b_tau = 0.1, double rel_tol = 0.00001
+  double a_tau = 0.1, double b_tau = 0.1, double rel_tol = 0.0001,
+  double abs_tol = 0.1
 ){
   // problem info
   int N = Y.rows();
@@ -147,7 +169,7 @@ Rcpp::List mv_lm_uninf_cavi_cpp(
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1.0);
 
   double logdet_msigma_psi, logdet_msigma_B, logdet_msigma_theta;
-  
+
   int iters = 0;
   for(int i = 0; i < n_iter; i++)
   {
@@ -201,17 +223,17 @@ Rcpp::List mv_lm_uninf_cavi_cpp(
 
     mu_B = mu_tau * E_hat.transpose() * X * msigma_B;
 
-    // ----- tau ----- 
-    E_hat = Y - one_N * mu_b0.transpose() - X * mu_B.transpose() - 
+    // ----- tau -----
+    E_hat = Y - one_N * mu_b0.transpose() - X * mu_B.transpose() -
       mu_psi * mu_theta.transpose();
     astar_tau = N/2.0 * M + a_tau;
-    
-    bstar_tau = b_tau + 1.0/2.0 * (
-      E_hat.array().square().sum() + 
+
+    bstar_tau = b_tau + N/2.0 / S * (
+      E_hat.array().square().sum() +
       N * vsigma2_b0.array().sum() +
-      M * (msigma_B * X.transpose() * X).trace() + 
-      N * M * (msigma_theta * msigma_psi).trace() + 
-      M * (msigma_theta * mu_psi.transpose() * mu_psi).trace() + 
+      M * (msigma_B * X.transpose() * X).trace() +
+      N * M * (msigma_theta * msigma_psi).trace() +
+      M * (msigma_theta * mu_psi.transpose() * mu_psi).trace() +
       N * (msigma_psi * mu_theta.transpose() * mu_theta).trace()
     );
     mu_tau = astar_tau / bstar_tau;
@@ -230,7 +252,7 @@ Rcpp::List mv_lm_uninf_cavi_cpp(
       if(elbo(i) < elbo(i - 1))
         std::cout << "LOWER BOUND DECREASES" << "\n";
       if((1.0 - elbo(i) / elbo(i - 5)) < rel_tol) {
-        if(elbo(i) - elbo(i-5) < 0.1) {
+        if(std::abs(elbo(i) - elbo(i-5)) < abs_tol) {
           break;
         }
       }
@@ -242,13 +264,30 @@ Rcpp::List mv_lm_uninf_cavi_cpp(
 
   Rcpp::List retl;
 
-  retl["mu_b0"] = mu_b0;
-  retl["vsigma2_b0"] = vsigma2_b0;
-  retl["mu_B"] = mu_B;
-  retl["msigma_B"] = msigma_B;
-  retl["mu_theta"] = mu_theta;
-  retl["msigma_theta"] = msigma_theta;
-  retl["elbo"] = elbo.topRows(iters);
+  Rcpp::List b0;
+  b0["dist"] = "independent multivariate normal";
+  b0["mu"] = mu_b0;
+  b0["vsigma2"] = vsigma2_b0;
+
+  Rcpp::List B;
+  B["dist"] = "matrix normal. independent over rows and each row has the same var-cov matrix";
+  B["mu"] = mu_B;
+  B["msigma"] = msigma_B;
+
+  Rcpp::List theta;
+  theta["dist"] = "matrix normal. independent over rows and each row has the same var-cov matrix";
+  theta["mu"] = mu_theta;
+  theta["msigma"] = msigma_theta;
+
+  Rcpp::List tau;
+  tau["dist"] = "univariate gamma";
+  tau["shape"] = astar_tau;
+  tau["rate"] = bstar_tau;
+
+  retl["b0"] = b0;
+  retl["B"] = B;
+  retl["theta"] = theta;
+  retl["tau"] = tau;
 
   return(retl);
 }

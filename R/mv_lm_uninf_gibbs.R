@@ -72,7 +72,9 @@ sim_mv_lm = function(N, M, P, K)
   Y = one_N %*% t(b0) + X %*% t(B) + mpsi %*% t(mtheta) +
     1 / sqrt(tau) * matrix(nrow = N, ncol = M, rnorm(N * M))
 
-  retl = list(X = X, Y = Y, B = B, b0 = b0)
+  cov_mat = mtheta %*% t(mtheta) + diag(1 / tau, M)
+
+  retl = list(X = X, Y = Y, B = B, b0 = b0, cov_mat = cov_mat)
   return(retl)
 }
 
