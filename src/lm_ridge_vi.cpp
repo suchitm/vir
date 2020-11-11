@@ -196,7 +196,7 @@ double lm_ridge_vi_elbo(
 //' @param n_iter Max number of iterations to run the algorithm for (default =
 //'   1000). A convergence warning is issues if the algorithm runs for the max
 //'   number of iterations.
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
 //' @param a_lambda Prior shape parameter for the coefficient precision
@@ -348,7 +348,7 @@ Rcpp::List lm_ridge_cavi(
 //' @param X Matrix of predictors (N by P)
 //' @param n_iter Number of iterations to run the algorithm for (default =
 //'   5000).
-//' @param verbose True of False. Do you want to print messages along the way?
+//' @param verbose True or False. Do you want to print messages along the way?
 //' @param a_tau Prior shape parameter for the likelihood precision.
 //' @param b_tau Prior rate parameter for the likelihood precision.
 //' @param a_lambda Prior shape parameter for the coefficient precision

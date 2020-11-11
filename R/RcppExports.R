@@ -14,7 +14,7 @@ lp_indep_matrix_normal <- function(mu_prec, mu_logdet_prec, mu, msigma, P, M) {
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @export
@@ -72,7 +72,7 @@ lm_hs_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_tau = 0.1, b_tau =
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_tau Prior shape parameter for the likelihood precision.
 #' @param b_tau Prior rate parameter for the likelihood precision.
 #' @param a_lambda Prior shape parameter for the coefficient precision
@@ -278,7 +278,7 @@ probit_vi_b <- function(X_s, param_z, param_b0, mu_prior_mat, N, S, P, type, cav
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #'   (shrinkage) term.
 #' @export
 probit_hs_gibbs <- function(y, X, verbose = TRUE, n_iter = 10000L) {
@@ -395,7 +395,7 @@ probit_lasso_svi <- function(y, X, verbose = TRUE, n_iter = 1000L, a_lambda2 = 0
 #' @param y Vector or responses (N by 1)
 #' @param X Matrix of predictors (N by P)
 #' @param n_iter Number of iterations to run the algorithm for
-#' @param verbose True of False. Do you want to print messages along the way?
+#' @param verbose True or False. Do you want to print messages along the way?
 #' @param a_lambda Prior shape parameter for the coefficient precision
 #'   (shrinkage) term.
 #' @param b_lambda Prior rate parameter for the coefficient precision
