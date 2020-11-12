@@ -58,16 +58,23 @@ predict_mv_lm = function(mvlm_fit, X_test)
 #' @param M number of responses
 #' @param P number of predictors
 #' @param K number of factors for the covariance matrix
+#' @export
 sim_mv_lm = function(N, M, P, K)
 {
   X = matrix(nrow = N, ncol = P, rnorm(N * P))
   B = matrix(nrow = M, ncol = P, rnorm(M * P))
   mtheta = matrix(nrow = M, ncol = K, rnorm(M * K))
   mpsi = matrix(nrow = N, ncol = K, rnorm(N * K))
+  b0 = rnorm(M)
+  one_N = rep(1, N)
+  tau = 5.0
 
-  Y = X %*% t(B) + mpsi %*% t(mtheta) + matrix(nrow = N, ncol = M, rnorm(N * M))
+  Y = one_N %*% t(b0) + X %*% t(B) + mpsi %*% t(mtheta) +
+    1 / sqrt(tau) * matrix(nrow = N, ncol = M, rnorm(N * M))
 
-  retl = list(X = X, Y = Y)
+  cov_mat = mtheta %*% t(mtheta) + diag(1 / tau, M)
+
+  retl = list(X = X, Y = Y, B = B, b0 = b0, cov_mat = cov_mat)
   return(retl)
 }
 
