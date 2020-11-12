@@ -43,10 +43,11 @@ predict_mv_lm_vi = function(fit, X_test, n_samps)
     Y_array, MARGIN = c(2, 3), FUN = function(x) quantile(x, probs = 0.975)
   )
 
-  return(
+  retl = list(
     samples = Y_array,
     mean = means,
     lower_bound = lower,
     upper_bound = upper
   )
+  return(retl)
 }

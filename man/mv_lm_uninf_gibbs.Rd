@@ -25,6 +25,5 @@ A list with samples for the intercept term (\code{b0_mat}),
   the correlation matrix (\code{cor_mat_upper_tri})
 }
 \description{
-Run a Gibbs sampler for the multivariate probit model. Uses the
-multiplicative gamma process for the factor structure
+Run a Gibbs sampler for the multivariate probit model.
 }
