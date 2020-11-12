@@ -19,6 +19,35 @@ predict_lm_vi = function(fit, X_test)
   return(retl)
 }
 
+#' @title Predictions from normal linear regression model - Gibbs
+#' @param fit the model fit
+#' @param X_test matrix of predictor values for which you want to predict the
+#'   response
+#' @export
+predict_lm_gibbs = function(model_fit, X_test, seq_to_keep)
+{
+  N = nrow(X_test)
+  y_pred = matrix(nrow = length(seq_to_keep), ncol = N)
+  
+  for(i in 1:length(seq_to_keep))
+  {
+    mu = model_fit$b0_vec[i] + X_test %*% model_fit$b_mat[i, ]
+    sigma = sqrt(1 / (model_fit$tau_vec[i]))
+    y_pred[i, ] = mu + rnorm(nrow(X_test)) * sigma
+  }
+    
+  estimate = as.numeric(colMeans(y_pred))
+  lower = apply(y_pred, MARGIN = 2, FUN = function(x) quantile(x, probs = 0.025))
+  upper = apply(y_pred, MARGIN = 2, FUN = function(x) quantile(x, probs = 0.975))
+
+  retl = list(
+    estimate = estimate, 
+    lower = lower, 
+    upper = upper,
+    samples = y_pred
+  )
+}
+
 #' @title Predictions from probit VI regression model fits
 #' @param fit the model fit
 #' @param X_test matrix of predictor values for which you want to predict the

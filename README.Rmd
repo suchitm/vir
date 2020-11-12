@@ -1,0 +1,56 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# vir 
+
+## Overview
+
+This package includes a set of variational and stochastic variational algorithms
+to estimate parameters in linear and probit regression with shirkage priors. The
+algorithms are implemented using RcppEigen and don't require linking with any
+other external libraries.
+
+## Installation
+
+Install the package using `devtools`
+```{r, eval = FALSE, message = FALSE}
+devtools::install_github("suchitm/vir")
+```
+
+## Usage
+The functions in the package are named according to the link function, `lm` for
+normal linear models and `probit` for binary regression, followed by the
+shrinkage prior type: `ridge`, `lasso`, `hs`, `uninf`; and then the algorithm:
+`gibbs`, `cavi`, or `svi`. Therefore, if an analyst wishes to use the svi
+algorithm with a linear model and horseshoe prior, they can call the function
+`lm_hs_svi` to analyze the data.
+```{r}
+library(vir)
+set.seed(42)
+X = matrix(nrow = 100, ncol = 5, rnorm(5 * 100))
+colnames(X) = paste0('X', 1:5)
+b = rnorm(5)
+y = rnorm(1) + X %*% b + rnorm(100)
+ridge_cavi_fit = lm_ridge_cavi(y, X, verbose = F, n_iter = 100, rel_tol = 0.0001)
+```
+The function outputs a nested list containing the names of the parameters and their optimal variational distributions. 
+```{r}
+names(ridge_cavi_fit)
+names(ridge_cavi_fit$b)
+ridge_cavi_fit$b$dist
+ridge_cavi_fit$b$mu
+```
+The parameters can be summarised by: 
+```{r}
+summary_vi(ridge_cavi_fit, level = 0.95, coef_names = colnames(X))
+```
+
+### Prediction
+Using the model fit, predictions can be generated using the predict functions named after the link and the algorithm (`vi` or `gibbs`)
+```{r}
+X_test = matrix(nrow = 5, ncol = 5, rnorm(25))
+predict_lm_vi(ridge_cavi_fit, X_test)
+```
