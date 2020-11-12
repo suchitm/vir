@@ -160,11 +160,8 @@ Rcpp::List mv_lm_uninf_cavi(
   Eigen::MatrixXd E_hat = Eigen::MatrixXd::Constant(N, M, 0.0);
   Eigen::MatrixXd diag_K = Eigen::MatrixXd::Identity(K, K);
   double mu_tau = 1.0;
-  double this_sd = 1.0;
-  double this_mu = 0.0;
   double astar_tau = 0.0;
   double bstar_tau = 0.0;
-  int this_y;
 
   Eigen::VectorXd elbo = Eigen::VectorXd::Constant(n_iter, 1.0);
 
@@ -447,13 +444,13 @@ Rcpp::List mv_lm_uninf_svi(
       mu_psi * mu_theta.transpose();
     delta1_tau = N/2.0 * M + a_tau - 1.0;
 
-    delta2_tau = -b_tau - N/2.0 / S * (
+    delta2_tau = -b_tau - N/2.0 / (1.0 * S) * (
       E_hat.array().square().sum() +
-      N * vsigma2_b0.array().sum() +
-      M * (msigma_B * X.transpose() * X).trace() +
-      N * M * (msigma_theta * msigma_psi).trace() +
+      S * vsigma2_b0.array().sum() +
+      M * (msigma_B * X_s.transpose() * X_s).trace() +
+      S * M * (msigma_theta * msigma_psi).trace() +
       M * (msigma_theta * mu_psi.transpose() * mu_psi).trace() +
-      N * (msigma_psi * mu_theta.transpose() * mu_theta).trace()
+      S * (msigma_psi * mu_theta.transpose() * mu_theta).trace()
     );
 
     // ------------------------------------------------------------------------

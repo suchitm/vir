@@ -1,5 +1,4 @@
-#' Run a Gibbs sampler for the multivariate probit model. Uses the
-#' multiplicative gamma process for the factor structure
+#' Run a Gibbs sampler for the multivariate probit model.
 #' @title Multivariate linear regression with a factor model
 #' @param Y matrix of responses
 #' @param X matrix of predictors to control for
@@ -31,7 +30,7 @@ mv_lm_uninf_gibbs = function(
 #' @param X_test values at which to predict
 #' @return an array with predictions (iter, N, M)
 #' @export
-predict_mv_lm = function(mvlm_fit, X_test)
+predict_mv_lm_gibbs = function(mvlm_fit, X_test)
 {
   N_test = nrow(X_test)
   M = nrow(mvlm_fit$B_array[1, , ])
