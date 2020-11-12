@@ -28,9 +28,9 @@ double mv_lm_uninf_elbo(
   Eigen::VectorXd one_S = Eigen::VectorXd::Constant(S, 1.0);
 
   // ********** ll **********
-  Eigen::MatrixXd E_hat = Y_s - one_S * mu_b0.transpose() -
-    X_s * mu_B.transpose() - mu_psi * mu_theta.transpose();
-
+  Eigen::MatrixXd E_hat = Y_s - one_S * mu_b0.transpose() - X_s * mu_B.transpose() - 
+    mu_psi * mu_theta.transpose();
+  
   double ll =
     -N/2.0 * M * std::log(2.0 * M_PI) +
     N/2.0 * M * (Rf_digamma(astar_tau) - std::log(bstar_tau)) -
@@ -42,7 +42,7 @@ double mv_lm_uninf_elbo(
       M * N * 1.0 / S * (msigma_theta * mu_psi.transpose() * mu_psi).trace() +
       N * (msigma_psi * mu_theta.transpose() * mu_theta).trace()
     );
-
+  
   // ********** lp ***********
   // ------ psi -----
   mu_prec = Eigen::MatrixXd::Identity(K, K);
@@ -53,7 +53,7 @@ double mv_lm_uninf_elbo(
   );
 
   lp_psi = N * lp_psi / S;
-
+  
   // ------ theta -----
   mu_prec = 0.000001 * Eigen::MatrixXd::Identity(K, K);
   mu_logdet_prec = -6.0 * K * std::log(10.0);
@@ -61,7 +61,7 @@ double mv_lm_uninf_elbo(
   double lp_theta = lp_indep_matrix_normal(
     mu_prec, mu_logdet_prec, mu_theta, msigma_theta, K, M
   );
-
+  
   // ----- b0 -----
   double mu_prec_b0, mu_log_prec, lp_b0, mu, sigma2;
 
@@ -87,7 +87,7 @@ double mv_lm_uninf_elbo(
   double lp_B = lp_indep_matrix_normal(
     mu_prec_B, mu_logdet_prec, mu_B, msigma_B, P, M
   );
-
+  
   // ----- tau -----
   double lp_tau =
     a_tau * std::log(b_tau) - Rf_lgammafn(a_tau) +
@@ -393,8 +393,6 @@ Rcpp::List mv_lm_uninf_svi(
     the_sample = Rcpp::sample(seq_samp, S, false);
     get_subsample_mvlm(Y, X, Y_s, X_s, S, N, the_sample);
 
-    // Rcpp::Rcout << "Breaks 0" << std::endl;
-
     // ----- local parameters: update psi -----
     E_hat = Y_s - one_S * mu_b0.transpose() - X_s * mu_B.transpose();
     msigma_psi_inv = diag_K + mu_tau * (
@@ -412,7 +410,6 @@ Rcpp::List mv_lm_uninf_svi(
     // global parameter updates; update the natural parameters first
     // ------------------------------------------------------------------------
 
-    // Rcpp::Rcout << "Breaks 5" << std::endl;
     // update theta
     E_hat = Y_s - one_S * mu_b0.transpose() - X_s * mu_B.transpose();
     delta1_theta = (1.0 - rhot) * delta1_theta + rhot * (
@@ -425,7 +422,6 @@ Rcpp::List mv_lm_uninf_svi(
       )
     );
 
-    // Rcpp::Rcout << "Breaks 6" << std::endl;
     // udpate b0
     E_hat = Y_s - X_s * mu_B.transpose() - mu_psi * mu_theta.transpose();
     delta1_b0 = (1.0 - rhot) * delta1_b0 + rhot * (
@@ -435,7 +431,6 @@ Rcpp::List mv_lm_uninf_svi(
       -1.0 / 2.0 * Eigen::VectorXd::Constant(M, 1.0) * (mu_tau * N + 0.000001)
     );
 
-    // Rcpp::Rcout << "Breaks 7" << std::endl;
     // update B
     E_hat = Y_s - one_S * mu_b0.transpose() - mu_psi * mu_theta.transpose();
     delta1_B = (1.0 - rhot) * delta1_B + rhot * (
@@ -472,8 +467,6 @@ Rcpp::List mv_lm_uninf_svi(
     logdet_msigma_theta = -2.0 *
       chol_theta_delta2.matrixL().toDenseMatrix().diagonal().array().log().sum();
 
-    // Rcpp::Rcout << "Breaks 9" << std::endl;
-
     // B
     Eigen::LLT<Eigen::MatrixXd> chol_B_delta2(-2.0 * delta2_B);
     msigma_B = chol_B_delta2.solve(Eigen::MatrixXd::Identity(P, P));
@@ -490,11 +483,9 @@ Rcpp::List mv_lm_uninf_svi(
     bstar_tau = -delta2_tau;
     mu_tau = astar_tau / bstar_tau;
 
-    // Rcpp::Rcout << "Breaks 10" << std::endl;
-
     // elbo
     elbo(i) = mv_lm_uninf_elbo(
-      X, Y, mu_theta, msigma_theta, mu_psi, msigma_psi, mu_b0, vsigma2_b0,
+      X_s, Y_s, mu_theta, msigma_theta, mu_psi, msigma_psi, mu_b0, vsigma2_b0,
       mu_B, msigma_B, logdet_msigma_psi, logdet_msigma_theta,
       logdet_msigma_B, astar_tau, bstar_tau, mu_tau, a_tau, b_tau, N, S, M, P, K
     );
