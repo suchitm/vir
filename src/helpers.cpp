@@ -311,6 +311,7 @@ Rcpp::List natural_to_canonical(Rcpp::List& param, std::string dist_type)
     Eigen::VectorXd g(n_cols);
     Eigen::MatrixXd G(n_cols, n_cols);
     Eigen::MatrixXd temp_msigma(n_cols, n_cols);
+    Eigen::VectorXd logdet_msigma(n_rows);
 
     for(int n = 0; n < n_rows; n++)
     {
@@ -323,11 +324,14 @@ Rcpp::List natural_to_canonical(Rcpp::List& param, std::string dist_type)
       mu.row(n) = temp_msigma * g;
       msigma.block(n * n_cols, 0, n_cols, n_cols) = temp_msigma;
       vsigma2.row(n) = temp_msigma.diagonal();
+      logdet_msigma(n) = -2.0 *
+        chol_G.matrixL().toDenseMatrix().diagonal().array().log().sum();
     }
 
     param["mu"] = mu;
     param["msigma_mat"] = msigma;
     param["vsigma2_mat"] = vsigma2;
+    param["logdet_msigma"] = logdet_msigma;
   }
   else if (dist_type == "univ_gamma")
   {

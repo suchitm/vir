@@ -4,9 +4,18 @@
 \alias{mv_probit_uninf_svi}
 \title{multivariate probit with factor model - variational}
 \usage{
-mv_probit_uninf_svi(Y, X, K, n_iter = 10000, n_samps = 1000,
-  verbose = TRUE, batch_size = 10, const_rhot = 0.001, omega = 15,
-  kappa = 0.6)
+mv_probit_uninf_svi(
+  Y,
+  X,
+  K,
+  n_iter = 10000,
+  n_samps = 1000,
+  verbose = TRUE,
+  batch_size = 10,
+  const_rhot = 0.001,
+  omega = 15,
+  kappa = 0.6
+)
 }
 \arguments{
 \item{Y}{integer matrix for the responses}
@@ -33,6 +42,12 @@ Interacts with \eqn{\kappa} via the formula \eqn{\rho_{t} = (t +
 \item{cost_rhot}{Used to set a constant step size in the gradient descent
 algorithm. If this parameter is greater than zero, it overrides the step
 size iterations calculated using kappa and omega.}
+}
+\value{
+A list with samples from the variational distribution for the
+  intercept term (\code{b0_mat}), regression coefficients (\code{B_array}),
+  and upper triangular elements of the correlation matrix
+  (\code{cor_mat_upper_tri})
 }
 \description{
 multivariate probit with factor model - variational

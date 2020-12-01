@@ -25,12 +25,6 @@ get_identified_params_vi(model_fit, M, P, K, n_samps)
 \item{n_iter}{number of iterations the sampler was run for}
 
 \item{burn_in}{number of iterations to drop from the sampler run}
-
-\item{M}{dimension of the covariance matrix; number of responses.}
-
-\item{P}{number of covariates; excluding intercept}
-
-\item{K}{number of factors used}
 }
 \description{
 Extract identified parameters from MV probit

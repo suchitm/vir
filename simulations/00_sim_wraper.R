@@ -2,7 +2,7 @@ rm(list = ls())
 
 library(tidyverse)
 library(glmnet)
-library(fastbayes)
+library(vir)
 library(statmod)
 library(coda)
 library(Hmisc)

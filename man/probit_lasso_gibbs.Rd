@@ -5,8 +5,14 @@
 \title{Univariate probit linear regression with a LASSO prior using a
 Gibbs sampler.}
 \usage{
-probit_lasso_gibbs(y, X, verbose = TRUE, n_iter = 10000L,
-  a_lambda2 = 0.1, b_lambda2 = 0.1)
+probit_lasso_gibbs(
+  y,
+  X,
+  verbose = TRUE,
+  n_iter = 10000L,
+  a_lambda2 = 0.1,
+  b_lambda2 = 0.1
+)
 }
 \arguments{
 \item{y}{Vector or responses (N by 1)}

@@ -4,8 +4,15 @@
 \alias{mv_probit_uninf_cavi}
 \title{multivariate probit with factor model - variational}
 \usage{
-mv_probit_uninf_cavi(Y, X, K, n_iter = 100, n_samps = 1000,
-  verbose = TRUE, rel_tol = 1e-05)
+mv_probit_uninf_cavi(
+  Y,
+  X,
+  K,
+  n_iter = 100,
+  n_samps = 1000,
+  verbose = TRUE,
+  rel_tol = 1e-05
+)
 }
 \arguments{
 \item{Y}{integer matrix for the responses}
@@ -21,6 +28,12 @@ mv_probit_uninf_cavi(Y, X, K, n_iter = 100, n_samps = 1000,
 \item{verbose}{print status of the sampler}
 
 \item{rel_tol}{relative tolerance at which to end the algorithm}
+}
+\value{
+A list with samples from the variational distribution for the
+  intercept term (\code{b0_mat}), regression coefficients (\code{B_array}),
+  and upper triangular elements of the correlation matrix
+  (\code{cor_mat_upper_tri})
 }
 \description{
 multivariate probit with factor model - variational
