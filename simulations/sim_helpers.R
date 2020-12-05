@@ -4,8 +4,8 @@
 get_ci_vb = function(vb_res, P)
 {
     ci_mat = matrix(nrow = P, ncol = 2, NA)
-    mu_b = vb_res$mu_b
-    vsigma2_b = diag(vb_res$msigma_b)
+    mu_b = vb_res$b$mu
+    vsigma2_b = diag(vb_res$b$sigma_mat)
     for(p in 1:P) {
         ci_mat[p, ] = mu_b[p] + c(-1, 1) * 1.96 * sqrt(vsigma2_b[p])
     }

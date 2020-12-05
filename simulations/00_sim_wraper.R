@@ -8,7 +8,6 @@ library(coda)
 library(Hmisc)
 library(PRROC)
 library(fossil)
-library(rstanarm)
 library(stringr)
 
 set.seed(42)
@@ -16,13 +15,13 @@ set.seed(42)
 #--------------------------------------------------
 # parameters used for both lm and probit funcitons
 #--------------------------------------------------
-gibbs_iter = 5000
-seq_to_keep = 1000:gibbs_iter
-svi_n_iter = 15000
-cavi_n_iter = 1000
-stan_iter = 100000
+gibbs_iter = 50
+seq_to_keep = 10:gibbs_iter
+svi_n_iter = 150
+cavi_n_iter = 10
+stan_iter = 10
 stan_rel_tol = 0.001
-n_sim = 50
+n_sim = 3
 
 #**********************************************************************#
 # CLONE THE GIT REPOSITORY TO YOUR COMPUTER AND WRITE PATH BELOW

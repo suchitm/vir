@@ -33,7 +33,7 @@ sim_data_lm = function(N, P, rho = 0.5, snr = 1)
 get_model_info_lm_vi = function(model_fit, true_b, X_test, y_test)
 {
   P = ncol(X_test)
-  coefs = model_fit$mu_b
+  coefs = model_fit$b$mu
   mse = mean((true_b - coefs)^2)
   cred_ints = model_fit %>% get_ci_vb(P)
   ci_info = get_coverage(cred_ints, true_b)
@@ -247,19 +247,19 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
     },
     # gibbs samplers
     ridge_gibbs = {
-      model_fit = fastbayes:::lm_ridge_gibbs(y_train, X_train, F, gibbs_iter)
+      model_fit = vir::lm_ridge_gibbs(y_train, X_train, F, gibbs_iter)
       model_info = get_model_info_lm_gibbs(
         model_fit, true_b, seq_to_keep, X_test, y_test
       )
     },
     lasso_gibbs = {
-      model_fit = fastbayes:::lm_lasso_gibbs(y_train, X_train, FALSE, gibbs_iter)
+      model_fit = vir:::lm_lasso_gibbs(y_train, X_train, FALSE, gibbs_iter)
       model_info = get_model_info_lm_gibbs(
         model_fit, true_b, seq_to_keep, X_test, y_test
       )
     },
     hs_gibbs = {
-      model_fit = fastbayes:::lm_hs_gibbs(y_train, X_train, F, gibbs_iter)
+      model_fit = vir:::lm_hs_gibbs(y_train, X_train, F, gibbs_iter)
       model_info = get_model_info_lm_gibbs(
         model_fit, true_b, seq_to_keep, X_test, y_test
       )
@@ -271,7 +271,7 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
     #  ridge
     #~~~~~~~~~~~~~~~~~~~~#
     ridge_cavi_corr = {
-      model_fit = fastbayes:::lm_ridge_cavi(
+      model_fit = vir:::lm_ridge_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 0
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
