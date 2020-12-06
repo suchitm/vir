@@ -7,4 +7,4 @@ probit_data = all_files[str_detect(all_files, "probit")]
 models = c("ridge_gibbs", "lasso_gibbs", "hs_gibbs")
 
 results_df <- run_sims_probit(models, probit_data)
-write_csv(results_df, path = probit_results_path)
+write_csv(results_df, file = probit_results_path)

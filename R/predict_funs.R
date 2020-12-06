@@ -56,9 +56,9 @@ predict_lm_gibbs = function(model_fit, X_test, seq_to_keep)
 predict_probit_vi = function(model_fit, X_test)
 {
   N = nrow(X_test)
-  mu = model_fit$mu_b0 + X_test %*% model_fit$mu_b
-  sigma2 = diag(model_fit$sigma2_b0, N) +
-    X_test %*% model_fit$msigma_b %*% t(X_test) + diag(1, N)
+  mu = model_fit$b0$mu + X_test %*% model_fit$b$mu
+  sigma2 = diag(model_fit$b0$var, N) +
+    X_test %*% model_fit$b$sigma_mat %*% t(X_test) + diag(1, N)
   probs = pnorm(mu / sqrt(diag(sigma2)))
   return(probs)
 }

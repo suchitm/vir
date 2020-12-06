@@ -277,20 +277,20 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     ridge_cavi_indep = {
-      model_fit = fastbayes:::lm_ridge_cavi(
+      model_fit = vir:::lm_ridge_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 1
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     ridge_svi_corr = {
-      model_fit = fastbayes:::lm_ridge_svi(
+      model_fit = vir:::lm_ridge_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     ridge_svi_indep = {
-      model_fit = fastbayes:::lm_ridge_svi(
+      model_fit = vir:::lm_ridge_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )
@@ -311,26 +311,26 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
     # lasso
     #~~~~~~~~~~~~~~~~~~~~#
     lasso_cavi_corr = {
-      model_fit = fastbayes:::lm_lasso_cavi(
+      model_fit = vir:::lm_lasso_cavi(
         y_train, X_train, verbose = FALSE, n_iter = cavi_n_iter, type = 0
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     lasso_cavi_indep = {
-      model_fit = fastbayes:::lm_lasso_cavi(
+      model_fit = vir:::lm_lasso_cavi(
         y_train, X_train, verbose = FALSE, n_iter = cavi_n_iter, type = 1
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     lasso_svi_corr = {
-      model_fit = fastbayes:::lm_lasso_svi(
+      model_fit = vir:::lm_lasso_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     lasso_svi_indep = {
-      model_fit = fastbayes:::lm_lasso_svi(
+      model_fit = vir:::lm_lasso_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )
@@ -351,28 +351,28 @@ fit_model_lm = function(X_train, y_train, X_test, y_test, model_type, true_b)
     # hs
     #~~~~~~~~~~~~~~~~~~~~#
     hs_cavi_corr = {
-      model_fit = fastbayes:::lm_hs_cavi(
+      model_fit = vir:::lm_hs_cavi(
         y_train, X_train, verbose = FALSE, type = 0, n_iter = cavi_n_iter,
         a_tau = 0.1, b_tau = 0.1
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     hs_cavi_indep = {
-      model_fit = fastbayes:::lm_hs_cavi(
+      model_fit = vir:::lm_hs_cavi(
         y_train, X_train, verbose = FALSE, type = 1, n_iter = cavi_n_iter,
         a_tau = 0.1, b_tau = 0.1
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     hs_svi_corr = {
-      model_fit = fastbayes:::lm_hs_svi(
+      model_fit = vir:::lm_hs_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
       model_info = get_model_info_lm_vi(model_fit, true_b, X_test, y_test)
     },
     hs_svi_indep = {
-      model_fit = fastbayes:::lm_hs_svi(
+      model_fit = vir:::lm_hs_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )

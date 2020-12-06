@@ -41,7 +41,7 @@ sim_data_binom = function(N, P, rho = 0.5, type)
 get_model_info_probit_vi = function(
   model_fit, true_b, X_test, y_test, X_train, y_train
 ){
-  mse = mean((true_b - model_fit$mu_b)^2)
+  mse = mean((true_b - model_fit$b$mu)^2)
   conf_ints = model_fit %>% get_ci_vb(P)
   ci_info = get_coverage(conf_ints, true_b)
   coverage = mean(ci_info$covers)
@@ -252,7 +252,7 @@ fit_model_probit = function(
     },
     # gibbs samplers
     ridge_gibbs = {
-      model_fit = fastbayes:::probit_ridge_gibbs(
+      model_fit = vir:::probit_ridge_gibbs(
         y_train, X_train, F, gibbs_iter
       )
       model_info = get_model_info_probit_gibbs(
@@ -260,7 +260,7 @@ fit_model_probit = function(
       )
     },
     lasso_gibbs = {
-      model_fit = fastbayes:::probit_lasso_gibbs(
+      model_fit = vir:::probit_lasso_gibbs(
         y_train, X_train, F, gibbs_iter
       )
       model_info = get_model_info_probit_gibbs(
@@ -268,7 +268,7 @@ fit_model_probit = function(
       )
     },
     hs_gibbs = {
-      model_fit = fastbayes:::probit_hs_gibbs(
+      model_fit = vir:::probit_hs_gibbs(
         y_train, X_train, F, gibbs_iter
       )
       model_info = get_model_info_probit_gibbs(
@@ -282,7 +282,7 @@ fit_model_probit = function(
     #  ridge
     #~~~~~~~~~~~~~~~~~~~~#
     ridge_cavi_corr = {
-      model_fit = fastbayes:::probit_ridge_cavi(
+      model_fit = vir:::probit_ridge_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 0
       )
       model_info = get_model_info_probit_vi(
@@ -290,7 +290,7 @@ fit_model_probit = function(
       )
     },
     ridge_cavi_indep = {
-      model_fit = fastbayes:::probit_ridge_cavi(
+      model_fit = vir:::probit_ridge_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 1
       )
       model_info = get_model_info_probit_vi(
@@ -298,7 +298,7 @@ fit_model_probit = function(
       )
     },
     ridge_svi_corr = {
-      model_fit = fastbayes:::probit_ridge_svi(
+      model_fit = vir:::probit_ridge_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
@@ -307,7 +307,7 @@ fit_model_probit = function(
       )
     },
     ridge_svi_indep = {
-      model_fit = fastbayes:::probit_ridge_svi(
+      model_fit = vir:::probit_ridge_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )
@@ -331,7 +331,7 @@ fit_model_probit = function(
     #  lasso
     #~~~~~~~~~~~~~~~~~~~~#
     lasso_cavi_corr = {
-      model_fit = fastbayes:::probit_lasso_cavi(
+      model_fit = vir:::probit_lasso_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 0, tol = 0
       )
       model_info = get_model_info_probit_vi(
@@ -339,7 +339,7 @@ fit_model_probit = function(
       )
     },
     lasso_cavi_indep = {
-      model_fit = fastbayes:::probit_lasso_cavi(
+      model_fit = vir:::probit_lasso_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 1
       )
       model_info = get_model_info_probit_vi(
@@ -347,7 +347,7 @@ fit_model_probit = function(
       )
     },
     lasso_svi_corr = {
-      model_fit = fastbayes:::probit_lasso_svi(
+      model_fit = vir:::probit_lasso_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
@@ -356,7 +356,7 @@ fit_model_probit = function(
       )
     },
     lasso_svi_indep = {
-      model_fit = fastbayes:::probit_lasso_svi(
+      model_fit = vir:::probit_lasso_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )
@@ -380,7 +380,7 @@ fit_model_probit = function(
     #  hs
     #~~~~~~~~~~~~~~~~~~~~#
     hs_cavi_corr = {
-      model_fit = fastbayes:::probit_hs_cavi(
+      model_fit = vir:::probit_hs_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 0
       )
       model_info = get_model_info_probit_vi(
@@ -388,7 +388,7 @@ fit_model_probit = function(
       )
     },
     hs_cavi_indep = {
-      model_fit = fastbayes:::probit_hs_cavi(
+      model_fit = vir:::probit_hs_cavi(
         y_train, X_train, n_iter = cavi_n_iter, verbose = FALSE, type = 1
       )
       model_info = get_model_info_probit_vi(
@@ -396,7 +396,7 @@ fit_model_probit = function(
       )
     },
     hs_svi_corr = {
-      model_fit = fastbayes:::probit_hs_svi(
+      model_fit = vir:::probit_hs_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 0,
         batch_size = 50
       )
@@ -405,7 +405,7 @@ fit_model_probit = function(
       )
     },
     hs_svi_indep = {
-      model_fit = fastbayes:::probit_hs_svi(
+      model_fit = vir:::probit_hs_svi(
         y_train, X_train, n_iter = svi_n_iter, verbose = FALSE, type = 1,
         batch_size = 50
       )

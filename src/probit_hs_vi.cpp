@@ -210,19 +210,29 @@ Rcpp::List probit_hs_cavi(
   sigma2_b0 = sigma2_b0 + s_x.transpose() * msigma_b * s_x;
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
-  Eigen::VectorXd mu_z = param_z["mu"];
+
+  Rcpp::List b0;
+  b0["dist"] = "univariate normal";
+  b0["mu"] = mu_b0;
+  b0["var"] = sigma2_b0;
+
+  Rcpp::List b;
+  b["dist"] = "multivariate normal";
+  b["mu"] = mu_b;
+  b["sigma_mat"] = msigma_b;
+
+  Rcpp::List lambda;
+  lambda["dist"] = "gamma";
+  lambda["shape"] = astar_lambda;
+  lambda["rate"] = bstar_lambda;
 
   Rcpp::List ret;
-  ret["mu_z"] = mu_z;
-  ret["mu_b0"] = mu_b0;
-  ret["sigma2_b0"] = sigma2_b0;
-  ret["mu_b"] = mu_b;
-  ret["msigma_b"] = msigma_b;
-  ret["astar_lambda"] = astar_lambda;
-  ret["bstar_lambda"] = bstar_lambda;
-  ret["mu_gamma"] = param_gamma["mu"];
+  ret["b0"] = b0;
+  ret["b"] = b;
+  ret["lambda"] = lambda;
   ret["elbo"] = elbo.topRows(iters);
   return(ret);
+
 }
 
 // **********************************************************************
@@ -374,7 +384,6 @@ Rcpp::List probit_hs_svi(
   double astar_lambda = param_lambda["shape"];
   double bstar_lambda = param_lambda["rate"];
   mu_gamma = param_gamma["mu"];
-  Eigen::VectorXd mu_z = param_z["mu"];
 
   // rescaled values - need mu_b0, sigma2_b0, msigma_b
   mu_b0 = mu_b0 - (mu_b.array() * s_x.array()).sum();
@@ -382,15 +391,26 @@ Rcpp::List probit_hs_svi(
   mu_b = mu_b.array() * vsigma_x_inv.array();
   msigma_b = vsigma_x_inv.asDiagonal() * msigma_b * vsigma_x_inv.asDiagonal();
 
+  Rcpp::List b0;
+  b0["dist"] = "univariate normal";
+  b0["mu"] = mu_b0;
+  b0["var"] = sigma2_b0;
+
+  Rcpp::List b;
+  b["dist"] = "multivariate normal";
+  b["mu"] = mu_b;
+  b["sigma_mat"] = msigma_b;
+
+  Rcpp::List lambda;
+  lambda["dist"] = "gamma";
+  lambda["shape"] = astar_lambda;
+  lambda["rate"] = bstar_lambda;
+
   Rcpp::List ret;
-  ret["mu_b0"] = mu_b0;
-  ret["sigma2_b0"] = sigma2_b0;
-  ret["mu_b"] = mu_b;
-  ret["msigma_b"] = msigma_b;
-  ret["astar_lambda"] = astar_lambda;
-  ret["bstar_lambda"] = bstar_lambda;
-  ret["mu_gamma"] = param_gamma["mu"];
-  ret["elbo"] = elbo;
+  ret["b0"] = b0;
+  ret["b"] = b;
+  ret["lambda"] = lambda;
+  ret["elbo"] = elbo.topRows(iters);
   return(ret);
 }
 
