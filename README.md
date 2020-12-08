@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# vir
+# vir - Variational Inference in R
 
 ## Overview
 
 This package includes a set of variational and stochastic variational
 algorithms to estimate parameters in linear and probit regression with
-shrinkage priors. The algorithms are implemented using RcppEigen and
+shirkage priors. The algorithms are implemented using RcppEigen and
 don’t require linking with any other external libraries.
 
 ## Installation
