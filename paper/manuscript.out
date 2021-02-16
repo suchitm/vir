@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Markov Chain Monte Carlo Methods}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Gibbs Sampling}{section.2}% 3
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Exponential Families}{subsection.2.1}% 4
+\BOOKMARK [1][-]{section.3}{Variational Inference}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{General Setup}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Mean-Field Approximations}{section.3}% 7
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Coordinate Ascent Variational Inference \(CAVI\)}{subsection.3.2}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Stochastic Variational Inference \(SVI\)}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Implementation and Usage}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{SVI}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Simulations}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{Linear Regression}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{Probit Regression}{section.5}% 14
+\BOOKMARK [1][-]{section.6}{Computational Performance}{}% 15
+\BOOKMARK [1][-]{section.7}{Discussion}{}% 16

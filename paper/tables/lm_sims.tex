@@ -1,0 +1,34 @@
+%latex.default(res_mat, file = lm_tab_path, rowlabel = "", rowname = row_labels,     rgroup = this_priors, n.rgroup = lapply(prior_inds, length) %>%         unlist(), colheads = rep(metric_names, length(this_N)),     cgroup = paste0("N = ", this_N), n.cgroup = rep(length(metric_names),         length(this_N)), table.env = FALSE, col.just = rep("c",         9))%
+\begin{center}
+\begin{tabular}{lccccccccccc}
+\hline\hline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{3}{c}{\bfseries N = 100}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries N = 1000}&\multicolumn{1}{c}{\bfseries }&\multicolumn{3}{c}{\bfseries N = 5000}\tabularnewline
+\cline{2-4} \cline{6-8} \cline{10-12}
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{MSE}&\multicolumn{1}{c}{Cov.}&\multicolumn{1}{c}{MSPE}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{MSE}&\multicolumn{1}{c}{Cov.}&\multicolumn{1}{c}{MSPE}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{MSE}&\multicolumn{1}{c}{Cov.}&\multicolumn{1}{c}{MSPE}\tabularnewline
+\hline
+{\bfseries Ridge}&&&&&&&&&&&\tabularnewline
+~~GLM-1SE&0.132&-&0.863&&0.021&-&0.717&&0.010&-&0.696\tabularnewline
+~~GLM-Min&0.095&-&0.806&&0.011&-&0.702&&0.004&-&0.690\tabularnewline
+~~Gibbs-Corr&0.099&0.955&0.803&&0.011&0.952&0.702&&0.002&0.948&0.690\tabularnewline
+~~CAVI-Corr&0.106&0.956&0.807&&0.011&0.950&0.702&&0.002&0.949&0.689\tabularnewline
+~~CAVI-Indep&0.098&0.914&0.801&&0.011&0.873&0.702&&0.002&0.883&0.689\tabularnewline
+~~SVI-Corr&0.106&0.957&0.807&&0.012&0.948&0.702&&0.003&0.935&0.690\tabularnewline
+~~SVI-Indep&0.099&0.914&0.801&&0.011&0.873&0.702&&0.003&0.860&0.690\tabularnewline
+\hline
+{\bfseries LASSO}&&&&&&&&&&&\tabularnewline
+~~GLM-1SE&0.084&-&0.807&&0.016&-&0.706&&0.008&-&0.693\tabularnewline
+~~GLM-Min&0.055&-&0.767&&0.005&-&0.694&&0.002&-&0.688\tabularnewline
+~~Gibbs-Corr&0.089&0.976&0.790&&0.008&0.972&0.699&&0.002&0.957&0.689\tabularnewline
+~~CAVI-Corr&0.094&0.947&0.796&&0.008&0.959&0.699&&0.002&0.952&0.689\tabularnewline
+~~CAVI-Indep&0.078&0.915&0.782&&0.008&0.902&0.698&&0.002&0.901&0.689\tabularnewline
+~~SVI-Corr&0.093&0.948&0.794&&0.009&0.955&0.699&&0.002&0.941&0.689\tabularnewline
+~~SVI-Indep&0.063&0.928&0.771&&0.007&0.924&0.697&&0.002&0.900&0.689\tabularnewline
+\hline
+{\bfseries HS}&&&&&&&&&&&\tabularnewline
+~~Gibbs-Corr&0.053&0.965&0.758&&0.004&0.986&0.692&&0.001&0.980&0.687\tabularnewline
+~~CAVI-Corr&0.069&0.932&0.774&&0.005&0.965&0.694&&0.001&0.966&0.688\tabularnewline
+~~CAVI-Indep&0.059&0.907&0.764&&0.005&0.942&0.693&&0.001&0.940&0.687\tabularnewline
+~~SVI-Corr&0.068&0.930&0.773&&0.005&0.967&0.694&&0.001&0.958&0.688\tabularnewline
+~~SVI-Indep&0.061&0.904&0.763&&0.005&0.939&0.693&&0.001&0.936&0.688\tabularnewline
+\hline
+\end{tabular}\end{center}

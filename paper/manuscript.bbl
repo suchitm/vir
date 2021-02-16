@@ -1,0 +1,263 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Amari}{Amari}{1998}]{amari1998natural}
+Amari, S.-I. (1998).
+\newblock Natural gradient works efficiently in learning.
+\newblock {\em Neural computation} {\bf 10,} 251--276.
+
+\bibitem[\protect\citeauthoryear{Bates, Eddelbuettel, et~al\mbox{.}}{Bates
+  et~al.}{2013}]{bates2013fast}
+Bates, D., Eddelbuettel, D., et~al. (2013).
+\newblock Fast and elegant numerical linear algebra using the rcppeigen
+  package.
+\newblock {\em Journal of Statistical Software} {\bf 52,} 1--24.
+
+\bibitem[\protect\citeauthoryear{Bernardo and Smith}{Bernardo and
+  Smith}{2000}]{bernardo2000}
+Bernardo, J.~M. and Smith, A.~F. (2000).
+\newblock {\em Bayesian theory}, volume 405.
+\newblock John Wiley \& Sons.
+
+\bibitem[\protect\citeauthoryear{Betancourt}{Betancourt}{2017}]{betancourt2017conceptual}
+Betancourt, M. (2017).
+\newblock A conceptual introduction to hamiltonian monte carlo.
+\newblock {\em arXiv preprint arXiv:1701.02434} .
+
+\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006}]{bishop2006pattern}
+Bishop, C.~M. (2006).
+\newblock {\em Pattern recognition and machine learning}.
+\newblock springer.
+
+\bibitem[\protect\citeauthoryear{Blei, Kucukelbir, and McAuliffe}{Blei
+  et~al.}{2017a}]{blei2017variational}
+Blei, D.~M., Kucukelbir, A., and McAuliffe, J.~D. (2017a).
+\newblock Variational inference: A review for statisticians.
+\newblock {\em Journal of the American Statistical Association} {\bf 112,}
+  859--877.
+
+\bibitem[\protect\citeauthoryear{Blei, Kucukelbir, and McAuliffe}{Blei
+  et~al.}{2017b}]{vbreview}
+Blei, D.~M., Kucukelbir, A., and McAuliffe, J.~D. (2017b).
+\newblock Variational inference: A review for statisticians.
+\newblock {\em Journal of the American Statistical Association} {\bf 112,}
+  859--877.
+
+\bibitem[\protect\citeauthoryear{Brooks, Gelman, Jones, and Meng}{Brooks
+  et~al.}{2011}]{brooks2011handbook}
+Brooks, S., Gelman, A., Jones, G., and Meng, X.-L. (2011).
+\newblock {\em Handbook of markov chain monte carlo}.
+\newblock CRC press.
+
+\bibitem[\protect\citeauthoryear{Carbonetto, Stephens,
+  et~al\mbox{.}}{Carbonetto et~al.}{2012}]{carbonetto2012scalable}
+Carbonetto, P., Stephens, M., et~al. (2012).
+\newblock Scalable variational inference for bayesian variable selection in
+  regression, and its accuracy in genetic association studies.
+\newblock {\em Bayesian analysis} {\bf 7,} 73--108.
+
+\bibitem[\protect\citeauthoryear{Carvalho, Polson, and Scott}{Carvalho
+  et~al.}{2010}]{carvalho2010horseshoe}
+Carvalho, C.~M., Polson, N.~G., and Scott, J.~G. (2010).
+\newblock The horseshoe estimator for sparse signals.
+\newblock {\em Biometrika} {\bf 97,} 465--480.
+
+\bibitem[\protect\citeauthoryear{Chen, Wang, Erosheva, et~al\mbox{.}}{Chen
+  et~al.}{2018}]{chen2018use}
+Chen, Y.-C., Wang, Y.~S., Erosheva, E.~A., et~al. (2018).
+\newblock On the use of bootstrap with variational inference: Theory,
+  interpretation, and a two-sample test example.
+\newblock {\em The Annals of Applied Statistics} {\bf 12,} 846--876.
+
+\bibitem[\protect\citeauthoryear{Eddelbuettel and Francois}{Eddelbuettel and
+  Francois}{2011}]{rcpp}
+Eddelbuettel, D. and Francois, R. (2011).
+\newblock Rcpp: Seamless r and c++ integration.
+\newblock {\em Journal of Statistical Software, Articles} {\bf 40,} 1--18.
+
+\bibitem[\protect\citeauthoryear{Fasano, Durante, and Zanella}{Fasano
+  et~al.}{2019}]{fasano2019scalable}
+Fasano, A., Durante, D., and Zanella, G. (2019).
+\newblock Scalable and accurate variational bayes for high-dimensional binary
+  regression models.
+\newblock {\em arXiv} pages arXiv--1911.
+
+\bibitem[\protect\citeauthoryear{Gelfand and Smith}{Gelfand and
+  Smith}{1990}]{gelfand1990sampling}
+Gelfand, A.~E. and Smith, A.~F. (1990).
+\newblock Sampling-based approaches to calculating marginal densities.
+\newblock {\em Journal of the American statistical association} {\bf 85,}
+  398--409.
+
+\bibitem[\protect\citeauthoryear{Geman and Geman}{Geman and
+  Geman}{1984}]{geman1984stochastic}
+Geman, S. and Geman, D. (1984).
+\newblock Stochastic relaxation, gibbs distributions, and the bayesian
+  restoration of images.
+\newblock {\em IEEE Transactions on pattern analysis and machine intelligence}
+  pages 721--741.
+
+\bibitem[\protect\citeauthoryear{Guhaniyogi and Dunson}{Guhaniyogi and
+  Dunson}{2015}]{bayesiancompressed}
+Guhaniyogi, R. and Dunson, D.~B. (2015).
+\newblock Bayesian compressed regression.
+\newblock {\em Journal of the American Statistical Association} {\bf 110,}
+  1500--1514.
+
+\bibitem[\protect\citeauthoryear{Hastings}{Hastings}{1970}]{hastings1970monte}
+Hastings, W.~K. (1970).
+\newblock Monte carlo sampling methods using markov chains and their
+  applications.
+
+\bibitem[\protect\citeauthoryear{Hoffman, Blei, Wang, and Paisley}{Hoffman
+  et~al.}{2013}]{hoffman2013svi}
+Hoffman, M.~D., Blei, D.~M., Wang, C., and Paisley, J. (2013).
+\newblock Stochastic variational inference.
+\newblock {\em The Journal of Machine Learning Research} {\bf 14,} 1303--1347.
+
+\bibitem[\protect\citeauthoryear{Hoffman and Gelman}{Hoffman and
+  Gelman}{2014}]{hoffman2014no}
+Hoffman, M.~D. and Gelman, A. (2014).
+\newblock The no-u-turn sampler: Adaptively setting path lengths in hamiltonian
+  monte carlo.
+\newblock {\em Journal of Machine Learning Research} {\bf 15,} 1593--1623.
+
+\bibitem[\protect\citeauthoryear{Holmes, Held, et~al\mbox{.}}{Holmes
+  et~al.}{2006}]{holmes2006bayesian}
+Holmes, C.~C., Held, L., et~al. (2006).
+\newblock Bayesian auxiliary variable models for binary and multinomial
+  regression.
+\newblock {\em Bayesian analysis} {\bf 1,} 145--168.
+
+\bibitem[\protect\citeauthoryear{Kingma and Ba}{Kingma and
+  Ba}{2014}]{kingma2014adam}
+Kingma, D.~P. and Ba, J. (2014).
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980} .
+
+\bibitem[\protect\citeauthoryear{Kucukelbir, Tran, Ranganath, Gelman, and
+  Blei}{Kucukelbir et~al.}{2017}]{advipaper}
+Kucukelbir, A., Tran, D., Ranganath, R., Gelman, A., and Blei, D.~M. (2017).
+\newblock Automatic differentiation variational inference.
+\newblock {\em Journal of Machine Learning Research} {\bf 18,} 1--45.
+
+\bibitem[\protect\citeauthoryear{Kyung, Gill, Ghosh, and Casella}{Kyung
+  et~al.}{2010}]{kyung2010penalized}
+Kyung, M., Gill, J., Ghosh, M., and Casella, G. (2010).
+\newblock Penalized regression, standard errors, and bayesian lassos.
+\newblock {\em Bayesian Analysis} {\bf 5,} 369--411.
+
+\bibitem[\protect\citeauthoryear{Ma, Chen, and Fox}{Ma et~al.}{2015}]{sgdmcmc}
+Ma, Y.-A., Chen, T., and Fox, E. (2015).
+\newblock A complete recipe for stochastic gradient mcmc.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  2917--2925.
+
+\bibitem[\protect\citeauthoryear{Makalic and Schmidt}{Makalic and
+  Schmidt}{2015}]{makalic2015simple}
+Makalic, E. and Schmidt, D.~F. (2015).
+\newblock A simple sampler for the horseshoe estimator.
+\newblock {\em IEEE Signal Processing Letters} {\bf 23,} 179--182.
+
+\bibitem[\protect\citeauthoryear{Metropolis, Rosenbluth, Rosenbluth, Teller,
+  and Teller}{Metropolis et~al.}{1953}]{metropolis1953}
+Metropolis, N., Rosenbluth, A.~W., Rosenbluth, M.~N., Teller, A.~H., and
+  Teller, E. (1953).
+\newblock Equation of state calculations by fast computing machines.
+\newblock {\em The journal of chemical physics} {\bf 21,} 1087--1092.
+
+\bibitem[\protect\citeauthoryear{Murphy}{Murphy}{2012}]{murphy2012}
+Murphy, K.~P. (2012).
+\newblock {\em Machine learning: a probabilistic perspective}.
+\newblock MIT press.
+
+\bibitem[\protect\citeauthoryear{Park and Casella}{Park and
+  Casella}{2008}]{park2008lasso}
+Park, T. and Casella, G. (2008).
+\newblock The bayesian lasso.
+\newblock {\em Journal of the American Statistical Association} {\bf 103,}
+  681--686.
+
+\bibitem[\protect\citeauthoryear{Plummer, Stukalov, Denwood, and
+  Plummer}{Plummer et~al.}{2019}]{plummer2019rjags}
+Plummer, M., Stukalov, A., Denwood, M., and Plummer, M.~M. (2019).
+\newblock Package ‘rjags’.
+
+\bibitem[\protect\citeauthoryear{Quiroz, Kohn, Villani, and Tran}{Quiroz
+  et~al.}{2018}]{quiroz2018speeding}
+Quiroz, M., Kohn, R., Villani, M., and Tran, M.-N. (2018).
+\newblock Speeding up mcmc by efficient data subsampling.
+\newblock {\em Journal of the American Statistical Association} .
+
+\bibitem[\protect\citeauthoryear{Rand}{Rand}{1971}]{rand1971objective}
+Rand, W.~M. (1971).
+\newblock Objective criteria for the evaluation of clustering methods.
+\newblock {\em Journal of the American Statistical association} {\bf 66,}
+  846--850.
+
+\bibitem[\protect\citeauthoryear{Robert and Casella}{Robert and
+  Casella}{2013}]{robert2013monte}
+Robert, C. and Casella, G. (2013).
+\newblock {\em Monte Carlo statistical methods}.
+\newblock Springer Science \& Business Media.
+
+\bibitem[\protect\citeauthoryear{Saibaba, Bardsley, Brown, and
+  Alexanderian}{Saibaba et~al.}{2019}]{saibaba2019efficient}
+Saibaba, A.~K., Bardsley, J., Brown, D.~A., and Alexanderian, A. (2019).
+\newblock Efficient marginalization-based mcmc methods for hierarchical
+  bayesian inverse problems.
+\newblock {\em SIAM/ASA Journal on Uncertainty Quantification} {\bf 7,}
+  1105--1131.
+
+\bibitem[\protect\citeauthoryear{Schaul, Zhang, and LeCun}{Schaul
+  et~al.}{2013}]{nopeskylr}
+Schaul, T., Zhang, S., and LeCun, Y. (2013).
+\newblock No more pesky learning rates.
+\newblock In {\em International Conference on Machine Learning}, pages
+  343--351.
+
+\bibitem[\protect\citeauthoryear{Scott, Blocker, Bonassi, Chipman, George, and
+  McCulloch}{Scott et~al.}{2016}]{consensusmc}
+Scott, S.~L., Blocker, A.~W., Bonassi, F.~V., Chipman, H.~A., George, E.~I.,
+  and McCulloch, R.~E. (2016).
+\newblock Bayes and big data: The consensus monte carlo algorithm.
+\newblock {\em International Journal of Management Science and Engineering
+  Management} {\bf 11,} 78--88.
+
+\bibitem[\protect\citeauthoryear{Simon, Friedman, Hastie, and Tibshirani}{Simon
+  et~al.}{2011}]{glmnet}
+Simon, N., Friedman, J., Hastie, T., and Tibshirani, R. (2011).
+\newblock Regularization paths for cox's proportional hazards model via
+  coordinate descent.
+\newblock {\em Journal of Statistical Software} {\bf 39,} 1--13.
+
+\bibitem[\protect\citeauthoryear{Srivastava, Cevher, Dinh, and
+  Dunson}{Srivastava et~al.}{2015}]{srivastava2015wasp}
+Srivastava, S., Cevher, V., Dinh, Q., and Dunson, D. (2015).
+\newblock Wasp: Scalable bayes via barycenters of subset posteriors.
+\newblock In {\em Artificial Intelligence and Statistics}, pages 912--920.
+
+\bibitem[\protect\citeauthoryear{{Stan Development Team}}{{Stan Development
+  Team}}{2018}]{stan2018rstan}
+{Stan Development Team} (2018).
+\newblock Rstan: the r interface to stan. r package version 2.17. 3.
+
+\bibitem[\protect\citeauthoryear{Sturtz, Ligges, and Gelman}{Sturtz
+  et~al.}{2005}]{r2winbugs}
+Sturtz, S., Ligges, U., and Gelman, A.~E. (2005).
+\newblock R2winbugs: a package for running winbugs from r.
+
+\bibitem[\protect\citeauthoryear{Terenin, Dong, and Draper}{Terenin
+  et~al.}{2019}]{terenin2019gpu}
+Terenin, A., Dong, S., and Draper, D. (2019).
+\newblock Gpu-accelerated gibbs sampling: a case study of the horseshoe probit
+  model.
+\newblock {\em Statistics and Computing} {\bf 29,} 301--310.
+
+\bibitem[\protect\citeauthoryear{Terenin, Simpson, and Draper}{Terenin
+  et~al.}{2020}]{terenin2020asynchronous}
+Terenin, A., Simpson, D., and Draper, D. (2020).
+\newblock Asynchronous gibbs sampling.
+\newblock In {\em International Conference on Artificial Intelligence and
+  Statistics}, pages 144--154.
+
+\end{thebibliography}

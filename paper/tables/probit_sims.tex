@@ -1,0 +1,34 @@
+%latex.default(res_mat, file = probit_tab_path, rowlabel = "",     rowname = row_labels, rgroup = this_priors, n.rgroup = lapply(prior_inds,         length) %>% unlist(), colheads = rep(metric_names, length(this_sim_type)),     cgroup = c("Logit", "Probit"), n.cgroup = rep(length(metric_names),         length(this_sim_type)), table.env = FALSE, col.just = rep("c",         ncol(res_mat)))%
+\begin{center}
+\begin{tabular}{lccccccccc}
+\hline\hline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{4}{c}{\bfseries Logit}&\multicolumn{1}{c}{\bfseries }&\multicolumn{4}{c}{\bfseries Probit}\tabularnewline
+\cline{2-5} \cline{7-10}
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{MSE}&\multicolumn{1}{c}{AUC-PR}&\multicolumn{1}{c}{PPV}&\multicolumn{1}{c}{RAND}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{MSE}&\multicolumn{1}{c}{AUC-PR}&\multicolumn{1}{c}{PPV}&\multicolumn{1}{c}{RAND}\tabularnewline
+\hline
+{\bfseries Ridge}&&&&&&&&&\tabularnewline
+~~GLM-Corr&0.080&0.875&0.769&0.673&&-&0.949&0.862&0.673\tabularnewline
+~~GLM-Corr&0.182&0.879&0.773&0.673&&-&0.947&0.860&0.673\tabularnewline
+~~Gibbs-Corr&-&0.880&0.776&0.837&&0.027&0.953&0.873&0.860\tabularnewline
+~~CAVI-Corr&-&0.880&0.775&0.755&&0.041&0.953&0.871&0.715\tabularnewline
+~~CAVI-Indep&-&0.880&0.774&0.655&&0.042&0.953&0.869&0.601\tabularnewline
+~~SVI-Corr&-&0.880&0.773&0.741&&0.039&0.953&0.870&0.694\tabularnewline
+~~SVI-Indep&-&0.880&0.775&0.643&&0.039&0.953&0.870&0.587\tabularnewline
+\hline
+{\bfseries LASSO}&&&&&&&&&\tabularnewline
+~~GLM-Corr&0.188&0.886&0.769&0.809&&-&0.953&0.862&0.813\tabularnewline
+~~GLM-Corr&0.181&0.892&0.780&0.607&&-&0.958&0.871&0.601\tabularnewline
+~~Gibbs-Corr&-&0.888&0.780&0.854&&0.030&0.957&0.879&0.875\tabularnewline
+~~CAVI-Corr&-&0.890&0.784&0.802&&0.020&0.959&0.879&0.807\tabularnewline
+~~CAVI-Indep&-&0.891&0.785&0.773&&0.025&0.960&0.876&0.774\tabularnewline
+~~SVI-Corr&-&0.889&0.786&0.801&&0.022&0.959&0.882&0.811\tabularnewline
+~~SVI-Indep&-&0.893&0.787&0.833&&0.025&0.961&0.882&0.851\tabularnewline
+\hline
+{\bfseries HS}&&&&&&&&&\tabularnewline
+~~Gibbs-Corr&-&0.895&0.783&0.849&&0.015&0.961&0.880&0.885\tabularnewline
+~~CAVI-Corr&-&0.896&0.783&0.853&&0.013&0.962&0.881&0.884\tabularnewline
+~~CAVI-Indep&-&0.895&0.779&0.855&&0.014&0.962&0.876&0.884\tabularnewline
+~~SVI-Corr&-&0.895&0.783&0.853&&0.013&0.962&0.880&0.884\tabularnewline
+~~SVI-Indep&-&0.895&0.782&0.855&&0.013&0.962&0.880&0.890\tabularnewline
+\hline
+\end{tabular}\end{center}

@@ -1,0 +1,159 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{robert2013monte}
+\citation{metropolis1953,hastings1970monte}
+\citation{geman1984stochastic,gelfand1990sampling}
+\citation{plummer2019rjags}
+\citation{r2winbugs}
+\citation{stan2018rstan}
+\citation{hoffman2014no}
+\citation{betancourt2017conceptual}
+\citation{terenin2019gpu}
+\citation{terenin2020asynchronous}
+\citation{consensusmc,srivastava2015wasp}
+\citation{bayesiancompressed}
+\citation{quiroz2018speeding,sgdmcmc}
+\citation{saibaba2019efficient}
+\citation{blei2017variational}
+\citation{hoffman2013svi}
+\citation{stan2018rstan,advipaper}
+\citation{carbonetto2012scalable}
+\providecommand \oddpage@label [2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\newlabel{sec:vir:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{park2008lasso}
+\citation{carvalho2010horseshoe}
+\citation{glmnet}
+\citation{robert2013monte}
+\citation{brooks2011handbook}
+\citation{bernardo2000}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Markov Chain Monte Carlo Methods}{3}{section.2}}
+\newlabel{sec:vir:mcmc}{{2}{3}{Markov Chain Monte Carlo Methods}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Gibbs Sampling}{3}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Exponential Families}{3}{subsubsection.2.1.1}}
+\newlabel{eq:vir:exp-fam}{{1}{3}{Exponential Families}{equation.2.1}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Gibbs Sampler\relax }}{4}{algocf.1}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{algo:vir:gibbs-sampler}{{1}{4}{Gibbs Sampling}{algocf.1}{}}
+\citation{vbreview,bishop2006pattern,murphy2012}
+\citation{vbreview,hoffman2013svi,bishop2006pattern,murphy2012}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Variational Inference}{5}{section.3}}
+\newlabel{sec:vir:vi}{{3}{5}{Variational Inference}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}General Setup}{5}{subsection.3.1}}
+\citation{vbreview}
+\citation{bishop2006pattern,vbreview,murphy2012}
+\newlabel{eq:vi_optim}{{3}{6}{General Setup}{equation.3.3}{}}
+\newlabel{eq:elbo}{{4}{6}{General Setup}{equation.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Mean-Field Approximations}{6}{subsection.3.2}}
+\newlabel{sec:mfvb}{{3.2}{6}{Mean-Field Approximations}{subsection.3.2}{}}
+\newlabel{eq:vir:mfvb}{{5}{6}{Mean-Field Approximations}{equation.3.5}{}}
+\citation{hoffman2013svi}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Coordinate Ascent Variational Inference (CAVI)}{7}{subsubsection.3.2.1}}
+\newlabel{eq:vir:cavi_optim}{{6}{7}{Coordinate Ascent Variational Inference (CAVI)}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Stochastic Variational Inference (SVI)}{7}{subsection.3.3}}
+\newlabel{eq:probit_ridge}{{8}{8}{Stochastic Variational Inference (SVI)}{equation.3.8}{}}
+\citation{hoffman2013svi}
+\citation{amari1998natural}
+\citation{hoffman2013svi}
+\newlabel{eq:natural_grad}{{12}{9}{Stochastic Variational Inference (SVI)}{equation.3.12}{}}
+\newlabel{eq:gradient_step}{{13}{9}{Stochastic Variational Inference (SVI)}{equation.3.13}{}}
+\newlabel{eq:rhot_cond}{{14}{9}{Stochastic Variational Inference (SVI)}{equation.3.14}{}}
+\citation{park2008lasso}
+\citation{carvalho2010horseshoe,makalic2015simple}
+\citation{rcpp}
+\citation{bates2013fast}
+\newlabel{eq:sgradient_step}{{15}{10}{Stochastic Variational Inference (SVI)}{equation.3.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Implementation and Usage}{10}{section.4}}
+\newlabel{sec:vir:usage}{{4}{10}{Implementation and Usage}{section.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces List of functions implemented in the {\fontseries  {b}\selectfont  vir} package. The functions have the format \texttt  {model\_prior\_algorithm}. Consequently, if an analyst wishes to use a Gibbs sampler to fit a multivariate linear model with a non-informative prior then they could call the function \texttt  {mv\_lm\_uninf\_gibbs()}. If they wished to fit a univariate probit model with a horseshoe prior using CAVI, they would call the function \texttt  {probit\_hs\_cavi()}. Each function is implemented in \textsf  {C++} using the {\fontseries  {b}\selectfont  RcppEigen} package.\relax }}{11}{table.caption.2}}
+\@cons\caption@pkg@list{{ragged2e}}
+\newlabel{tab:implementation}{{1}{11}{List of functions implemented in the \pkg {vir} package. The functions have the format \code {model\_prior\_algorithm}. Consequently, if an analyst wishes to use a Gibbs sampler to fit a multivariate linear model with a non-informative prior then they could call the function \fct {mv\_lm\_uninf\_gibbs}. If they wished to fit a univariate probit model with a horseshoe prior using CAVI, they would call the function \fct {probit\_hs\_cavi}. Each function is implemented in \proglang {C++} using the \pkg {RcppEigen} package.\relax }{table.caption.2}{}}
+\citation{hoffman2013svi}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}SVI}{13}{subsection.4.1}}
+\citation{nopeskylr,kingma2014adam}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Simulations}{14}{section.5}}
+\newlabel{sec:vir:simulations}{{5}{14}{Simulations}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Linear Regression}{14}{subsection.5.1}}
+\newlabel{sec:lm_sims}{{5.1}{14}{Linear Regression}{subsection.5.1}{}}
+\newlabel{eq:lm_sim}{{16}{14}{Linear Regression}{equation.5.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Simulation results for the normal linear model.\relax }}{15}{table.caption.3}}
+\newlabel{tab:lm_sims}{{2}{15}{Simulation results for the normal linear model.\relax }{table.caption.3}{}}
+\citation{rand1971objective}
+\citation{fasano2019scalable}
+\citation{holmes2006bayesian}
+\citation{chen2018use}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Probit Regression}{16}{subsection.5.2}}
+\newlabel{sec:probit_sims}{{5.2}{16}{Probit Regression}{subsection.5.2}{}}
+\citation{kyung2010penalized}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Simulation results for binary regression with shrinkage priors.\relax }}{17}{table.caption.4}}
+\newlabel{tab:probit_sims}{{3}{17}{Simulation results for binary regression with shrinkage priors.\relax }{table.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Computational Performance}{18}{section.6}}
+\newlabel{sec:vir:timing}{{6}{18}{Computational Performance}{section.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Timing results as the number of predictors is varied with sample size fixed.\relax }}{19}{figure.caption.5}}
+\newlabel{fig:timing_n_fix}{{1}{19}{Timing results as the number of predictors is varied with sample size fixed.\relax }{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Timing results when the sample size is varied with the number of predictors fixed at 100.\relax }}{19}{figure.caption.6}}
+\newlabel{fig:timing_p_fix}{{2}{19}{Timing results when the sample size is varied with the number of predictors fixed at 100.\relax }{figure.caption.6}{}}
+\bibdata{references.bib}
+\bibcite{amari1998natural}{{1}{1998}{{Amari}}{{Amari}}}
+\bibcite{bates2013fast}{{2}{2013}{{Bates et~al.}}{{Bates, Eddelbuettel, et~al\unhbox \voidb@x \hbox {.}}}}
+\bibcite{bernardo2000}{{3}{2000}{{Bernardo and Smith}}{{Bernardo and Smith}}}
+\bibcite{betancourt2017conceptual}{{4}{2017}{{Betancourt}}{{Betancourt}}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{20}{section.7}}
+\newlabel{sec:vir:discussion}{{7}{20}{Discussion}{section.7}{}}
+\bibcite{bishop2006pattern}{{5}{2006}{{Bishop}}{{Bishop}}}
+\bibcite{blei2017variational}{{6}{2017a}{{Blei et~al.}}{{Blei, Kucukelbir, and McAuliffe}}}
+\bibcite{vbreview}{{7}{2017b}{{Blei et~al.}}{{Blei, Kucukelbir, and McAuliffe}}}
+\bibcite{brooks2011handbook}{{8}{2011}{{Brooks et~al.}}{{Brooks, Gelman, Jones, and Meng}}}
+\bibcite{carbonetto2012scalable}{{9}{2012}{{Carbonetto et~al.}}{{Carbonetto, Stephens, et~al\unhbox \voidb@x \hbox {.}}}}
+\bibcite{carvalho2010horseshoe}{{10}{2010}{{Carvalho et~al.}}{{Carvalho, Polson, and Scott}}}
+\bibcite{chen2018use}{{11}{2018}{{Chen et~al.}}{{Chen, Wang, Erosheva, et~al\unhbox \voidb@x \hbox {.}}}}
+\bibcite{rcpp}{{12}{2011}{{Eddelbuettel and Francois}}{{Eddelbuettel and Francois}}}
+\bibcite{fasano2019scalable}{{13}{2019}{{Fasano et~al.}}{{Fasano, Durante, and Zanella}}}
+\bibcite{gelfand1990sampling}{{14}{1990}{{Gelfand and Smith}}{{Gelfand and Smith}}}
+\bibcite{geman1984stochastic}{{15}{1984}{{Geman and Geman}}{{Geman and Geman}}}
+\bibcite{bayesiancompressed}{{16}{2015}{{Guhaniyogi and Dunson}}{{Guhaniyogi and Dunson}}}
+\bibcite{hastings1970monte}{{17}{1970}{{Hastings}}{{Hastings}}}
+\bibcite{hoffman2013svi}{{18}{2013}{{Hoffman et~al.}}{{Hoffman, Blei, Wang, and Paisley}}}
+\bibcite{hoffman2014no}{{19}{2014}{{Hoffman and Gelman}}{{Hoffman and Gelman}}}
+\bibcite{holmes2006bayesian}{{20}{2006}{{Holmes et~al.}}{{Holmes, Held, et~al\unhbox \voidb@x \hbox {.}}}}
+\bibcite{kingma2014adam}{{21}{2014}{{Kingma and Ba}}{{Kingma and Ba}}}
+\bibcite{advipaper}{{22}{2017}{{Kucukelbir et~al.}}{{Kucukelbir, Tran, Ranganath, Gelman, and Blei}}}
+\bibcite{kyung2010penalized}{{23}{2010}{{Kyung et~al.}}{{Kyung, Gill, Ghosh, and Casella}}}
+\bibcite{sgdmcmc}{{24}{2015}{{Ma et~al.}}{{Ma, Chen, and Fox}}}
+\bibcite{makalic2015simple}{{25}{2015}{{Makalic and Schmidt}}{{Makalic and Schmidt}}}
+\bibcite{metropolis1953}{{26}{1953}{{Metropolis et~al.}}{{Metropolis, Rosenbluth, Rosenbluth, Teller, and Teller}}}
+\bibcite{murphy2012}{{27}{2012}{{Murphy}}{{Murphy}}}
+\bibcite{park2008lasso}{{28}{2008}{{Park and Casella}}{{Park and Casella}}}
+\bibcite{plummer2019rjags}{{29}{2019}{{Plummer et~al.}}{{Plummer, Stukalov, Denwood, and Plummer}}}
+\bibcite{quiroz2018speeding}{{30}{2018}{{Quiroz et~al.}}{{Quiroz, Kohn, Villani, and Tran}}}
+\bibcite{rand1971objective}{{31}{1971}{{Rand}}{{Rand}}}
+\bibcite{robert2013monte}{{32}{2013}{{Robert and Casella}}{{Robert and Casella}}}
+\bibcite{saibaba2019efficient}{{33}{2019}{{Saibaba et~al.}}{{Saibaba, Bardsley, Brown, and Alexanderian}}}
+\bibcite{nopeskylr}{{34}{2013}{{Schaul et~al.}}{{Schaul, Zhang, and LeCun}}}
+\bibcite{consensusmc}{{35}{2016}{{Scott et~al.}}{{Scott, Blocker, Bonassi, Chipman, George, and McCulloch}}}
+\bibcite{glmnet}{{36}{2011}{{Simon et~al.}}{{Simon, Friedman, Hastie, and Tibshirani}}}
+\bibcite{srivastava2015wasp}{{37}{2015}{{Srivastava et~al.}}{{Srivastava, Cevher, Dinh, and Dunson}}}
+\bibcite{stan2018rstan}{{38}{2018}{{{Stan Development Team}}}{{{Stan Development Team}}}}
+\bibcite{r2winbugs}{{39}{2005}{{Sturtz et~al.}}{{Sturtz, Ligges, and Gelman}}}
+\bibcite{terenin2019gpu}{{40}{2019}{{Terenin et~al.}}{{Terenin, Dong, and Draper}}}
+\bibcite{terenin2020asynchronous}{{41}{2020}{{Terenin et~al.}}{{Terenin, Simpson, and Draper}}}
+\bibstyle{biom}
+\newlabel{LastPage}{{}{23}{}{page.23}{}}
+\xdef\lastpage@lastpage{23}
+\xdef\lastpage@lastpageHy{23}
