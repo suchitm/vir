@@ -1,50 +1,51 @@
 This is BibTeX, Version 0.99d (TeX Live 2018)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: manuscript.aux
-The style file: biom.bst
+The style file: plainnat.bst
 Database file #1: references.bib
+Warning--there's a number but no volume in geman1984stochastic
 Warning--empty journal in hastings1970monte
 Warning--empty journal in plummer2019rjags
 Warning--empty journal in r2winbugs
 You've used 41 entries,
-            2146 wiz_defined-function locations,
-            756 strings with 10467 characters,
-and the built_in function-call counts, 19077 in all, are:
-= -- 1761
-> -- 1070
-< -- 24
-+ -- 358
+            2773 wiz_defined-function locations,
+            842 strings with 11522 characters,
+and the built_in function-call counts, 19774 in all, are:
+= -- 1769
+> -- 1140
+< -- 23
++ -- 387
 - -- 345
-* -- 1766
-:= -- 3309
-add.period$ -- 119
+* -- 1650
+:= -- 3013
+add.period$ -- 129
 call.type$ -- 41
-change.case$ -- 311
+change.case$ -- 229
 chr.to.int$ -- 40
-cite$ -- 44
-duplicate$ -- 671
-empty$ -- 1159
+cite$ -- 86
+duplicate$ -- 896
+empty$ -- 1616
 format.name$ -- 406
-if$ -- 3611
+if$ -- 4135
 int.to.chr$ -- 2
-int.to.str$ -- 0
+int.to.str$ -- 1
 missing$ -- 45
-newline$ -- 204
+newline$ -- 219
 num.names$ -- 164
-pop$ -- 296
+pop$ -- 457
 preamble$ -- 1
-purify$ -- 316
+purify$ -- 193
 quote$ -- 0
-skip$ -- 487
+skip$ -- 693
 stack$ -- 0
-substring$ -- 1269
-swap$ -- 311
-text.length$ -- 7
+substring$ -- 840
+swap$ -- 96
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 236
-warning$ -- 3
-while$ -- 185
+type$ -- 426
+warning$ -- 4
+while$ -- 184
 width$ -- 0
-write$ -- 516
-(There were 3 warnings)
+write$ -- 538
+(There were 4 warnings)

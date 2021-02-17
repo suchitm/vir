@@ -1,263 +1,269 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{41}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[\protect\citeauthoryear{Amari}{Amari}{1998}]{amari1998natural}
-Amari, S.-I. (1998).
+\bibitem[Amari(1998)]{amari1998natural}
+Shun-Ichi Amari.
 \newblock Natural gradient works efficiently in learning.
-\newblock {\em Neural computation} {\bf 10,} 251--276.
+\newblock \emph{Neural computation}, 10\penalty0 (2):\penalty0 251--276, 1998.
 
-\bibitem[\protect\citeauthoryear{Bates, Eddelbuettel, et~al\mbox{.}}{Bates
-  et~al.}{2013}]{bates2013fast}
-Bates, D., Eddelbuettel, D., et~al. (2013).
+\bibitem[Bates et~al.(2013)Bates, Eddelbuettel, et~al.]{bates2013fast}
+Douglas Bates, Dirk Eddelbuettel, et~al.
 \newblock Fast and elegant numerical linear algebra using the rcppeigen
   package.
-\newblock {\em Journal of Statistical Software} {\bf 52,} 1--24.
+\newblock \emph{Journal of Statistical Software}, 52\penalty0 (5):\penalty0
+  1--24, 2013.
 
-\bibitem[\protect\citeauthoryear{Bernardo and Smith}{Bernardo and
-  Smith}{2000}]{bernardo2000}
-Bernardo, J.~M. and Smith, A.~F. (2000).
-\newblock {\em Bayesian theory}, volume 405.
-\newblock John Wiley \& Sons.
+\bibitem[Bernardo and Smith(2000)]{bernardo2000}
+Jos{\'e}~M Bernardo and Adrian~FM Smith.
+\newblock \emph{Bayesian theory}, volume 405.
+\newblock John Wiley \& Sons, 2000.
 
-\bibitem[\protect\citeauthoryear{Betancourt}{Betancourt}{2017}]{betancourt2017conceptual}
-Betancourt, M. (2017).
+\bibitem[Betancourt(2017)]{betancourt2017conceptual}
+Michael Betancourt.
 \newblock A conceptual introduction to hamiltonian monte carlo.
-\newblock {\em arXiv preprint arXiv:1701.02434} .
+\newblock \emph{arXiv preprint arXiv:1701.02434}, 2017.
 
-\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006}]{bishop2006pattern}
-Bishop, C.~M. (2006).
-\newblock {\em Pattern recognition and machine learning}.
-\newblock springer.
+\bibitem[Bishop(2006)]{bishop2006pattern}
+Christopher~M Bishop.
+\newblock \emph{Pattern recognition and machine learning}.
+\newblock springer, 2006.
 
-\bibitem[\protect\citeauthoryear{Blei, Kucukelbir, and McAuliffe}{Blei
-  et~al.}{2017a}]{blei2017variational}
-Blei, D.~M., Kucukelbir, A., and McAuliffe, J.~D. (2017a).
+\bibitem[Blei et~al.(2017{\natexlab{a}})Blei, Kucukelbir, and
+  McAuliffe]{blei2017variational}
+David~M Blei, Alp Kucukelbir, and Jon~D McAuliffe.
 \newblock Variational inference: A review for statisticians.
-\newblock {\em Journal of the American Statistical Association} {\bf 112,}
-  859--877.
+\newblock \emph{Journal of the American Statistical Association}, 112\penalty0
+  (518):\penalty0 859--877, 2017{\natexlab{a}}.
 
-\bibitem[\protect\citeauthoryear{Blei, Kucukelbir, and McAuliffe}{Blei
-  et~al.}{2017b}]{vbreview}
-Blei, D.~M., Kucukelbir, A., and McAuliffe, J.~D. (2017b).
+\bibitem[Blei et~al.(2017{\natexlab{b}})Blei, Kucukelbir, and
+  McAuliffe]{vbreview}
+David~M. Blei, Alp Kucukelbir, and Jon~D. McAuliffe.
 \newblock Variational inference: A review for statisticians.
-\newblock {\em Journal of the American Statistical Association} {\bf 112,}
-  859--877.
+\newblock \emph{Journal of the American Statistical Association}, 112\penalty0
+  (518):\penalty0 859--877, 2017{\natexlab{b}}.
+\newblock \doi{10.1080/01621459.2017.1285773}.
+\newblock URL \url{https://doi.org/10.1080/01621459.2017.1285773}.
 
-\bibitem[\protect\citeauthoryear{Brooks, Gelman, Jones, and Meng}{Brooks
-  et~al.}{2011}]{brooks2011handbook}
-Brooks, S., Gelman, A., Jones, G., and Meng, X.-L. (2011).
-\newblock {\em Handbook of markov chain monte carlo}.
-\newblock CRC press.
+\bibitem[Brooks et~al.(2011)Brooks, Gelman, Jones, and
+  Meng]{brooks2011handbook}
+Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
+\newblock \emph{Handbook of markov chain monte carlo}.
+\newblock CRC press, 2011.
 
-\bibitem[\protect\citeauthoryear{Carbonetto, Stephens,
-  et~al\mbox{.}}{Carbonetto et~al.}{2012}]{carbonetto2012scalable}
-Carbonetto, P., Stephens, M., et~al. (2012).
+\bibitem[Carbonetto et~al.(2012)Carbonetto, Stephens,
+  et~al.]{carbonetto2012scalable}
+Peter Carbonetto, Matthew Stephens, et~al.
 \newblock Scalable variational inference for bayesian variable selection in
   regression, and its accuracy in genetic association studies.
-\newblock {\em Bayesian analysis} {\bf 7,} 73--108.
+\newblock \emph{Bayesian analysis}, 7\penalty0 (1):\penalty0 73--108, 2012.
 
-\bibitem[\protect\citeauthoryear{Carvalho, Polson, and Scott}{Carvalho
-  et~al.}{2010}]{carvalho2010horseshoe}
-Carvalho, C.~M., Polson, N.~G., and Scott, J.~G. (2010).
+\bibitem[Carvalho et~al.(2010)Carvalho, Polson, and
+  Scott]{carvalho2010horseshoe}
+Carlos~M Carvalho, Nicholas~G Polson, and James~G Scott.
 \newblock The horseshoe estimator for sparse signals.
-\newblock {\em Biometrika} {\bf 97,} 465--480.
+\newblock \emph{Biometrika}, 97\penalty0 (2):\penalty0 465--480, 2010.
 
-\bibitem[\protect\citeauthoryear{Chen, Wang, Erosheva, et~al\mbox{.}}{Chen
-  et~al.}{2018}]{chen2018use}
-Chen, Y.-C., Wang, Y.~S., Erosheva, E.~A., et~al. (2018).
+\bibitem[Chen et~al.(2018)Chen, Wang, Erosheva, et~al.]{chen2018use}
+Yen-Chi Chen, Y~Samuel Wang, Elena~A Erosheva, et~al.
 \newblock On the use of bootstrap with variational inference: Theory,
   interpretation, and a two-sample test example.
-\newblock {\em The Annals of Applied Statistics} {\bf 12,} 846--876.
+\newblock \emph{The Annals of Applied Statistics}, 12\penalty0 (2):\penalty0
+  846--876, 2018.
 
-\bibitem[\protect\citeauthoryear{Eddelbuettel and Francois}{Eddelbuettel and
-  Francois}{2011}]{rcpp}
-Eddelbuettel, D. and Francois, R. (2011).
+\bibitem[Eddelbuettel and Francois(2011)]{rcpp}
+Dirk Eddelbuettel and Romain Francois.
 \newblock Rcpp: Seamless r and c++ integration.
-\newblock {\em Journal of Statistical Software, Articles} {\bf 40,} 1--18.
+\newblock \emph{Journal of Statistical Software, Articles}, 40\penalty0
+  (8):\penalty0 1--18, 2011.
+\newblock ISSN 1548-7660.
+\newblock \doi{10.18637/jss.v040.i08}.
+\newblock URL \url{https://www.jstatsoft.org/v040/i08}.
 
-\bibitem[\protect\citeauthoryear{Fasano, Durante, and Zanella}{Fasano
-  et~al.}{2019}]{fasano2019scalable}
-Fasano, A., Durante, D., and Zanella, G. (2019).
+\bibitem[Fasano et~al.(2019)Fasano, Durante, and Zanella]{fasano2019scalable}
+Augusto Fasano, Daniele Durante, and Giacomo Zanella.
 \newblock Scalable and accurate variational bayes for high-dimensional binary
   regression models.
-\newblock {\em arXiv} pages arXiv--1911.
+\newblock \emph{arXiv}, pages arXiv--1911, 2019.
 
-\bibitem[\protect\citeauthoryear{Gelfand and Smith}{Gelfand and
-  Smith}{1990}]{gelfand1990sampling}
-Gelfand, A.~E. and Smith, A.~F. (1990).
+\bibitem[Gelfand and Smith(1990)]{gelfand1990sampling}
+Alan~E Gelfand and Adrian~FM Smith.
 \newblock Sampling-based approaches to calculating marginal densities.
-\newblock {\em Journal of the American statistical association} {\bf 85,}
-  398--409.
+\newblock \emph{Journal of the American statistical association}, 85\penalty0
+  (410):\penalty0 398--409, 1990.
 
-\bibitem[\protect\citeauthoryear{Geman and Geman}{Geman and
-  Geman}{1984}]{geman1984stochastic}
-Geman, S. and Geman, D. (1984).
+\bibitem[Geman and Geman(1984)]{geman1984stochastic}
+Stuart Geman and Donald Geman.
 \newblock Stochastic relaxation, gibbs distributions, and the bayesian
   restoration of images.
-\newblock {\em IEEE Transactions on pattern analysis and machine intelligence}
-  pages 721--741.
+\newblock \emph{IEEE Transactions on pattern analysis and machine
+  intelligence}, \penalty0 (6):\penalty0 721--741, 1984.
 
-\bibitem[\protect\citeauthoryear{Guhaniyogi and Dunson}{Guhaniyogi and
-  Dunson}{2015}]{bayesiancompressed}
-Guhaniyogi, R. and Dunson, D.~B. (2015).
+\bibitem[Guhaniyogi and Dunson(2015)]{bayesiancompressed}
+Rajarshi Guhaniyogi and David~B Dunson.
 \newblock Bayesian compressed regression.
-\newblock {\em Journal of the American Statistical Association} {\bf 110,}
-  1500--1514.
+\newblock \emph{Journal of the American Statistical Association}, 110\penalty0
+  (512):\penalty0 1500--1514, 2015.
 
-\bibitem[\protect\citeauthoryear{Hastings}{Hastings}{1970}]{hastings1970monte}
-Hastings, W.~K. (1970).
+\bibitem[Hastings(1970)]{hastings1970monte}
+W~Keith Hastings.
 \newblock Monte carlo sampling methods using markov chains and their
   applications.
+\newblock 1970.
 
-\bibitem[\protect\citeauthoryear{Hoffman, Blei, Wang, and Paisley}{Hoffman
-  et~al.}{2013}]{hoffman2013svi}
-Hoffman, M.~D., Blei, D.~M., Wang, C., and Paisley, J. (2013).
-\newblock Stochastic variational inference.
-\newblock {\em The Journal of Machine Learning Research} {\bf 14,} 1303--1347.
-
-\bibitem[\protect\citeauthoryear{Hoffman and Gelman}{Hoffman and
-  Gelman}{2014}]{hoffman2014no}
-Hoffman, M.~D. and Gelman, A. (2014).
+\bibitem[Hoffman and Gelman(2014)]{hoffman2014no}
+Matthew~D Hoffman and Andrew Gelman.
 \newblock The no-u-turn sampler: Adaptively setting path lengths in hamiltonian
   monte carlo.
-\newblock {\em Journal of Machine Learning Research} {\bf 15,} 1593--1623.
+\newblock \emph{Journal of Machine Learning Research}, 15:\penalty0 1593--1623,
+  2014.
 
-\bibitem[\protect\citeauthoryear{Holmes, Held, et~al\mbox{.}}{Holmes
-  et~al.}{2006}]{holmes2006bayesian}
-Holmes, C.~C., Held, L., et~al. (2006).
+\bibitem[Hoffman et~al.(2013)Hoffman, Blei, Wang, and Paisley]{hoffman2013svi}
+Matthew~D Hoffman, David~M Blei, Chong Wang, and John Paisley.
+\newblock Stochastic variational inference.
+\newblock \emph{The Journal of Machine Learning Research}, 14\penalty0
+  (1):\penalty0 1303--1347, 2013.
+
+\bibitem[Holmes et~al.(2006)Holmes, Held, et~al.]{holmes2006bayesian}
+Chris~C Holmes, Leonhard Held, et~al.
 \newblock Bayesian auxiliary variable models for binary and multinomial
   regression.
-\newblock {\em Bayesian analysis} {\bf 1,} 145--168.
+\newblock \emph{Bayesian analysis}, 1\penalty0 (1):\penalty0 145--168, 2006.
 
-\bibitem[\protect\citeauthoryear{Kingma and Ba}{Kingma and
-  Ba}{2014}]{kingma2014adam}
-Kingma, D.~P. and Ba, J. (2014).
+\bibitem[Kingma and Ba(2014)]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
 \newblock Adam: A method for stochastic optimization.
-\newblock {\em arXiv preprint arXiv:1412.6980} .
+\newblock \emph{arXiv preprint arXiv:1412.6980}, 2014.
 
-\bibitem[\protect\citeauthoryear{Kucukelbir, Tran, Ranganath, Gelman, and
-  Blei}{Kucukelbir et~al.}{2017}]{advipaper}
-Kucukelbir, A., Tran, D., Ranganath, R., Gelman, A., and Blei, D.~M. (2017).
+\bibitem[Kucukelbir et~al.(2017)Kucukelbir, Tran, Ranganath, Gelman, and
+  Blei]{advipaper}
+Alp Kucukelbir, Dustin Tran, Rajesh Ranganath, Andrew Gelman, and David~M.
+  Blei.
 \newblock Automatic differentiation variational inference.
-\newblock {\em Journal of Machine Learning Research} {\bf 18,} 1--45.
+\newblock \emph{Journal of Machine Learning Research}, 18\penalty0
+  (14):\penalty0 1--45, 2017.
+\newblock URL \url{http://jmlr.org/papers/v18/16-107.html}.
 
-\bibitem[\protect\citeauthoryear{Kyung, Gill, Ghosh, and Casella}{Kyung
-  et~al.}{2010}]{kyung2010penalized}
-Kyung, M., Gill, J., Ghosh, M., and Casella, G. (2010).
+\bibitem[Kyung et~al.(2010)Kyung, Gill, Ghosh, and Casella]{kyung2010penalized}
+Minjung Kyung, Jeff Gill, Malay Ghosh, and George Casella.
 \newblock Penalized regression, standard errors, and bayesian lassos.
-\newblock {\em Bayesian Analysis} {\bf 5,} 369--411.
+\newblock \emph{Bayesian Analysis}, 5\penalty0 (2):\penalty0 369--411, 2010.
 
-\bibitem[\protect\citeauthoryear{Ma, Chen, and Fox}{Ma et~al.}{2015}]{sgdmcmc}
-Ma, Y.-A., Chen, T., and Fox, E. (2015).
+\bibitem[Ma et~al.(2015)Ma, Chen, and Fox]{sgdmcmc}
+Yi-An Ma, Tianqi Chen, and Emily Fox.
 \newblock A complete recipe for stochastic gradient mcmc.
-\newblock In {\em Advances in Neural Information Processing Systems}, pages
-  2917--2925.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  2917--2925, 2015.
 
-\bibitem[\protect\citeauthoryear{Makalic and Schmidt}{Makalic and
-  Schmidt}{2015}]{makalic2015simple}
-Makalic, E. and Schmidt, D.~F. (2015).
+\bibitem[Makalic and Schmidt(2015)]{makalic2015simple}
+Enes Makalic and Daniel~F Schmidt.
 \newblock A simple sampler for the horseshoe estimator.
-\newblock {\em IEEE Signal Processing Letters} {\bf 23,} 179--182.
+\newblock \emph{IEEE Signal Processing Letters}, 23\penalty0 (1):\penalty0
+  179--182, 2015.
 
-\bibitem[\protect\citeauthoryear{Metropolis, Rosenbluth, Rosenbluth, Teller,
-  and Teller}{Metropolis et~al.}{1953}]{metropolis1953}
-Metropolis, N., Rosenbluth, A.~W., Rosenbluth, M.~N., Teller, A.~H., and
-  Teller, E. (1953).
+\bibitem[Metropolis et~al.(1953)Metropolis, Rosenbluth, Rosenbluth, Teller, and
+  Teller]{metropolis1953}
+Nicholas Metropolis, Arianna~W Rosenbluth, Marshall~N Rosenbluth, Augusta~H
+  Teller, and Edward Teller.
 \newblock Equation of state calculations by fast computing machines.
-\newblock {\em The journal of chemical physics} {\bf 21,} 1087--1092.
+\newblock \emph{The journal of chemical physics}, 21\penalty0 (6):\penalty0
+  1087--1092, 1953.
 
-\bibitem[\protect\citeauthoryear{Murphy}{Murphy}{2012}]{murphy2012}
-Murphy, K.~P. (2012).
-\newblock {\em Machine learning: a probabilistic perspective}.
-\newblock MIT press.
+\bibitem[Murphy(2012)]{murphy2012}
+Kevin~P Murphy.
+\newblock \emph{Machine learning: a probabilistic perspective}.
+\newblock MIT press, 2012.
 
-\bibitem[\protect\citeauthoryear{Park and Casella}{Park and
-  Casella}{2008}]{park2008lasso}
-Park, T. and Casella, G. (2008).
+\bibitem[Park and Casella(2008)]{park2008lasso}
+Trevor Park and George Casella.
 \newblock The bayesian lasso.
-\newblock {\em Journal of the American Statistical Association} {\bf 103,}
-  681--686.
+\newblock \emph{Journal of the American Statistical Association}, 103\penalty0
+  (482):\penalty0 681--686, 2008.
 
-\bibitem[\protect\citeauthoryear{Plummer, Stukalov, Denwood, and
-  Plummer}{Plummer et~al.}{2019}]{plummer2019rjags}
-Plummer, M., Stukalov, A., Denwood, M., and Plummer, M.~M. (2019).
+\bibitem[Plummer et~al.(2019)Plummer, Stukalov, Denwood, and
+  Plummer]{plummer2019rjags}
+Martyn Plummer, Alexey Stukalov, Matt Denwood, and Maintainer~Martyn Plummer.
 \newblock Package ‘rjags’.
+\newblock 2019.
 
-\bibitem[\protect\citeauthoryear{Quiroz, Kohn, Villani, and Tran}{Quiroz
-  et~al.}{2018}]{quiroz2018speeding}
-Quiroz, M., Kohn, R., Villani, M., and Tran, M.-N. (2018).
+\bibitem[Quiroz et~al.(2018)Quiroz, Kohn, Villani, and
+  Tran]{quiroz2018speeding}
+Matias Quiroz, Robert Kohn, Mattias Villani, and Minh-Ngoc Tran.
 \newblock Speeding up mcmc by efficient data subsampling.
-\newblock {\em Journal of the American Statistical Association} .
+\newblock \emph{Journal of the American Statistical Association}, 2018.
 
-\bibitem[\protect\citeauthoryear{Rand}{Rand}{1971}]{rand1971objective}
-Rand, W.~M. (1971).
+\bibitem[Rand(1971)]{rand1971objective}
+William~M Rand.
 \newblock Objective criteria for the evaluation of clustering methods.
-\newblock {\em Journal of the American Statistical association} {\bf 66,}
-  846--850.
+\newblock \emph{Journal of the American Statistical association}, 66\penalty0
+  (336):\penalty0 846--850, 1971.
 
-\bibitem[\protect\citeauthoryear{Robert and Casella}{Robert and
-  Casella}{2013}]{robert2013monte}
-Robert, C. and Casella, G. (2013).
-\newblock {\em Monte Carlo statistical methods}.
-\newblock Springer Science \& Business Media.
+\bibitem[Robert and Casella(2013)]{robert2013monte}
+Christian Robert and George Casella.
+\newblock \emph{Monte Carlo statistical methods}.
+\newblock Springer Science \& Business Media, 2013.
 
-\bibitem[\protect\citeauthoryear{Saibaba, Bardsley, Brown, and
-  Alexanderian}{Saibaba et~al.}{2019}]{saibaba2019efficient}
-Saibaba, A.~K., Bardsley, J., Brown, D.~A., and Alexanderian, A. (2019).
+\bibitem[Saibaba et~al.(2019)Saibaba, Bardsley, Brown, and
+  Alexanderian]{saibaba2019efficient}
+Arvind~K Saibaba, Johnathan Bardsley, D~Andrew Brown, and Alen Alexanderian.
 \newblock Efficient marginalization-based mcmc methods for hierarchical
   bayesian inverse problems.
-\newblock {\em SIAM/ASA Journal on Uncertainty Quantification} {\bf 7,}
-  1105--1131.
+\newblock \emph{SIAM/ASA Journal on Uncertainty Quantification}, 7\penalty0
+  (3):\penalty0 1105--1131, 2019.
 
-\bibitem[\protect\citeauthoryear{Schaul, Zhang, and LeCun}{Schaul
-  et~al.}{2013}]{nopeskylr}
-Schaul, T., Zhang, S., and LeCun, Y. (2013).
+\bibitem[Schaul et~al.(2013)Schaul, Zhang, and LeCun]{nopeskylr}
+Tom Schaul, Sixin Zhang, and Yann LeCun.
 \newblock No more pesky learning rates.
-\newblock In {\em International Conference on Machine Learning}, pages
-  343--351.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  343--351, 2013.
 
-\bibitem[\protect\citeauthoryear{Scott, Blocker, Bonassi, Chipman, George, and
-  McCulloch}{Scott et~al.}{2016}]{consensusmc}
-Scott, S.~L., Blocker, A.~W., Bonassi, F.~V., Chipman, H.~A., George, E.~I.,
-  and McCulloch, R.~E. (2016).
+\bibitem[Scott et~al.(2016)Scott, Blocker, Bonassi, Chipman, George, and
+  McCulloch]{consensusmc}
+Steven~L Scott, Alexander~W Blocker, Fernando~V Bonassi, Hugh~A Chipman,
+  Edward~I George, and Robert~E McCulloch.
 \newblock Bayes and big data: The consensus monte carlo algorithm.
-\newblock {\em International Journal of Management Science and Engineering
-  Management} {\bf 11,} 78--88.
+\newblock \emph{International Journal of Management Science and Engineering
+  Management}, 11\penalty0 (2):\penalty0 78--88, 2016.
 
-\bibitem[\protect\citeauthoryear{Simon, Friedman, Hastie, and Tibshirani}{Simon
-  et~al.}{2011}]{glmnet}
-Simon, N., Friedman, J., Hastie, T., and Tibshirani, R. (2011).
+\bibitem[Simon et~al.(2011)Simon, Friedman, Hastie, and Tibshirani]{glmnet}
+Noah Simon, Jerome Friedman, Trevor Hastie, and Rob Tibshirani.
 \newblock Regularization paths for cox's proportional hazards model via
   coordinate descent.
-\newblock {\em Journal of Statistical Software} {\bf 39,} 1--13.
+\newblock \emph{Journal of Statistical Software}, 39\penalty0 (5):\penalty0
+  1--13, 2011.
+\newblock URL \url{http://www.jstatsoft.org/v39/i05/}.
 
-\bibitem[\protect\citeauthoryear{Srivastava, Cevher, Dinh, and
-  Dunson}{Srivastava et~al.}{2015}]{srivastava2015wasp}
-Srivastava, S., Cevher, V., Dinh, Q., and Dunson, D. (2015).
+\bibitem[Srivastava et~al.(2015)Srivastava, Cevher, Dinh, and
+  Dunson]{srivastava2015wasp}
+Sanvesh Srivastava, Volkan Cevher, Quoc Dinh, and David Dunson.
 \newblock Wasp: Scalable bayes via barycenters of subset posteriors.
-\newblock In {\em Artificial Intelligence and Statistics}, pages 912--920.
+\newblock In \emph{Artificial Intelligence and Statistics}, pages 912--920,
+  2015.
 
-\bibitem[\protect\citeauthoryear{{Stan Development Team}}{{Stan Development
-  Team}}{2018}]{stan2018rstan}
-{Stan Development Team} (2018).
-\newblock Rstan: the r interface to stan. r package version 2.17. 3.
+\bibitem[{Stan Development Team}(2018)]{stan2018rstan}
+{Stan Development Team}.
+\newblock Rstan: the r interface to stan. r package version 2.17. 3, 2018.
 
-\bibitem[\protect\citeauthoryear{Sturtz, Ligges, and Gelman}{Sturtz
-  et~al.}{2005}]{r2winbugs}
-Sturtz, S., Ligges, U., and Gelman, A.~E. (2005).
+\bibitem[Sturtz et~al.(2005)Sturtz, Ligges, and Gelman]{r2winbugs}
+Sibylle Sturtz, Uwe Ligges, and Andrew~E Gelman.
 \newblock R2winbugs: a package for running winbugs from r.
+\newblock 2005.
 
-\bibitem[\protect\citeauthoryear{Terenin, Dong, and Draper}{Terenin
-  et~al.}{2019}]{terenin2019gpu}
-Terenin, A., Dong, S., and Draper, D. (2019).
+\bibitem[Terenin et~al.(2019)Terenin, Dong, and Draper]{terenin2019gpu}
+Alexander Terenin, Shawfeng Dong, and David Draper.
 \newblock Gpu-accelerated gibbs sampling: a case study of the horseshoe probit
   model.
-\newblock {\em Statistics and Computing} {\bf 29,} 301--310.
+\newblock \emph{Statistics and Computing}, 29\penalty0 (2):\penalty0 301--310,
+  2019.
 
-\bibitem[\protect\citeauthoryear{Terenin, Simpson, and Draper}{Terenin
-  et~al.}{2020}]{terenin2020asynchronous}
-Terenin, A., Simpson, D., and Draper, D. (2020).
+\bibitem[Terenin et~al.(2020)Terenin, Simpson, and
+  Draper]{terenin2020asynchronous}
+Alexander Terenin, Daniel Simpson, and David Draper.
 \newblock Asynchronous gibbs sampling.
-\newblock In {\em International Conference on Artificial Intelligence and
-  Statistics}, pages 144--154.
+\newblock In \emph{International Conference on Artificial Intelligence and
+  Statistics}, pages 144--154, 2020.
 
 \end{thebibliography}

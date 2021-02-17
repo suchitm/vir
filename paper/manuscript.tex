@@ -1,15 +1,13 @@
 \documentclass[]{article}
 
+\pdfoutput=1
+
 \usepackage[authoryear]{natbib}
 \usepackage{booktabs}  % professionally typeset tables
 \usepackage{amsfonts}%,amssymb,amsfonts}
 \usepackage{amsmath}
-\usepackage{textcomp}  % better copyright sign, among other things
-\usepackage{lipsum}    % filler text
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
-\usepackage[hidelinks]{hyperref}% add hypertext capabilities
-\usepackage{hypernat}% make hyperref and natbib work together
 \usepackage{cancel}
 \usepackage{verbatim}% multiline commenting
 \usepackage{ifthen}
@@ -196,6 +194,8 @@
 \newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
 \newcommand{\bigcell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
 
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords:}} #1}
+
 %*********************************************** 
 % end custom latex commands
 %***********************************************
@@ -214,6 +214,30 @@
 \maketitle
 
 \doublespacing
+
+\begin{abstract} 
+\noindent We present a new package \proglang{R} package for variational 
+inference with
+shrinkage priors. Our package implements variational and stochastic variational 
+algorithms for linear and probit regression models, the use of which is a 
+common first step in many applied analyses. We review variational inference and 
+show how the derivation for a Gibbs sampler can be easily modified to derive a 
+corresponding variational or stochastic variational algorithm. We provide 
+simulations showing that, at least for a normal linear model, variational inference 
+can 
+lead to similar uncertainty quantification as the corresponding Gibbs samplers, 
+while estimating the model parameters at a fraction of the computational cost. 
+Our package can be utilized to quickly explore different combinations of 
+predictors in a linear model, while providing accurate uncertainty quantification in 
+many applied situations.
+The package is implemented natively in
+\proglang{R} and \pkg{RcppEigen}, which has the benefit of bypassing the
+substantial operating system specific overhead of linking external libraries to
+work efficiently with \proglang{R}.
+\end{abstract}
+
+\keywords{Bayesian statistics, big data, Gibbs sampling, shrinkage priors, 
+variational inference}
 
 \section{Introduction} \label{sec:vir:intro}
 
@@ -1003,7 +1027,7 @@ below.
 \begin{table}[t]
 	\caption{Simulation results for the normal linear model.}	
 	\label{tab:lm_sims}
-	\input{./tables/lm_sims}
+	\input{./lm_sims}
 \end{table}
 
 We compare the mean squared error for the coefficients (MSE), coverage for 95\%
@@ -1057,7 +1081,7 @@ $P = 50$, and set 40 of the parameters to zero.
 \begin{table}[t]
 	\caption{Simulation results for binary regression with shrinkage priors.}	
 	\label{tab:probit_sims}
-	\input{./tables/probit_sims}
+	\input{./probit_sims}
 \end{table}
 
 We calculate the mean squared error for the parameter estimates for each of the
@@ -1167,8 +1191,8 @@ implementations continue to outperform \fct{cv.glmnet} as the sample size
 increases. It should be noted that the CAVI-Indep implementation is slower than
 CAVI-Corr because a large error term needs to be calculated for each predictor
 in each iteration of the algorithm. In the binary regression cases, the
-CAVI-Corr implementation is faster than the \pkg{glmnet} implementations, while
-CAVI-Indep remains slower. However, since Bayesian binary regression is an
+CAVI implementations were substantially slower the \pkg{glmnet} implementations 
+and were omitted from the plot.  However, since Bayesian binary regression is an
 appropriate use case for the SVI algorithm even when the data fits in memory, we
 see that the use of such algorithms for a fixed batch size and number of
 iterations done not lead to an increase in computation time as the size of the
@@ -1205,7 +1229,7 @@ goal is to create a package which solves common problems using a variety of
 methodology for big data analysis in Bayesian models (stochastic gradient MCMC,
 GPU acceleration, etc.). 	
 
-\bibliography{references.bib}
-\bibliographystyle{biom}
+\bibliography{references}
+\bibliographystyle{plainnat}
 
 \end{document}
