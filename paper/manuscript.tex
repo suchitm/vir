@@ -216,7 +216,7 @@
 \doublespacing
 
 \begin{abstract} 
-\noindent We present a new package \proglang{R} package for variational 
+\noindent We present \pkg{vir}, an \proglang{R} package for variational 
 inference with
 shrinkage priors. Our package implements variational and stochastic variational 
 algorithms for linear and probit regression models, the use of which is a 
@@ -226,8 +226,11 @@ corresponding variational or stochastic variational algorithm. We provide
 simulations showing that, at least for a normal linear model, variational inference 
 can 
 lead to similar uncertainty quantification as the corresponding Gibbs samplers, 
-while estimating the model parameters at a fraction of the computational cost. 
-Our package can be utilized to quickly explore different combinations of 
+while estimating the model parameters at a fraction of the computational cost. Our 
+timing experiments show situations in which our algorithms converge faster than 
+the frequentist LASSO implementations in \pkg{glmnet} while simultaneously 
+providing superior parameter estimation and variable selection. 
+Hence, our package can be utilized to quickly explore different combinations of 
 predictors in a linear model, while providing accurate uncertainty quantification in 
 many applied situations.
 The package is implemented natively in
