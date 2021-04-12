@@ -7,8 +7,12 @@
 
 This package includes a set of variational and stochastic variational
 algorithms to estimate parameters in linear and probit regression with
-shrinkage priors. The algorithms are implemented using RcppEigen and
+shirkage priors. The algorithms are implemented using RcppEigen and
 don’t require linking with any other external libraries.
+
+Simulations regarding the performance of these algorithms can be found
+in the accompanying paper: [Variational Inference for Shrinkage
+Priors](https://arxiv.org/pdf/2102.08877.pdf).
 
 ## Installation
 
